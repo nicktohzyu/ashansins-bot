@@ -3,7 +3,7 @@ var packageInfo = require('./package.json');
 var http = require("http");
 
 setInterval(function() {
-    http.get("http://damp-thicket-12345.herokuapp.com/");
+    http.get("https://ashansins-6.herokuapp.com/");
 }, 300000); // every 5 minutes (300000)
 var app = express();
 
