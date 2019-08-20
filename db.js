@@ -10,6 +10,7 @@ module.exports = {
     updateVictim: updateVictim,
     processDead: processDead,
     processKill: processKill,
+    processSpying: processSpying,
     processRegistration: processRegistration,
     processUnregistration: processUnregistration,
     sendToAll: sendToAll,
@@ -33,13 +34,14 @@ const district1_id = 0//insert the group ids of the different group chats with t
 const district2_id = 0//insert the group ids of the different group chats with the participants;
 const district6_id = 0//insert the group ids of the different group chats with the participants;
 const district12_id = 0//insert the group ids of the different group chats with the participants;
+const spies_id = 0;
 const allDistricts_id = 323056944//insert the group ids of the different group chats with the participants;
 const groupChats = [bloodbenders_id, district1_id, district12_id, district2_id, district6_id, allDistricts_id];
 const district1Title = "🌪 District 1 🌪";//"✈️💨🌬 District 1 🌪🦅🎈";
 const district2Title = "🌊 District 2 🌊";//"🚰🌊☔️ District 2 ❄️🐳🍵";
 const district6Title = "⛰ District 6 ⛰";//"🌍⛰🍄 District 6 🗻🐛🌚";
 const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
-
+const spiesTitle = "Capitol Spies"
 
 function getLogs(err, cb) {
     if (err) return handleError(err);
@@ -210,6 +212,10 @@ function displayAllPlayers(callback) {
             } else if (district === "spec") {
                 districtName = "Spectators";
             }
+            //to be onz in Phase 2
+            else if (district === "spies") {
+                districtName = spiesTitle;
+            }
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
@@ -276,6 +282,11 @@ function displayPlayers(district, callback) {
             } else if (district === "spec") {
                 districtName = "Spectators";
             }
+            // to be onz in Phase 2
+            else if (district === "spies") {
+                districtName = spiesTitle;
+            }
+
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
@@ -494,7 +505,8 @@ function prekds(bot, msg, purpose, text) {
         [bot.inlineButton("District 1", {callback: JSON.stringify({"target": "district1", "purpose": purpose})}),
             bot.inlineButton("District 2", {callback: JSON.stringify({"target": "district2", "purpose": purpose})})],
         [bot.inlineButton("District 6", {callback: JSON.stringify({"target": "district6", "purpose": purpose})}),
-            bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})]
+            bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})],
+        [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})})]
     ]);
 
     if (purpose == "random" || purpose == "register") {
@@ -502,7 +514,6 @@ function prekds(bot, msg, purpose, text) {
     } else {
         bot.sendMessage(msg.from.id, text, {replyMarkup});
     }
-
 }
 
 function kill(bot, msg, district) {
