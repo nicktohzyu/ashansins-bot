@@ -10,7 +10,6 @@ module.exports = {
     updateVictim: updateVictim,
     processDead: processDead,
     processKill: processKill,
-    processSpying: processSpying,
     processRegistration: processRegistration,
     processUnregistration: processUnregistration,
     sendToAll: sendToAll,
@@ -190,6 +189,8 @@ function displayAllPlayers(callback) {
         appendDistrict(district6Array, "district6");
         var district12Array = getDistrict("district12");
         appendDistrict(district12Array, "district12");
+        var spiesArray = getDistrict("spies");
+        appendDistrict(spiesArray, "spies");
         function getDistrict(district) {
             var districtArray = result.filter(function(el) {
                 return el.user.district === district;
@@ -506,7 +507,8 @@ function prekds(bot, msg, purpose, text) {
             bot.inlineButton("District 2", {callback: JSON.stringify({"target": "district2", "purpose": purpose})})],
         [bot.inlineButton("District 6", {callback: JSON.stringify({"target": "district6", "purpose": purpose})}),
             bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})],
-        [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})})]
+        [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})}),
+             ],
     ]);
 
     if (purpose == "random" || purpose == "register") {
