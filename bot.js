@@ -86,7 +86,7 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
         })
     } else {
         return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/tributes all\n\nTo view players from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
-    }
+    }i
 });
 
 
@@ -162,6 +162,10 @@ bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     db.displayAllPlayers((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
     });
+});
+
+bot.on([/^\/🔪spy$/, /^\/tributes@Ashansins_bot$/], (msg) => {
+    return db.prekdsSpy(bot, msg, "spy", "Do you want to be revived?");
 });
 
 // Inline button callback
