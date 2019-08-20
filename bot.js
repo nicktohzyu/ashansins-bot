@@ -100,7 +100,7 @@ bot.on(/^(.+)$/, (msg, props) => {
         text: props.match[1]
     })
 
-    bot.sendMessage(francis_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
+    bot.sendMessage(heman_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
 });
 
 bot.on(/^\/register (.+)$/, (msg, props) => {
