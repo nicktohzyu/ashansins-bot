@@ -179,7 +179,7 @@ function updateExterminatorCount(err, user_id, victim_id) {
 
 function displayAllPlayers(callback) {
     Player.find({}).exec(function(err, result) {
-         var response = "☆*:.｡. All Players .｡.:*☆\n\n";
+         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
          var district1Array = getDistrict("district1");
          appendDistrict(district1Array, "district1");
          var district2Array = getDistrict("district2");
@@ -599,7 +599,7 @@ function sendExterminatorScore(msg, callback) {
 
 function sendExterminatorTargets(callback) {
     Player.find({"user.state": "Alive"}).exec(function(err, result) {
-        var response = "☆*:.｡. All Players .｡.:*☆\n\n";
+        var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
         var district1Array = getDistrict("district1");
         appendDistrict(district1Array, "district1");
         var district2Array = getDistrict("district2");

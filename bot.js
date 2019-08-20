@@ -53,39 +53,39 @@ bot.on('/help', (msg) => {
     return bot.sendMessage(msg.chat.id, text);
 })
 
-bot.on(/^\/players (.+)$/, (msg, props) => {
+bot.on(/^\/tributes (.+)$/, (msg, props) => {
     const text = props.match[1].toLowerCase();
     console.log(text);
-    if (text === "all" || text === "/players all") {
+    if (text === "all" || text === "/tributes all") {
         db.displayAllPlayers((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         });
-    } else if (text === "district1" || text === "/players district1") {
+    } else if (text === "district1" || text === "/tributes district1") {
         db.displayPlayers("district1", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "district2" || text === "/players district2") {
+    } else if (text === "district2" || text === "/tributes district2") {
         db.displayPlayers("district2", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "district6" || text === "/players district6") {
+    } else if (text === "district6" || text === "/tributes district6") {
         db.displayPlayers("district6", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "district12" || text === "/players district12") {
+    } else if (text === "district12" || text === "/tributes district12") {
         db.displayPlayers("district12", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "spec" || text === "/players spec") {
+    } else if (text === "spec" || text === "/tributes spec") {
         db.displayPlayers("spec", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "🔪" || text === "/players 🔪") {
+    } else if (text === "🔪" || text === "/tributes 🔪") {
         db.displayPlayers("🔪", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else {
-        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/players all\n\nTo view players from a SPECIFIC NATION, type:\n/players <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
+        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/tributes all\n\nTo view players from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
     }
 });
 
@@ -158,7 +158,7 @@ bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
     return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
 });
 
-bot.on([/^\/players$/, /^\/players@Ashansins_bot$/], (msg) => {
+bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     db.displayAllPlayers((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         });
