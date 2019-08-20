@@ -1,9 +1,9 @@
 var express = require('express');
 var packageInfo = require('./package.json');
-var http = require("http");
+var https = require("https");
 
 setInterval(function() {
-    http.get("https://ashansins-6.herokuapp.com/");
+    https.get("https://ashansins-6.herokuapp.com/");
 }, 300000); // every 5 minutes (300000)
 var app = express();
 
