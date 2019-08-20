@@ -1,5 +1,5 @@
 // your token from BotFather
-var botToken = '969817030:AAFSDOyJzpDk9X1tT4zRkLbWaSAlox8bkUk'; 
+var botToken = '969817030:AAFSDOyJzpDk9X1tT4zRkLbWaSAlox8bkUk';
 const TeleBot = require('telebot');
 const bot = new TeleBot(botToken);
 const math = require('mathjs');
@@ -30,62 +30,62 @@ bot.on('/clear_logs', (msg) => {
 
 bot.on('/help', (msg) => {
     var text = "The available commands for this game are:\n\n"
-             + "To register as a PLAYER, type:\n"
-             + "/register <Nation>\n"
-             + "Where <Nation> is either air, water, earth or fire.\n"
-             + "E.g. If you belong to the Air Nation, type:\n"
-             + "/register air\n\n"
-             + "To KILL someone, type:\n"
-             + "/kill <Person's FIRST name> (CASE SENSITIVE)\n"
-             + "E.g. If Francis's first name was registered as Lee, type:\n"
-             + "/kill Lee\n\n"
-             + "To STICK someone, type:\n"
-             + "/stick <Person's FIRST name>\n\n"
-             + "To DIE, type:\n"
-             + "/dead <Your killer's FIRST name>\n\n"
-             + "To view ALL players, type:\n"
-             + "/players all\n\n"
-             + "To view players from a SPECIFIC NATION, type:\n"
-             + "/players <Nation>\n"
-             + "Where <Nation> is either air, water, earth or fire.\n\n"
-             + "Typing /kill, /stick or /dead without any person indicated will cause the bot to prompt to ask who is your target.\n"
-             + "This feature however, requires you to start a conversation with @ashansins_bot first.";
+        + "To register as a TRIBUTE, type:\n"
+        + "/register <District>\n"
+        + "Where <District> is either 1, 2, 6 or 12.\n"
+        + "E.g. If you belong to district 2, type:\n"
+        + "/register 2\n\n"
+        + "To KILL someone, type:\n"
+        + "/kill <Tribute's FIRST name> (CASE SENSITIVE)\n"
+        + "E.g. If Bridget's first name was registered as Brids, type:\n"
+        + "/kill Brids\n\n"
+        + "To STICK someone, type:\n"
+        + "/stick <Tribute's FIRST name>\n\n"
+        + "To DIE, type:\n"
+        + "/dead <Your killer's FIRST name>\n\n"
+        + "To view ALL tributes, type:\n"
+        + "/tributes all\n\n"
+        + "To view tributes from a SPECIFIC DISTRICT, type:\n"
+        + "/tributes <District>\n"
+        + "Where <District> is either 1, 2, 6 or 12.\n\n"
+        + "Typing /kill, /stick or /dead without any tribute indicated will cause the bot to prompt to ask who is your target.\n"
+        + "This feature however, requires you to start a conversation with @ashansins6_bot first.";
     return bot.sendMessage(msg.chat.id, text);
 })
 
-bot.on(/^\/players (.+)$/, (msg, props) => {
+bot.on(/^\/tributes (.+)$/, (msg, props) => {
     const text = props.match[1].toLowerCase();
     console.log(text);
-    if (text === "all" || text === "/players all") {
+    if (text === "all" || text === "/tributes all") {
         db.displayAllPlayers((message) => {
-        return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         });
-    } else if (text === "air" || text === "/players air") {
-        db.displayPlayers("air", (message) => {
+    } else if (text === "district1" || text === "/tributes district1") {
+        db.displayPlayers("district1", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "water" || text === "/players water") {
-        db.displayPlayers("water", (message) => {
+    } else if (text === "district2" || text === "/tributes district2") {
+        db.displayPlayers("district2", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "earth" || text === "/players earth") {
-        db.displayPlayers("earth", (message) => {
+    } else if (text === "district6" || text === "/tributes district6") {
+        db.displayPlayers("district6", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "fire" || text === "/players fire") {
-        db.displayPlayers("fire", (message) => {
+    } else if (text === "district12" || text === "/tributes district12") {
+        db.displayPlayers("district12", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "spec" || text === "/players spec") {
+    } else if (text === "spec" || text === "/tributes spec") {
         db.displayPlayers("spec", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "🔪" || text === "/players 🔪") {
+    } else if (text === "🔪" || text === "/tributes 🔪") {
         db.displayPlayers("🔪", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else {
-        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/players all\n\nTo view players from a SPECIFIC NATION, type:\n/players <Nation>\nWhere <Nation> is either air, water, earth or fire.\n")
+        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/tributes all\n\nTo view players from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
     }
 });
 
@@ -95,12 +95,12 @@ bot.on(/^(.+)$/, (msg, props) => {
         name: msg.from.first_name,
         id: msg.from.id
     }, {
-        chat_id: msg.chat.id, 
+        chat_id: msg.chat.id,
         id: msg.message_id,
         text: props.match[1]
     })
 
-    bot.sendMessage(heman_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
+    bot.sendMessage(johanna_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
 });
 
 bot.on(/^\/register (.+)$/, (msg, props) => {
@@ -125,7 +125,7 @@ bot.on(/^\/kill (.+)$/, (msg, props) => {
     return db.processKill(msg, text, (id, message) => {
         return bot.sendMessage(id, message);
     });
-}); 
+});
 
 bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
     return db.sendExterminatorScore(msg, (message) => {
@@ -139,29 +139,29 @@ bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
     });
 });
 bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "prekill", "From which Nation is your target to kill?");
+    return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
 });
 
 bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "predead", "From which Nation is your killer?");
+    return db.prekds(bot, msg, "predead", "From which District is your killer?");
 });
 
 bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "prestick", "From which Nation is your target to stick?");
+    return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
 });
 
 bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "random", "From which Nation do you want to select a random player?");
+    return db.prekds(bot, msg, "random", "From which District do you want to select a random player?");
 });
 
 bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "register", "To which Nation do you pledge your allegiance?");
+    return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
 });
 
-bot.on([/^\/players$/, /^\/players@Ashansins_bot$/], (msg) => {
+bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     db.displayAllPlayers((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
-        });
+    });
 });
 
 // Inline button callback
@@ -200,7 +200,7 @@ bot.on('callbackQuery', msg => {
     } else if (data.purpose == "prestick") {
         return db.stick(bot, msg, data.target);
     } else if (data.purpose == "random") {
-        return db.rollNation(bot, msg, data.target);
+        return db.rollDistrict(bot, msg, data.target);
     } else if (data.purpose == "register") {
         return db.processRegistration(msg, data.target.toLowerCase(), (message) => {
             return bot.sendMessage(msg.from.id, message);
@@ -329,10 +329,10 @@ bot.on('/generate_equations', (msg) => {
 
 bot.on('/mole', (msg) => {
     var messages = ["%s, you are the mole.",
-    "Nice try, %s, but that won't work.",
-    "I am the mole.",
-    "Maybe it's you? Maybe it's me? Maybe it's all of us.",
-    "我是警察。"];
+        "Nice try, %s, but that won't work.",
+        "I am the mole.",
+        "Maybe it's you? Maybe it's me? Maybe it's all of us.",
+        "我是警察。"];
     var reply = messages[Math.floor(Math.random()*messages.length)];
     reply = reply.replace('%s', msg.from.first_name);
 

@@ -22,53 +22,53 @@ module.exports = {
     dead: dead,
     stick: stick,
     prekds: prekds,
-    rollNation: rollNation,
+    rollDistrict: rollDistrict,
     sendExterminatorScore: sendExterminatorScore,
     sendExterminatorTargets: sendExterminatorTargets,
     reviveAll: reviveAll
 }
 
 const bloodbenders_id = 0;//insert the group ids of the different group chats with the participants;
-const air_id = 0//insert the group ids of the different group chats with the participants;
-const fire_id = 0//insert the group ids of the different group chats with the participants;
-const earth_id = 0//insert the group ids of the different group chats with the participants;
-const water_id = 0//insert the group ids of the different group chats with the participants;
-const unitednations_id = 323056944//insert the group ids of the different group chats with the participants;
-const groupChats = [bloodbenders_id, air_id, fire_id, water_id, earth_id, unitednations_id];
-const airTitle = "🌪 Air 🌪";//"✈️💨🌬 Air 🌪🦅🎈";
-const waterTitle = "🌊 Water 🌊";//"🚰🌊☔️ Water ❄️🐳🍵";
-const earthTitle = "⛰ Earth ⛰";//"🌍⛰🍄 Earth 🗻🐛🌚";
-const fireTitle = "🔥 Fire 🔥"//"🌋🚒☀️ Fire 🔥💥👩🏻‍🚒";
+const district1_id = 0//insert the group ids of the different group chats with the participants;
+const district2_id = 0//insert the group ids of the different group chats with the participants;
+const district6_id = 0//insert the group ids of the different group chats with the participants;
+const district12_id = 0//insert the group ids of the different group chats with the participants;
+const allDistricts_id = 323056944//insert the group ids of the different group chats with the participants;
+const groupChats = [bloodbenders_id, district1_id, district12_id, district2_id, district6_id, allDistricts_id];
+const district1Title = "🌪 District 1 🌪";//"✈️💨🌬 District 1 🌪🦅🎈";
+const district2Title = "🌊 District 2 🌊";//"🚰🌊☔️ District 2 ❄️🐳🍵";
+const district6Title = "⛰ District 6 ⛰";//"🌍⛰🍄 District 6 🗻🐛🌚";
+const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
 
 
 function getLogs(err, cb) {
-        if (err) return handleError(err);
-        console.log("we reached here");
-	    Message.find({'message.text' : 'francis you bitch'}).exec(function (err, result) {
-	        cb(result);
-	    })
-	}
+    if (err) return handleError(err);
+    console.log("we reached here");
+    Message.find({'message.text' : 'francis you bitch'}).exec(function (err, result) {
+        cb(result);
+    })
+}
 
 function clearLogs(err, cb) {
-        if (err) return handleError(err);
-	    Message.remove({}, cb);
-	}
+    if (err) return handleError(err);
+    Message.remove({}, cb);
+}
 
 function addLog(err, user, message, cb) {
-        if (err) return handleError(err);
-	    dbmsg = new Message({
-	        user: user,
-	        message: message,
-	        timestamp: new Date().toISOString()
-	    }).save(cb);
-	}
+    if (err) return handleError(err);
+    dbmsg = new Message({
+        user: user,
+        message: message,
+        timestamp: new Date().toISOString()
+    }).save(cb);
+}
 
-function addPlayer(err, user, message, nation, state, cb) {
+function addPlayer(err, user, message, district, state, cb) {
     if (err) return handleError(err);
     dbmsg = new Player({
         user: user,
         message: message,
-        nation: nation,
+        district: district,
         state: state,
         equipment: "None",
         killer: "None",
@@ -109,18 +109,18 @@ function reviveAll(callback, callback2) {
     })
 }
 
-function randomRevive(nation, callback, callback2) {
-        Player.find({"user.nation": nation, "user.state": "Dead"}).exec(function(err, res){
-            var dead = res;
-            console.log(dead);
-            if (dead.length > 0) {
-                var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
-                revivePlayer(false, luckyGuy.user.name, function(res) {
-                    callback(res);
-                }, callback2);
-            }
-        })
-    }
+function randomRevive(district, callback, callback2) {
+    Player.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
+        var dead = res;
+        console.log(dead);
+        if (dead.length > 0) {
+            var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
+            revivePlayer(false, luckyGuy.user.name, function(res) {
+                callback(res);
+            }, callback2);
+        }
+    })
+}
 function updateEquip(err, user, newEquip, callback) {
     Player.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
         var message;
@@ -156,16 +156,16 @@ function updateVictimArray(err, user_id, victim) {
         if (res !== null) {
             var updatedVictims = JSON.parse(res.user.victims);
             console.log(updatedVictims);
-            if (updatedVictims[victim.user.nation] !== null && Array.isArray(updatedVictims[victim.user.nation])) {
-                updatedVictims[victim.user.nation].push(victim.user.name);
+            if (updatedVictims[victim.user.district] !== null && Array.isArray(updatedVictims[victim.user.district])) {
+                updatedVictims[victim.user.district].push(victim.user.name);
             } else {
-                updatedVictims[victim.user.nation] = [victim.user.name];
+                updatedVictims[victim.user.district] = [victim.user.name];
             }
             console.log(updatedVictims);
             Player.findOneAndUpdate({"user.id": user_id}, { $set: {"user.victims": JSON.stringify(updatedVictims)}, $inc: {"user.kills" : 1}}, function() {});
         }
     });
-    
+
 }
 
 function updateExterminatorCount(err, user_id, victim_id) {
@@ -174,47 +174,47 @@ function updateExterminatorCount(err, user_id, victim_id) {
             Player.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks" : res.user.kills}}, function() {});
         }
     });
-    
+
 }
 
 function displayAllPlayers(callback) {
     Player.find({}).exec(function(err, result) {
-         var response = "☆*:.｡. All Players .｡.:*☆\n\n";
-         var airArray = getNation("air");
-         appendNation(airArray, "air");
-         var waterArray = getNation("water");
-         appendNation(waterArray, "water");
-         var earthArray = getNation("earth");
-         appendNation(earthArray, "earth");
-         var fireArray = getNation("fire");
-         appendNation(fireArray, "fire");
-         function getNation(nation) {
-             var nationArray = result.filter(function(el) {
-                return el.user.nation === nation;
-             });
-             return nationArray;
-         }
+        var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
+        var district1Array = getDistrict("district1");
+        appendDistrict(district1Array, "district1");
+        var district2Array = getDistrict("district2");
+        appendDistrict(district2Array, "district2");
+        var district6Array = getDistrict("district6");
+        appendDistrict(district6Array, "district6");
+        var district12Array = getDistrict("district12");
+        appendDistrict(district12Array, "district12");
+        function getDistrict(district) {
+            var districtArray = result.filter(function(el) {
+                return el.user.district === district;
+            });
+            return districtArray;
+        }
 
-         function appendNation(nationArray, nation) {
-            var nationName = "Shan";
-            if (nation === "air") {
-                nationName = airTitle;
-            } else if (nation === "water") {
-                nationName = waterTitle;
-            } else if (nation === "earth") {
-                nationName = earthTitle;
-            } else if (nation === "fire") {
-                nationName = fireTitle;
-            } else if (nation === "🔪") {
-                nationName = "Administrators";
-            } else if (nation === "spec") {
-                nationName = "Spectators";
-            } 
-            response += "<b>" + nationName + "</b>\n";
-            nationArray.sort(compareState);
-            for (var i = 0; i < nationArray.length; i++) {
-                var state = nationArray[i].user.state;
-                var equip = nationArray[i].user.equipment;
+        function appendDistrict(districtArray, district) {
+            var districtName = "Shan";
+            if (district === "district1") {
+                districtName = district1Title;
+            } else if (district === "district2") {
+                districtName = district2Title;
+            } else if (district === "district6") {
+                districtName = district6Title;
+            } else if (district === "district12") {
+                districtName = district12Title;
+            } else if (district === "🔪") {
+                districtName = "Administrators";
+            } else if (district === "spec") {
+                districtName = "Spectators";
+            }
+            response += "<b>" + districtName + "</b>\n";
+            districtArray.sort(compareState);
+            for (var i = 0; i < districtArray.length; i++) {
+                var state = districtArray[i].user.state;
+                var equip = districtArray[i].user.equipment;
                 var emoji = "";
                 if (equip === "Coin") {
                     emoji = "💰";
@@ -223,86 +223,86 @@ function displayAllPlayers(callback) {
                 } else if (equip === "3Coin") {
                     emoji = "💰💰💰";
                 } else if (state === "Dead") {
-                    var dead = ["👻", "💀", "☠️"]; 
+                    var dead = ["👻", "💀", "☠️"];
                     emoji = dead[Math.floor(Math.random()*dead.length)];
                 } else if (state === "Alive") {
                     var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
                     emoji = alive[Math.floor(Math.random()*alive.length)];
                 }
-                response += ((i + 1) + ". " + nationArray[i].user.name + " [" + nationArray[i].user.state + "] " + emoji + " \n");
-            } 
+                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+            }
 
             response += "\n";
         }
 
-         console.log(response);
-         callback(response);
+        console.log(response);
+        callback(response);
     })
 }
 
 function compareState(a,b) {
     if (a.user.state < b.user.state)
-      return -1;
+        return -1;
     if (a.user.state > b.user.state)
-      return 1;
+        return 1;
     return 0;
-  }
-  
+}
 
-function displayPlayers(nation, callback) {
-    Player.find({"user.nation": nation}).exec(function(err, result) {
-         var response = "";
-         var nationArray = getNation(nation);
-         appendNation(nationArray, nation);
-         function getNation(nation) {
-             var nationArray = result.filter(function(el) {
-                return el.user.nation === nation;
-             });
-             return nationArray;
-         }
 
-         function appendNation(nationArray, nation) {
-             var nationName = "Shan";
-             if (nation === "air") {
-                 nationName = airTitle;
-             } else if (nation === "water") {
-                 nationName = waterTitle;
-             } else if (nation === "earth") {
-                 nationName = earthTitle;
-             } else if (nation === "fire") {
-                 nationName = fireTitle;
-             } else if (nation === "🔪") {
-                 nationName = "Administrators";
-             } else if (nation === "spec") {
-                 nationName = "Spectators";
-             } 
-             response += "<b>" + nationName + "</b>\n";
-             nationArray.sort(compareState);
-             for (var i = 0; i < nationArray.length; i++) {
-                 var state = nationArray[i].user.state;
-                 var equip = nationArray[i].user.equipment;
-                 var emoji = "";
-                 if (equip === "Coin") {
-                     emoji = "💰";
-                 } else if (equip === "2Coin") {
-                     emoji = "💰💰";
-                 } else if (equip === "3Coin") {
-                     emoji = "💰💰💰";
-                 } else if (state === "Dead") {
-                     var dead = ["👻", "💀", "☠️"]; 
-                     emoji = dead[Math.floor(Math.random()*dead.length)];
-                 } else if (state === "Alive") {
-                     var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
-                     emoji = alive[Math.floor(Math.random()*alive.length)];
-                 }
-                 response += ((i + 1) + ". " + nationArray[i].user.name + " [" + nationArray[i].user.state + "] " + emoji + " \n");
-             } 
+function displayPlayers(district, callback) {
+    Player.find({"user.district": district}).exec(function(err, result) {
+        var response = "";
+        var districtArray = getDistrict(district);
+        appendDistrict(districtArray, district);
+        function getDistrict(district) {
+            var districtArray = result.filter(function(el) {
+                return el.user.district === district;
+            });
+            return districtArray;
+        }
 
-             response += "\n";
-         }
+        function appendDistrict(districtArray, district) {
+            var districtName = "Shan";
+            if (district === "district1") {
+                districtName = district1Title;
+            } else if (district === "district2") {
+                districtName = district2Title;
+            } else if (district === "district6") {
+                districtName = district6Title;
+            } else if (district === "district12") {
+                districtName = district12Title;
+            } else if (district === "🔪") {
+                districtName = "Administrators";
+            } else if (district === "spec") {
+                districtName = "Spectators";
+            }
+            response += "<b>" + districtName + "</b>\n";
+            districtArray.sort(compareState);
+            for (var i = 0; i < districtArray.length; i++) {
+                var state = districtArray[i].user.state;
+                var equip = districtArray[i].user.equipment;
+                var emoji = "";
+                if (equip === "Coin") {
+                    emoji = "💰";
+                } else if (equip === "2Coin") {
+                    emoji = "💰💰";
+                } else if (equip === "3Coin") {
+                    emoji = "💰💰💰";
+                } else if (state === "Dead") {
+                    var dead = ["👻", "💀", "☠️"];
+                    emoji = dead[Math.floor(Math.random()*dead.length)];
+                } else if (state === "Alive") {
+                    var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
+                    emoji = alive[Math.floor(Math.random()*alive.length)];
+                }
+                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+            }
 
-         console.log(response);
-         callback(response);
+            response += "\n";
+        }
+
+        console.log(response);
+        callback(response);
     })
 }
 function processDead(msg, target, callback) {
@@ -310,7 +310,7 @@ function processDead(msg, target, callback) {
     Player.findOne({"user.id": msg.from.id}).exec(function(err, victim) {
         Player.findOne({"user.name": target}).exec(function(err, res) {
             if (res !== null) {
-                if (res.user.victim == msg.from.id) 
+                if (res.user.victim == msg.from.id)
                     toDead = true;
 
                 if (toDead) {
@@ -330,118 +330,118 @@ function processDead(msg, target, callback) {
                 callback(msg.chat.id, "You've entered an invalid target!");
             }
             console.log(toDead);
-            
+
         });
     });
 
 }
 
 function processKill(msg, target, callback) {
-        var toKill = false;
-        Player.findOne({"user.id": msg.from.id}).exec(function(err, killer) {
-            if (killer == null) {
-                callback(msg.from.id, "Error!");
-            } else if (killer.user.state === "Dead") {
-                callback("Invalid command, you're already dead!");
-            } else {
-                Player.findOne({"user.name": target}).exec(function(err, res) {
-                    if (res !== null) {
-                        if (res.user.killer == msg.from.id) {
-                            toKill = true;
-                        }      
-
-                        if (toKill) {   
-                            killPlayer(false, res.user.id);  
-                            updateVictimArray(false, msg.from.id, res);
-                            updateExterminatorCount(false, msg.from.id, res.user.id);
-                            callback(msg.from.id, "You SHANed successfully!");
-                            for (var i in groupChats) {
-                                callback(groupChats[i], target + " has been killed by " + killer.user.name + "!");
-                            }
-                        } else {
-                            updateVictim(false, msg.from.id, res.user.id);
-                            callback(msg.from.id, "Your response has been recorded!");
-                        }
-                    } else {
-                        callback(msg.chat.id, "You've entered an invalid target!");
+    var toKill = false;
+    Player.findOne({"user.id": msg.from.id}).exec(function(err, killer) {
+        if (killer == null) {
+            callback(msg.from.id, "Error!");
+        } else if (killer.user.state === "Dead") {
+            callback("Invalid command, you're already dead!");
+        } else {
+            Player.findOne({"user.name": target}).exec(function(err, res) {
+                if (res !== null) {
+                    if (res.user.killer == msg.from.id) {
+                        toKill = true;
                     }
 
-                    
-                });
-            }
-        });
-    }
+                    if (toKill) {
+                        killPlayer(false, res.user.id);
+                        updateVictimArray(false, msg.from.id, res);
+                        updateExterminatorCount(false, msg.from.id, res.user.id);
+                        callback(msg.from.id, "You SHANed successfully!");
+                        for (var i in groupChats) {
+                            callback(groupChats[i], target + " has been killed by " + killer.user.name + "!");
+                        }
+                    } else {
+                        updateVictim(false, msg.from.id, res.user.id);
+                        callback(msg.from.id, "Your response has been recorded!");
+                    }
+                } else {
+                    callback(msg.chat.id, "You've entered an invalid target!");
+                }
+
+
+            });
+        }
+    });
+}
 
 function processStick(msg, target, callback, callback2) {
-        var toStick = false;
-        Player.findOne({"user.id": msg.from.id}).exec(function(err, sticker) {
-            if (sticker.user.state === "Dead") {
-                callback("Invalid command, you're already dead!");
-            } else {
-                Player.findOne({"user.name": target}).exec(function(err, res) {
-                    if (res !== null) {
-                        if (res.user.sticker == msg.from.id) {
-                            toStick = true;
-                        }  
-
-                        if (toStick) {
-                            killPlayer(false, res.user.id);
-                            updateVictimArray(false, msg.from.id, res);
-                            callback2(target + "  got sticked by " + sticker.user.name + "!");
-                            callback(msg.from.id, "You sticked successfully!");
-                            updateExterminatorCount(false, msg.from.id, res.user.id);
-                            for (var i in groupChats) {
-                                callback(groupChats[i], target + " has been sticked by " + sticker.user.name + "!");
-                            }
-                        } else {
-                            updateVictim(false, msg.from.id, res.user.id);
-                            callback2(sticker.user.name + " is trying to stick " + target + "!");
-                            callback(msg.from.id, "Your response has been recorded!");
-                        }
-                    } else {
-                        callback(msg.chat.id, "You've entered an invalid target!");
+    var toStick = false;
+    Player.findOne({"user.id": msg.from.id}).exec(function(err, sticker) {
+        if (sticker.user.state === "Dead") {
+            callback("Invalid command, you're already dead!");
+        } else {
+            Player.findOne({"user.name": target}).exec(function(err, res) {
+                if (res !== null) {
+                    if (res.user.sticker == msg.from.id) {
+                        toStick = true;
                     }
 
-                    
-                });
-            }
-        });
-    }
+                    if (toStick) {
+                        killPlayer(false, res.user.id);
+                        updateVictimArray(false, msg.from.id, res);
+                        callback2(target + "  got sticked by " + sticker.user.name + "!");
+                        callback(msg.from.id, "You sticked successfully!");
+                        updateExterminatorCount(false, msg.from.id, res.user.id);
+                        for (var i in groupChats) {
+                            callback(groupChats[i], target + " has been sticked by " + sticker.user.name + "!");
+                        }
+                    } else {
+                        updateVictim(false, msg.from.id, res.user.id);
+                        callback2(sticker.user.name + " is trying to stick " + target + "!");
+                        callback(msg.from.id, "Your response has been recorded!");
+                    }
+                } else {
+                    callback(msg.chat.id, "You've entered an invalid target!");
+                }
+
+
+            });
+        }
+    });
+}
 
 function sendTo(user, input, msg, callback) {
-   Player.findOne({"user.name": user}).exec(function (err, result) {
-            if (result !== null) {
-	            callback(result.user.id, input);
-            } else {
-                Player.findOne({"user.id": user}).exec(function (err, result) {
-                    if (result !== null) {
-                        callback(result.user.id, input);
-                        callback(msg.from.id, "Sucessfully sent: " + input);
-                    } 
-                })
-            }
-	    })
+    Player.findOne({"user.name": user}).exec(function (err, result) {
+        if (result !== null) {
+            callback(result.user.id, input);
+        } else {
+            Player.findOne({"user.id": user}).exec(function (err, result) {
+                if (result !== null) {
+                    callback(result.user.id, input);
+                    callback(msg.from.id, "Sucessfully sent: " + input);
+                }
+            })
+        }
+    })
 }
 
 function sendToAll(input, callback) {
-	    Player.find({}).exec(function (err, result) {
-	        for (var i in result) {
-                callback(result[i].user.id, input);
-            }
-        })
-        for (var i in groupChats) {
-            callback(groupChats[i], input);
+    Player.find({}).exec(function (err, result) {
+        for (var i in result) {
+            callback(result[i].user.id, input);
         }
+    })
+    for (var i in groupChats) {
+        callback(groupChats[i], input);
+    }
 }
 
-function isValidNation(nation) {
-    var arrayNation = ["air", "water", "earth", "fire", "🔪", "spec"];
-    console.log(nation);
-    for (var i in arrayNation) {
-        if (nation === arrayNation[i])
+function isValidDistrict(district) {
+    var arrayDistrict = ["district1", "district2", "district6", "district12", "🔪", "spec"];
+    console.log(district);
+    for (var i in arrayDistrict) {
+        if (district === arrayDistrict[i])
             return true;
     }
-    
+
     return false;
 }
 
@@ -454,11 +454,11 @@ function processRegistration(msg, text, callback) {
         var users = res.length;
         if (users > 0) {
             callback("Sorry, either you've already registered, or there is already another user with your name.");
-        } else if (isValidNation(text)) {
+        } else if (isValidDistrict(text)) {
             addPlayer(false, {
                 name: msg.from.first_name,
                 id: msg.from.id,
-                nation: text,
+                district: text,
                 state: "Alive",
                 equipment: "None",
                 killer: "None yet",
@@ -469,15 +469,15 @@ function processRegistration(msg, text, callback) {
                 revives: 0,
                 victims: "{}"
             });
-            
+
             if (text === "🔪") {
                 callback("Successful 🔪 registration!");
             } else {
                 callback("Successful registration!");
             }
-            
+
         } else {
-            var bad = "You've entered an invalid command! Please type: /register <your nation>, where <your nation> can be either gry, sly, rav or huf. For example, if you're from Ravenclaw, please type: /register Rav"
+            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either gry, sly, rav or huf. For example, if you're from Ravenclaw, please type: /register Rav"
             callback(bad);
         }
     });
@@ -491,28 +491,28 @@ function processUnregistration(msg, user, callback) {
 
 function prekds(bot, msg, purpose, text) {
     let replyMarkup = bot.inlineKeyboard([
-        [bot.inlineButton("Air", {callback: JSON.stringify({"target": "air", "purpose": purpose})}),
-         bot.inlineButton("Water", {callback: JSON.stringify({"target": "water", "purpose": purpose})})],
-        [bot.inlineButton("Earth", {callback: JSON.stringify({"target": "earth", "purpose": purpose})}), 
-         bot.inlineButton("Fire", {callback: JSON.stringify({"target": "fire", "purpose": purpose})})]
+        [bot.inlineButton("District 1", {callback: JSON.stringify({"target": "district1", "purpose": purpose})}),
+            bot.inlineButton("District 2", {callback: JSON.stringify({"target": "district2", "purpose": purpose})})],
+        [bot.inlineButton("District 6", {callback: JSON.stringify({"target": "district6", "purpose": purpose})}),
+            bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})]
     ]);
-    
+
     if (purpose == "random" || purpose == "register") {
         bot.sendMessage(msg.chat.id, text, {replyMarkup});
     } else {
         bot.sendMessage(msg.from.id, text, {replyMarkup});
     }
-    
+
 }
 
-function kill(bot, msg, nation) {
-    Player.find({"user.nation": nation, "user.state": "Alive"}).exec(function(err, res){
+function kill(bot, msg, district) {
+    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {"target": alive[i].user.name,
-                          "purpose": "kill"};
+                "purpose": "kill"};
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -522,19 +522,19 @@ function kill(bot, msg, nation) {
         let replyMarkup = bot.inlineKeyboard(
             hitlist
         );
-        
+
         bot.sendMessage(msg.from.id, "Who would you like to kill?", {replyMarkup});
-    })  
+    })
 }
 
-function dead(bot, msg, nation) {
-    Player.find({"user.nation": nation, "user.state": "Alive"}).exec(function(err, res){
+function dead(bot, msg, district) {
+    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {"target": alive[i].user.name,
-                          "purpose": "dead"};
+                "purpose": "dead"};
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -542,20 +542,20 @@ function dead(bot, msg, nation) {
         let replyMarkup = bot.inlineKeyboard(
             hitlist
         );
-        
+
         bot.sendMessage(msg.from.id, "Who did you get killed by?", {replyMarkup});
-    })  
+    })
 }
 
-function stick(bot, msg, nation) {
-    
-    Player.find({"user.nation": nation, "user.state": "Alive"}).exec(function(err, res){
+function stick(bot, msg, district) {
+
+    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {"target": alive[i].user.name,
-                          "purpose": "stick"};
+                "purpose": "stick"};
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -563,23 +563,23 @@ function stick(bot, msg, nation) {
         let replyMarkup = bot.inlineKeyboard(
             hitlist
         );
-        
+
         bot.sendMessage(msg.from.id, "Who would you like to stick?", {replyMarkup});
-    })  
+    })
 }
 
-function rollNation(bot, msg, nation) {
-    Player.find({"user.nation": nation, "user.state": "Dead"}).exec(function(err, res){
+function rollDistrict(bot, msg, district) {
+    Player.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
         var alive = res;
         console.log(msg);
         if (alive.length > 0) {
             var luckyGuy = alive[Math.floor(Math.random()*alive.length)];
-            bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from the " + nation + " nation has been chosen!");
+            bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from the " + district + " district has been chosen!");
         } else {
-            bot.sendMessage(msg.message.chat.id, "No one in the " + nation + " nation is dead.");
+            bot.sendMessage(msg.message.chat.id, "No one in the " + district + " district is dead.");
         }
 
-    })  
+    })
 }
 
 function sendExterminatorScore(msg, callback) {
@@ -587,80 +587,80 @@ function sendExterminatorScore(msg, callback) {
         var sum = 0;
         var possiblePoints = 0;
         for (var i = 0; i < res.length; i++) {
-            if (res[i].user.nation == "water") {
+            if (res[i].user.district == "district2") {
                 sum += res[i].user.sticks;
             } else if (res[i].user.state == "Alive") {
                 possiblePoints += res[i].user.kills;
             }
         }
         return callback("The current score is: " + sum + "\nThere are " + possiblePoints + " points up for grabs.");
-    }) 
+    })
 }
 
 function sendExterminatorTargets(callback) {
     Player.find({"user.state": "Alive"}).exec(function(err, result) {
-        var response = "☆*:.｡. All Players .｡.:*☆\n\n";
-        var airArray = getNation("air");
-        appendNation(airArray, "air");
-        var waterArray = getNation("water");
-        appendNation(waterArray, "water");
-        var earthArray = getNation("earth");
-        appendNation(earthArray, "earth");
-        var fireArray = getNation("fire");
-        appendNation(fireArray, "fire");
-        function getNation(nation) {
-            var nationArray = result.filter(function(el) {
-               return el.user.nation === nation;
+        var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
+        var district1Array = getDistrict("district1");
+        appendDistrict(district1Array, "district1");
+        var district2Array = getDistrict("district2");
+        appendDistrict(district2Array, "district2");
+        var district6Array = getDistrict("district6");
+        appendDistrict(district6Array, "district6");
+        var district12Array = getDistrict("district12");
+        appendDistrict(district12Array, "district12");
+        function getDistrict(district) {
+            var districtArray = result.filter(function(el) {
+                return el.user.district === district;
             });
-            return nationArray;
+            return districtArray;
         }
 
-        function appendNation(nationArray, nation) {
-           var nationName = "Shan";
-           if (nation === "air") {
-               nationName = airTitle;
-           } else if (nation === "water") {
-               nationName = waterTitle;
-           } else if (nation === "earth") {
-               nationName = earthTitle;
-           } else if (nation === "fire") {
-               nationName = fireTitle;
-           } else if (nation === "🔪") {
-               nationName = "Administrators";
-           } else if (nation === "spec") {
-               nationName = "Spectators";
-           } 
-           response += "<b>" + nationName + "</b>\n";
-           nationArray.sort(compareState);
-           for (var i = 0; i < nationArray.length; i++) {
-               var state = nationArray[i].user.state;
-               var equip = nationArray[i].user.equipment;
-               var emoji = "";
-               if (equip === "Coin") {
-                   emoji = "💰";
-               } else if (equip === "2Coin") {
-                   emoji = "💰💰";
-               } else if (equip === "3Coin") {
-                   emoji = "💰💰💰";
-               } else if (state === "Dead") {
-                   var dead = ["👻", "💀", "☠️"]; 
-                   emoji = dead[Math.floor(Math.random()*dead.length)];
-               } else if (state === "Alive") {
-                   var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
-                   emoji = alive[Math.floor(Math.random()*alive.length)];
-               }
+        function appendDistrict(districtArray, district) {
+            var districtName = "Shan";
+            if (district === "district1") {
+                districtName = district1Title;
+            } else if (district === "district2") {
+                districtName = district2Title;
+            } else if (district === "district6") {
+                districtName = district6Title;
+            } else if (district === "district12") {
+                districtName = district12Title;
+            } else if (district === "🔪") {
+                districtName = "Administrators";
+            } else if (district === "spec") {
+                districtName = "Spectators";
+            }
+            response += "<b>" + districtName + "</b>\n";
+            districtArray.sort(compareState);
+            for (var i = 0; i < districtArray.length; i++) {
+                var state = districtArray[i].user.state;
+                var equip = districtArray[i].user.equipment;
+                var emoji = "";
+                if (equip === "Coin") {
+                    emoji = "💰";
+                } else if (equip === "2Coin") {
+                    emoji = "💰💰";
+                } else if (equip === "3Coin") {
+                    emoji = "💰💰💰";
+                } else if (state === "Dead") {
+                    var dead = ["👻", "💀", "☠️"];
+                    emoji = dead[Math.floor(Math.random()*dead.length)];
+                } else if (state === "Alive") {
+                    var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
+                    emoji = alive[Math.floor(Math.random()*alive.length)];
+                }
 
-               emoji += ": " + nationArray[i].user.kills;
+                emoji += ": " + districtArray[i].user.kills;
 
-               response += ((i + 1) + ". " + nationArray[i].user.name + " [" + nationArray[i].user.state + "] " + emoji + " \n");
-           } 
+                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+            }
 
-           response += "\n";
-       }
+            response += "\n";
+        }
 
         console.log(response);
         callback(response);
-   })
+    })
 }
 
 
@@ -701,7 +701,7 @@ var playerSchema = new mongoose.Schema({
     user: {
         name: String,
         id: Number,
-        nation: String,
+        district: String,
         state: String,
         equipment: String,
         killer: String,
@@ -719,5 +719,5 @@ var playerSchema = new mongoose.Schema({
     }
 });
 
-var Message = mongoose.model('Messages', messageSchema); 
+var Message = mongoose.model('Messages', messageSchema);
 var Player = mongoose.model('Ashansins5_Players', playerSchema);   
