@@ -1,5 +1,5 @@
 module.exports = {
-    getLogs: getLogs,
+    //getLogs: getLogs,
     clearLogs: clearLogs,
     addLog: addLog,
     addTribute: addTribute,
@@ -42,6 +42,8 @@ const district6Title = "⛰ District 6 ⛰";//"🌍⛰🍄 District 6 🗻🐛�
 const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
 const spiesTitle = "Capitol Spies"
 
+/*
+// This command crashes the application. Also it it not used in the app. Commented out for ashansins6
 function getLogs(err, cb) {
     if (err) return handleError(err);
     console.log("we reached here");
@@ -49,6 +51,7 @@ function getLogs(err, cb) {
         cb(result);
     })
 }
+*/
 
 function clearLogs(err, cb) {
     if (err) return handleError(err);
@@ -590,9 +593,9 @@ function rollDistrict(bot, msg, district) {
         console.log(msg);
         if (alive.length > 0) {
             var luckyGuy = alive[Math.floor(Math.random()*alive.length)];
-            bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from the " + district + " district has been chosen!");
+            bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from " + district + " has been chosen!");
         } else {
-            bot.sendMessage(msg.message.chat.id, "No one in the " + district + " district is dead.");
+            bot.sendMessage(msg.message.chat.id, "No one in " + district + " is dead.");
         }
 
     })

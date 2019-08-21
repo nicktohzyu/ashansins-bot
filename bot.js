@@ -23,13 +23,15 @@ bot.on(/^\/say (.+)$/, (msg, props) => {
     return bot.sendMessage(msg.from.id, text, { replyToMessage: msg.message_id });
 });
 
+/*
 bot.on('/get_logs', (msg) => {
     console.log("1");
-    db.getLogs(false, (res) => {console.log(res);
+    db.getLogs(false, (res) => {
+        console.log(res);
         var text = "User: " +  res[0].user.name + " text: " + res[0].message.text;
         bot.sendMessage(msg.chat.id, text);
     })
-});
+});*/
 
 bot.on('/clear_logs', (msg) => {
     db.clearLogs(false, (res) => console.log("Clearing the logs!"));
@@ -107,7 +109,7 @@ bot.on(/^(.+)$/, (msg, props) => {
         text: props.match[1]
     })
 
-    bot.sendMessage(johanna_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
+    bot.sendMessage(heman_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
 });
 
 bot.on(/^\/register (.+)$/, (msg, props) => {
@@ -134,11 +136,15 @@ bot.on(/^\/kill (.+)$/, (msg, props) => {
     });
 });
 
+/*
+not used for ashansins 6 as ashansins 6 is not points based
+
 bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
     return db.sendExterminatorScore(msg, (message) => {
         return bot.sendMessage(msg.chat.id, message);
     });
 });
+*/
 
 bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
     db.sendExterminatorTargets((message) => {
