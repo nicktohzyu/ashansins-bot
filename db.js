@@ -495,7 +495,7 @@ function processRegistration(msg, text, callback) {
             }
 
         } else {
-            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either gry, sly, rav or huf. For example, if you're from Ravenclaw, please type: /register Rav"
+            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either district1, district2, district6 or district12. For example, if you're from district 2, please type: /register district2"
             callback(bad);
         }
     });

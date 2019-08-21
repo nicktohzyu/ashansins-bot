@@ -66,7 +66,7 @@ bot.on('/help', (msg) => {
     var text = "The available commands for this game are:\n\n"
         + "To register as a TRIBUTE, type:\n"
         + "/register <District>\n"
-        + "Where <District> is either 1, 2, 6 or 12.\n"
+        + "Where <District> is either district1, district2, district6 or district12.\n"
         + "E.g. If you belong to district 2, type:\n"
         + "/register 2\n\n"
         + "To KILL someone, type:\n"
@@ -81,7 +81,8 @@ bot.on('/help', (msg) => {
         + "/tributes all\n\n"
         + "To view tributes from a SPECIFIC DISTRICT, type:\n"
         + "/tributes <District>\n"
-        + "Where <District> is either district1, district2, district6 or district12.\n\n"
+        + "Where <District> is either district1, district2, district6 or district12.\n\n" 
+        + "The aforementioned commands can also be triggered using /<Command>, ie. friendly mode w/ prompts.\n\n"
         + "Typing /kill, /stick or /dead without any tribute indicated will cause the bot to prompt to ask who is your target.\n"
         + "This feature however, requires you to start a conversation with @ashansins6_bot first.";
     return bot.sendMessage(msg.chat.id, text);
