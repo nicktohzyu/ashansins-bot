@@ -70,20 +70,16 @@ bot.on('/help', (msg) => {
         + "E.g. If you belong to district 2, type:\n"
         + "/register district2\n\n"
         + "To KILL someone, type:\n"
-        + "/kill <Tribute's FIRST name> (CASE SENSITIVE)\n"
-        + "E.g. If Bridget's first name was registered as Brids, type:\n"
-        + "/kill Brids\n\n"
+        + "/kill (and follow the prompts)\n\n"
         + "To STICK someone, type:\n"
-        + "/stick <Tribute's FIRST name>\n\n"
+        + "/stick (and follow the prompts)\n\n"
         + "To DIE, type:\n"
-        + "/dead <Your killer's FIRST name>\n\n"
+        + "/dead (and follow the prompts)\n\n"
         + "To view ALL tributes, type:\n"
         + "/tributes all\n\n"
         + "To view tributes from a SPECIFIC DISTRICT, type:\n"
         + "/tributes <District>\n"
         + "Where <District> is either district1, district2, district6 or district12.\n\n" 
-        + "The aforementioned commands can also be triggered using /<Command>, ie. friendly mode w/ prompts.\n\n"
-        + "Typing /kill, /stick or /dead without any tribute indicated will cause the bot to prompt to ask who is your target.\n"
         + "This feature however, requires you to start a conversation with @ashansins6_bot first.";
     return bot.sendMessage(msg.chat.id, text);
 })
@@ -365,16 +361,17 @@ bot.on('/generate_equations', (msg) => {
     bot.sendMessage(msg.chat.id, reply);
 });
 
-bot.on('/mole', (msg) => {
-    var messages = ["%s, you are the mole.",
+/*
+bot.on('/spy', (msg) => {
+    var messages = ["%s, you are the spy.",
         "Nice try, %s, but that won't work.",
-        "I am the mole.",
+        "I am the spy.",
         "Maybe it's you? Maybe it's me? Maybe it's all of us.",
-        "我是警察。"];
+        ];
     var reply = messages[Math.floor(Math.random()*messages.length)];
     reply = reply.replace('%s', msg.from.first_name);
 
     bot.sendMessage(msg.chat.id, reply);
-});
+});*/
 
 bot.start();
