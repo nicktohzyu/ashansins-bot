@@ -2,9 +2,9 @@ module.exports = {
     getLogs: getLogs,
     clearLogs: clearLogs,
     addLog: addLog,
-    addPlayer: addPlayer,
-    killPlayer: killPlayer,
-    // revivePlayer: revivePlayer,
+    addTribute: addTribute,
+    killTribute: killTribute,
+    // reviveTribute: reviveTribute,
     updateEquip: updateEquip,
     updateKiller: updateKiller,
     updateVictim: updateVictim,
@@ -14,8 +14,8 @@ module.exports = {
     processUnregistration: processUnregistration,
     sendToAll: sendToAll,
     sendTo: sendTo,
-    displayAllPlayers: displayAllPlayers,
-    displayPlayers: displayPlayers,
+    displayAllTributes: displayAllTributes,
+    displayTributes: displayTributes,
     processStick: processStick,
     // randomRevive: randomRevive,
     kill: kill,
@@ -64,9 +64,9 @@ function addLog(err, user, message, cb) {
     }).save(cb);
 }
 
-function addPlayer(err, user, message, district, state, cb) {
+function addTribute(err, user, message, district, state, cb) {
     if (err) return handleError(err);
-    dbmsg = new Player({
+    dbmsg = new Tribute({
         user: user,
         message: message,
         district: district,
@@ -77,15 +77,15 @@ function addPlayer(err, user, message, district, state, cb) {
     }).save(cb);
 }
 
-function killPlayer(err, user_id) {
+function killTribute(err, user_id) {
     console.log("KILLING HERE")
-    Player.findOneAndUpdate({"user.id": user_id}, { $set: {"user.state": "Dead"}, $inc: {"user.deaths" : 1}}, function(res) {
+    Tribute.findOneAndUpdate({"user.id": user_id}, { $set: {"user.state": "Dead"}, $inc: {"user.deaths" : 1}}, function(res) {
         console.log(res);
     });
 }
 
-/*function revivePlayer(err, user, callback, callback2) {
-    Player.findOneAndUpdate({"user.name": user}, { $set: {"user.state": "Alive"}, $inc: {"user.revives" : 1}}, function(err, res) {
+/*function reviveTribute(err, user, callback, callback2) {
+    Tribute.findOneAndUpdate({"user.name": user}, { $set: {"user.state": "Alive"}, $inc: {"user.revives" : 1}}, function(err, res) {
         if (res !== null) {
             callback(res);
             for (var i in groupChats) {
@@ -97,12 +97,12 @@ function killPlayer(err, user_id) {
 }
 
 function reviveAll(callback, callback2) {
-    Player.find({"user.state": "Dead"}).exec(function(err, res){
+    Tribute.find({"user.state": "Dead"}).exec(function(err, res){
         var dead = res;
         console.log(dead);
         if (dead.length > 0) {
             for (var i = 0; i < dead.length; i++) {
-                revivePlayer(false, dead[i].user.name, function(res) {
+                reviveTribute(false, dead[i].user.name, function(res) {
                     callback(res);
                 }, callback2);
             }
@@ -111,19 +111,19 @@ function reviveAll(callback, callback2) {
 }
 
 function randomRevive(district, callback, callback2) {
-    Player.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
         var dead = res;
         console.log(dead);
         if (dead.length > 0) {
             var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
-            revivePlayer(false, luckyGuy.user.name, function(res) {
+            reviveTribute(false, luckyGuy.user.name, function(res) {
                 callback(res);
             }, callback2);
         }
     })
 }*/
 function updateEquip(err, user, newEquip, callback) {
-    Player.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
+    Tribute.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
         var message;
         if (result !== null) {
             if (newEquip === "Coin") {
@@ -141,19 +141,19 @@ function updateEquip(err, user, newEquip, callback) {
 }
 
 function updateKiller(err, user_id, killer_id) {
-    Player.findOneAndUpdate({"user.id": user_id}, {"user.killer": killer_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killer_id}, function() {});
 }
 
 function updateSticker(err, user_id, sticker_id) {
-    Player.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function() {});
 }
 
 function updateVictim(err, user_id, victim_id) {
-    Player.findOneAndUpdate({"user.id": user_id}, {"user.victim": victim_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.victim": victim_id}, function() {});
 }
 
 function updateVictimArray(err, user_id, victim) {
-    Player.findOne({"user.id": user_id}).exec(function(err, res) {
+    Tribute.findOne({"user.id": user_id}).exec(function(err, res) {
         if (res !== null) {
             var updatedVictims = JSON.parse(res.user.victims);
             console.log(updatedVictims);
@@ -163,23 +163,23 @@ function updateVictimArray(err, user_id, victim) {
                 updatedVictims[victim.user.district] = [victim.user.name];
             }
             console.log(updatedVictims);
-            Player.findOneAndUpdate({"user.id": user_id}, { $set: {"user.victims": JSON.stringify(updatedVictims)}, $inc: {"user.kills" : 1}}, function() {});
+            Tribute.findOneAndUpdate({"user.id": user_id}, { $set: {"user.victims": JSON.stringify(updatedVictims)}, $inc: {"user.kills" : 1}}, function() {});
         }
     });
 
 }
 
 function updateExterminatorCount(err, user_id, victim_id) {
-    Player.findOne({"user.id": victim_id}).exec(function(err, res) {
+    Tribute.findOne({"user.id": victim_id}).exec(function(err, res) {
         if (res !== null) {
-            Player.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks" : res.user.kills}}, function() {});
+            Tribute.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks" : res.user.kills}}, function() {});
         }
     });
 
 }
 
-function displayAllPlayers(callback) {
-    Player.find({}).exec(function(err, result) {
+function displayAllTributes(callback) {
+    Tribute.find({}).exec(function(err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
         var district1Array = getDistrict("district1");
         appendDistrict(district1Array, "district1");
@@ -259,8 +259,8 @@ function compareState(a,b) {
 }
 
 
-function displayPlayers(district, callback) {
-    Player.find({"user.district": district}).exec(function(err, result) {
+function displayTributes(district, callback) {
+    Tribute.find({"user.district": district}).exec(function(err, result) {
         var response = "";
         var districtArray = getDistrict(district);
         appendDistrict(districtArray, district);
@@ -322,14 +322,14 @@ function displayPlayers(district, callback) {
 }
 function processDead(msg, target, callback) {
     var toDead = false;
-    Player.findOne({"user.id": msg.from.id}).exec(function(err, victim) {
-        Player.findOne({"user.name": target}).exec(function(err, res) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, victim) {
+        Tribute.findOne({"user.name": target}).exec(function(err, res) {
             if (res !== null) {
                 if (res.user.victim == msg.from.id)
                     toDead = true;
 
                 if (toDead) {
-                    killPlayer(false, msg.from.id);
+                    killTribute(false, msg.from.id);
                     updateVictimArray(false, res.user.id, victim);
                     callback(msg.from.id, "You've died successfully!");
                     updateExterminatorCount(false, res.user.id, msg.from.id);
@@ -353,20 +353,20 @@ function processDead(msg, target, callback) {
 
 function processKill(msg, target, callback) {
     var toKill = false;
-    Player.findOne({"user.id": msg.from.id}).exec(function(err, killer) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, killer) {
         if (killer == null) {
             callback(msg.from.id, "Error!");
         } else if (killer.user.state === "Dead") {
             callback("Invalid command, you're already dead!");
         } else {
-            Player.findOne({"user.name": target}).exec(function(err, res) {
+            Tribute.findOne({"user.name": target}).exec(function(err, res) {
                 if (res !== null) {
                     if (res.user.killer == msg.from.id) {
                         toKill = true;
                     }
 
                     if (toKill) {
-                        killPlayer(false, res.user.id);
+                        killTribute(false, res.user.id);
                         updateVictimArray(false, msg.from.id, res);
                         updateExterminatorCount(false, msg.from.id, res.user.id);
                         callback(msg.from.id, "You SHANed successfully!");
@@ -389,18 +389,18 @@ function processKill(msg, target, callback) {
 
 function processStick(msg, target, callback, callback2) {
     var toStick = false;
-    Player.findOne({"user.id": msg.from.id}).exec(function(err, sticker) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, sticker) {
         if (sticker.user.state === "Dead") {
             callback("Invalid command, you're already dead!");
         } else {
-            Player.findOne({"user.name": target}).exec(function(err, res) {
+            Tribute.findOne({"user.name": target}).exec(function(err, res) {
                 if (res !== null) {
                     if (res.user.sticker == msg.from.id) {
                         toStick = true;
                     }
 
                     if (toStick) {
-                        killPlayer(false, res.user.id);
+                        killTribute(false, res.user.id);
                         updateVictimArray(false, msg.from.id, res);
                         callback2(target + "  got sticked by " + sticker.user.name + "!");
                         callback(msg.from.id, "You sticked successfully!");
@@ -424,11 +424,11 @@ function processStick(msg, target, callback, callback2) {
 }
 
 function sendTo(user, input, msg, callback) {
-    Player.findOne({"user.name": user}).exec(function (err, result) {
+    Tribute.findOne({"user.name": user}).exec(function (err, result) {
         if (result !== null) {
             callback(result.user.id, input);
         } else {
-            Player.findOne({"user.id": user}).exec(function (err, result) {
+            Tribute.findOne({"user.id": user}).exec(function (err, result) {
                 if (result !== null) {
                     callback(result.user.id, input);
                     callback(msg.from.id, "Sucessfully sent: " + input);
@@ -439,7 +439,7 @@ function sendTo(user, input, msg, callback) {
 }
 
 function sendToAll(input, callback) {
-    Player.find({}).exec(function (err, result) {
+    Tribute.find({}).exec(function (err, result) {
         for (var i in result) {
             callback(result[i].user.id, input);
         }
@@ -461,7 +461,7 @@ function isValidDistrict(district) {
 }
 
 function isRegistered(name) {
-    return Player.find({"user.name": name});
+    return Tribute.find({"user.name": name});
 }
 
 function processRegistration(msg, text, callback) {
@@ -470,7 +470,7 @@ function processRegistration(msg, text, callback) {
         if (users > 0) {
             callback("Sorry, either you've already registered, or there is already another user with your name.");
         } else if (isValidDistrict(text)) {
-            addPlayer(false, {
+            addTribute(false, {
                 name: msg.from.first_name,
                 id: msg.from.id,
                 district: text,
@@ -499,7 +499,7 @@ function processRegistration(msg, text, callback) {
 }
 
 function processUnregistration(msg, user, callback) {
-    Player.remove({"user.name": user}).exec(function(err) {
+    Tribute.remove({"user.name": user}).exec(function(err) {
         callback("Sucessfully unregistered!")
     });
 }
@@ -522,7 +522,7 @@ function prekds(bot, msg, purpose, text) {
 }
 
 function kill(bot, msg, district) {
-    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
@@ -544,7 +544,7 @@ function kill(bot, msg, district) {
 }
 
 function dead(bot, msg, district) {
-    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
@@ -565,7 +565,7 @@ function dead(bot, msg, district) {
 
 function stick(bot, msg, district) {
 
-    Player.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
         var alive = res;
         var hitlist = [];
 
@@ -585,7 +585,7 @@ function stick(bot, msg, district) {
 }
 
 function rollDistrict(bot, msg, district) {
-    Player.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
         var alive = res;
         console.log(msg);
         if (alive.length > 0) {
@@ -599,7 +599,7 @@ function rollDistrict(bot, msg, district) {
 }
 
 function sendExterminatorScore(msg, callback) {
-    Player.find({}).exec(function(err, res){
+    Tribute.find({}).exec(function(err, res){
         var sum = 0;
         var possiblePoints = 0;
         for (var i = 0; i < res.length; i++) {
@@ -614,7 +614,7 @@ function sendExterminatorScore(msg, callback) {
 }
 
 function sendExterminatorTargets(callback) {
-    Player.find({"user.state": "Alive"}).exec(function(err, result) {
+    Tribute.find({"user.state": "Alive"}).exec(function(err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
         var district1Array = getDistrict("district1");
         appendDistrict(district1Array, "district1");
@@ -728,7 +728,7 @@ var messageSchema = new mongoose.Schema({
     timestamp: String
 });
 
-var playerSchema = new mongoose.Schema({
+var tributeSchema = new mongoose.Schema({
     user: {
         name: String,
         id: Number,
@@ -751,4 +751,4 @@ var playerSchema = new mongoose.Schema({
 });
 
 var Message = mongoose.model('Messages', messageSchema);
-var Player = mongoose.model('Ashansins5_Players', playerSchema);   
+var Tribute = mongoose.model('Ashansins5_Tributes', tributeSchema);   
