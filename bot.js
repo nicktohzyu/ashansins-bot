@@ -9,6 +9,12 @@ const johanna_id = 650290297;
 
 var adminIDs = [heman_id, johanna_id];
 
+// Listens for the invocation of /start command
+bot.on('/start', (msg) => {
+    // Sends welcome message to chat.
+    return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Type /help to learn more about how this bot works.`);
+});
+
 bot.on(/^\/say (.+)$/, (msg, props) => {
     console.log(msg);
     console.log(props);
