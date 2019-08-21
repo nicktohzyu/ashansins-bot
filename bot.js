@@ -1,6 +1,7 @@
 // your token from BotFather
 var botToken = '969817030:AAFSDOyJzpDk9X1tT4zRkLbWaSAlox8bkUk';
 const TeleBot = require('telebot');
+const request = require('request');
 const bot = new TeleBot(botToken);
 const constants = require('./constants');
 const math = require('mathjs');
@@ -55,7 +56,7 @@ bot.on('/compliment', (msg) => {
           return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
         });
       }
-  });
+});
 
 bot.on('/clear_logs', (msg) => {
     db.clearLogs(false, (res) => console.log("Clearing the logs!"));
