@@ -164,10 +164,6 @@ bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     });
 });
 
-bot.on([/^\/🔪spy$/, /^\/tributes@Ashansins_bot$/], (msg) => {
-    return db.prekdsSpy(bot, msg, "spy", "Do you want to be revived?");
-});
-
 // Inline button callback
 bot.on('callbackQuery', msg => {
     // User message alert
@@ -243,7 +239,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
     }
 });
 
-bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
+/*bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
     const text = props.match[1];
     db.revivePlayer(false, text, function(user) {
         bot.sendMessage(user.user.id, "You got revived!");
@@ -251,7 +247,7 @@ bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
         bot.sendMessage(id, message);
     });
     return bot.sendMessage(msg.from.id, "Successful Revive!");
-});
+});*/
 
 bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
     const text = props.match[1];
@@ -271,7 +267,7 @@ bot.on(/^\/🔪SendTo (.+)$/, (msg, props) => {
     });
 });
 
-bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {
+/*bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {
     const text = props.match[1];
     db.randomRevive(text, function(user) {
         bot.sendMessage(user.user.id, "You got revived!")
@@ -279,9 +275,9 @@ bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {
         bot.sendMessage(id, message);
     });
     return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
-});
+});*/
 
-bot.on(/^\/🔪ReviveAll (.+)$/, (msg, props) => {
+/*bot.on(/^\/🔪ReviveAll (.+)$/, (msg, props) => {
     const text = props.match[1];
     db.reviveAll(function(user) {
         bot.sendMessage(user.user.id, "You got revived!")
@@ -289,7 +285,7 @@ bot.on(/^\/🔪ReviveAll (.+)$/, (msg, props) => {
         bot.sendMessage(id, message);
     });
     return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
-});
+});*/
 
 function extractFirst(input) {
     var inputArray = input.split(" ");

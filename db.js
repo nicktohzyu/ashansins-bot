@@ -4,7 +4,7 @@ module.exports = {
     addLog: addLog,
     addPlayer: addPlayer,
     killPlayer: killPlayer,
-    revivePlayer: revivePlayer,
+    // revivePlayer: revivePlayer,
     updateEquip: updateEquip,
     updateKiller: updateKiller,
     updateVictim: updateVictim,
@@ -17,7 +17,7 @@ module.exports = {
     displayAllPlayers: displayAllPlayers,
     displayPlayers: displayPlayers,
     processStick: processStick,
-    randomRevive: randomRevive,
+    // randomRevive: randomRevive,
     kill: kill,
     dead: dead,
     stick: stick,
@@ -25,7 +25,7 @@ module.exports = {
     rollDistrict: rollDistrict,
     sendExterminatorScore: sendExterminatorScore,
     sendExterminatorTargets: sendExterminatorTargets,
-    reviveAll: reviveAll
+    // reviveAll: reviveAll
 }
 
 const bloodbenders_id = 0;//insert the group ids of the different group chats with the participants;
@@ -84,7 +84,7 @@ function killPlayer(err, user_id) {
     });
 }
 
-function revivePlayer(err, user, callback, callback2) {
+/*function revivePlayer(err, user, callback, callback2) {
     Player.findOneAndUpdate({"user.name": user}, { $set: {"user.state": "Alive"}, $inc: {"user.revives" : 1}}, function(err, res) {
         if (res !== null) {
             callback(res);
@@ -121,7 +121,7 @@ function randomRevive(district, callback, callback2) {
             }, callback2);
         }
     })
-}
+}*/
 function updateEquip(err, user, newEquip, callback) {
     Player.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
         var message;
@@ -189,8 +189,11 @@ function displayAllPlayers(callback) {
         appendDistrict(district6Array, "district6");
         var district12Array = getDistrict("district12");
         appendDistrict(district12Array, "district12");
-        var spiesArray = getDistrict("spies");
-        appendDistrict(spiesArray, "spies");
+
+        // to be onz in phase 2
+        /*var spiesArray = getDistrict("spies");
+        appendDistrict(spiesArray, "spies");*/
+
         function getDistrict(district) {
             var districtArray = result.filter(function(el) {
                 return el.user.district === district;
@@ -214,9 +217,9 @@ function displayAllPlayers(callback) {
                 districtName = "Spectators";
             }
             //to be onz in Phase 2
-            else if (district === "spies") {
+            /*else if (district === "spies") {
                 districtName = spiesTitle;
-            }
+            }*/
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
@@ -284,9 +287,9 @@ function displayPlayers(district, callback) {
                 districtName = "Spectators";
             }
             // to be onz in Phase 2
-            else if (district === "spies") {
+            /*else if (district === "spies") {
                 districtName = spiesTitle;
-            }
+            }*/
 
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
@@ -478,7 +481,7 @@ function processRegistration(msg, text, callback) {
                 kills: 0,
                 deaths: 0,
                 sticks: 0,
-                revives: 0,
+                // revives: 0,
                 victims: "{}"
             });
 
@@ -507,8 +510,8 @@ function prekds(bot, msg, purpose, text) {
             bot.inlineButton("District 2", {callback: JSON.stringify({"target": "district2", "purpose": purpose})})],
         [bot.inlineButton("District 6", {callback: JSON.stringify({"target": "district6", "purpose": purpose})}),
             bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})],
-        [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})}),
-             ],
+        // [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})}),
+        //      ],
     ]);
 
     if (purpose == "random" || purpose == "register") {
@@ -621,6 +624,13 @@ function sendExterminatorTargets(callback) {
         appendDistrict(district6Array, "district6");
         var district12Array = getDistrict("district12");
         appendDistrict(district12Array, "district12");
+
+        // to be onz in phase 2
+        /*
+        var spiesArray = getDistrict("spies");
+        appendDistrict(spiesArray, "spies");
+         */
+
         function getDistrict(district) {
             var districtArray = result.filter(function(el) {
                 return el.user.district === district;
@@ -643,6 +653,14 @@ function sendExterminatorTargets(callback) {
             } else if (district === "spec") {
                 districtName = "Spectators";
             }
+
+            //to be onz in phase 2
+            /*
+            } else if (district === "spies") {
+                districtName = spiesTitle;
+            }
+             */
+
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
@@ -723,7 +741,7 @@ var playerSchema = new mongoose.Schema({
         kills: Number,
         deaths: Number,
         sticks: Number,
-        revives: Number,
+        // revives: Number,
         victims: String
     },
     message: {
