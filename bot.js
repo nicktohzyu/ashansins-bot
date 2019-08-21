@@ -33,7 +33,7 @@ bot.on('/get_logs', (msg) => {
     })
 });*/
 
-bot.on('/start', (msg) => {
+bot.on('/compliment', (msg) => {
     // Returns a floating value between 0 and 1
     const insultOrCompliment = Math.random();
     // Insult 
