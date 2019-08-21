@@ -33,6 +33,29 @@ bot.on('/get_logs', (msg) => {
     })
 });*/
 
+bot.on('/start', (msg) => {
+    // Returns a floating value between 0 and 1
+    const insultOrCompliment = Math.random();
+    // Insult 
+    if (insultOrCompliment > 0.6) {
+      const randPick = Math.floor(Math.random() * constants.insultsList.length);
+      let text = constants.insultsList[randPick];
+      return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}`);
+    } else {
+      // Compliment
+        request('https://complimentr.com/api', {json:true}, function(error, response, body) {
+          let text;
+          if (!error && response.statusCode == 200) {
+            text = body.compliment;
+          } else {
+              text = "I'm not in the mood to compliment you.";
+              console.log("error");
+          }
+          return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
+        });
+      }
+  });
+
 bot.on('/clear_logs', (msg) => {
     db.clearLogs(false, (res) => console.log("Clearing the logs!"));
 })
@@ -272,7 +295,6 @@ bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
 bot.on(/^\/🔪SendTo (.+)$/, (msg, props) => {
     const text = props.match[1];
     console.log(text);
-
 
     var processed = extractFirst(text);
     return db.sendTo(processed[0], processed[1], msg, (chat_id, message) => {
