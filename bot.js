@@ -65,10 +65,7 @@ bot.on('/clear_logs', (msg) => {
 bot.on('/help', (msg) => {
     var text = "The available commands for this game are:\n\n"
         + "To register as a TRIBUTE, type:\n"
-        + "/register <District>\n"
-        + "Where <District> is either district1, district2, district6 or district12.\n"
-        + "E.g. If you belong to district 2, type:\n"
-        + "/register district2\n\n"
+        + "/register (and follow the prompts)\n\n"
         + "To KILL someone, type:\n"
         + "/kill (and follow the prompts)\n\n"
         + "To STICK someone, type:\n"
