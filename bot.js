@@ -2,6 +2,7 @@
 var botToken = '969817030:AAFSDOyJzpDk9X1tT4zRkLbWaSAlox8bkUk';
 const TeleBot = require('telebot');
 const bot = new TeleBot(botToken);
+const constants = require('./constants');
 const math = require('mathjs');
 var db = require('./db');
 const heman_id = 31031122;
