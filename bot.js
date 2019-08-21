@@ -68,7 +68,7 @@ bot.on('/help', (msg) => {
         + "/register <District>\n"
         + "Where <District> is either district1, district2, district6 or district12.\n"
         + "E.g. If you belong to district 2, type:\n"
-        + "/register 2\n\n"
+        + "/register district2\n\n"
         + "To KILL someone, type:\n"
         + "/kill <Tribute's FIRST name> (CASE SENSITIVE)\n"
         + "E.g. If Bridget's first name was registered as Brids, type:\n"
