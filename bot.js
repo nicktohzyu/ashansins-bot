@@ -86,7 +86,7 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
         })
     } else {
         return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
-    }i
+    }
 });
 
 
