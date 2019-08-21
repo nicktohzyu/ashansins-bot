@@ -57,35 +57,35 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
     const text = props.match[1].toLowerCase();
     console.log(text);
     if (text === "all" || text === "/tributes all") {
-        db.displayAllPlayers((message) => {
+        db.displayAllTributes((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         });
     } else if (text === "district1" || text === "/tributes district1") {
-        db.displayPlayers("district1", (message) => {
+        db.displayTributes("district1", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "district2" || text === "/tributes district2") {
-        db.displayPlayers("district2", (message) => {
+        db.displayTributes("district2", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "district6" || text === "/tributes district6") {
-        db.displayPlayers("district6", (message) => {
+        db.displayTributes("district6", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "district12" || text === "/tributes district12") {
-        db.displayPlayers("district12", (message) => {
+        db.displayTributes("district12", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "spec" || text === "/tributes spec") {
-        db.displayPlayers("spec", (message) => {
+        db.displayTributes("spec", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "🔪" || text === "/tributes 🔪") {
-        db.displayPlayers("🔪", (message) => {
+        db.displayTributes("🔪", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else {
-        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL players, type:\n/tributes all\n\nTo view players from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
+        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
     }i
 });
 
@@ -151,7 +151,7 @@ bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
 });
 
 bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "random", "From which District do you want to select a random player?");
+    return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
 });
 
 bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
@@ -159,7 +159,7 @@ bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
 });
 
 bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
-    db.displayAllPlayers((message) => {
+    db.displayAllTributes((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
     });
 });
@@ -245,7 +245,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
 
 bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
     const text = props.match[1];
-    db.revivePlayer(false, text, function(user) {
+    db.reviveTribute(false, text, function(user) {
         bot.sendMessage(user.user.id, "You got revived!");
     }, function (id, message) {
         bot.sendMessage(id, message);
@@ -331,12 +331,12 @@ bot.on('/generate_equations', (msg) => {
     bot.sendMessage(msg.chat.id, reply);
 });
 
-bot.on('/mole', (msg) => {
-    var messages = ["%s, you are the mole.",
+bot.on('/spy', (msg) => {
+    var messages = ["%s, you are the spy.",
         "Nice try, %s, but that won't work.",
-        "I am the mole.",
+        "I am the spy.",
         "Maybe it's you? Maybe it's me? Maybe it's all of us.",
-        "我是警察。"];
+        "Maybe the Mockingjay has the answers you are looking for..."];
     var reply = messages[Math.floor(Math.random()*messages.length)];
     reply = reply.replace('%s', msg.from.first_name);
 

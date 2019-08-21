@@ -2,6 +2,7 @@ var express = require('express');
 var packageInfo = require('./package.json');
 var https = require("https");
 
+// this is to ping the heroku app regularly so that the dynos do not go to sleep (thereby prevent cold starts)
 setInterval(function() {
     https.get("https://ashansins-6.herokuapp.com/");
 }, 300000); // every 5 minutes (300000)
