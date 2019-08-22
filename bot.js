@@ -77,7 +77,7 @@ bot.on('/help', (msg) => {
         + "To view tributes from a SPECIFIC DISTRICT, type:\n"
         + "/tributes <District>\n"
         + "Where <District> is either district1, district2, district6 or district12.\n\n" 
-        + "This feature however, requires you to start a conversation with @ashansins6_bot first.";
+        + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
     return bot.sendMessage(msg.chat.id, text);
 })
 
