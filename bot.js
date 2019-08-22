@@ -197,6 +197,7 @@ bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
 });
 
 bot.on('/*sudoTest', msg => {
+    console.log("hello");
     return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode:"HTML"});
 });
 
