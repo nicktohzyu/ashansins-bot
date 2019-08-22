@@ -196,6 +196,10 @@ bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     });
 });
 
+bot.on('/*sudoTest', msg => {
+    console.log("this chat id is: " + msg.chat.id);
+});
+
 // Inline button callback
 bot.on('callbackQuery', msg => {
     // User message alert
