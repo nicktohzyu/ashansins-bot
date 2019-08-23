@@ -28,14 +28,13 @@ module.exports = {
     // reviveAll: reviveAll
 }
 
-const bloodbenders_id = 0;//insert the group ids of the different group chats with the participants;
-const district1_id = 0//insert the group ids of the different group chats with the participants;
-const district2_id = 0//insert the group ids of the different group chats with the participants;
-const district6_id = 0//insert the group ids of the different group chats with the participants;
-const district12_id = 0//insert the group ids of the different group chats with the participants;
+const district1_id = -391986817;//insert the group ids of the different group chats with the participants;
+const district2_id = -264119959;//insert the group ids of the different group chats with the participants;
+const district6_id = -364865565;//insert the group ids of the different group chats with the participants;
+const district12_id = -358638029;//insert the group ids of the different group chats with the participants;
 const spies_id = 0;
-const allDistricts_id = 323056944//insert the group ids of the different group chats with the participants;
-const groupChats = [bloodbenders_id, district1_id, district12_id, district2_id, district6_id, allDistricts_id];
+const allDistricts_id = -1001215955875;//insert the group ids of the different group chats with the participants;
+const groupChats = [district1_id, district12_id, district2_id, district6_id, allDistricts_id];
 const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
 const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
 const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
