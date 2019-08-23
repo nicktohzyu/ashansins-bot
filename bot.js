@@ -8,8 +8,8 @@ const math = require('mathjs');
 var db = require('./db');
 const heman_id = 31031122;
 const johanna_id = 650290297;
-
-var adminIDs = [heman_id, johanna_id];
+const yr_id = 41628748;
+var adminIDs = [heman_id, johanna_id, yr_id];
 
 // Listens for the invocation of /start command
 bot.on('/start', (msg) => {
