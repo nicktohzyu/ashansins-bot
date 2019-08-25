@@ -4,7 +4,7 @@ module.exports = {
     addLog: addLog,
     addTribute: addTribute,
     killTribute: killTribute,
-    // reviveTribute: reviveTribute,
+    reviveTribute: reviveTribute,
     updateEquip: updateEquip,
     updateKiller: updateKiller,
     updateVictim: updateVictim,
@@ -86,7 +86,7 @@ function killTribute(err, user_id) {
     });
 }
 
-/*function reviveTribute(err, user, callback, callback2) {
+function reviveTribute(err, user, callback, callback2) {
     Tribute.findOneAndUpdate({"user.name": user}, { $set: {"user.state": "Alive"}, $inc: {"user.revives" : 1}}, function(err, res) {
         if (res !== null) {
             callback(res);
@@ -97,7 +97,7 @@ function killTribute(err, user_id) {
     });
 
 }
-
+/*
 function reviveAll(callback, callback2) {
     Tribute.find({"user.state": "Dead"}).exec(function(err, res){
         var dead = res;
@@ -123,7 +123,8 @@ function randomRevive(district, callback, callback2) {
             }, callback2);
         }
     })
-}*/
+}
+*/
 function updateEquip(err, user, newEquip, callback) {
     Tribute.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
         var message;

@@ -165,6 +165,7 @@ bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
 });
 */
 
+// Displays kill count of targets
 bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
     db.sendExterminatorTargets((message) => {
         return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
@@ -276,7 +277,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
     }
 });
 
-/*bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
+bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
     const text = props.match[1];
     db.reviveTribute(false, text, function(user) {
         bot.sendMessage(user.user.id, "You got revived!");
@@ -284,7 +285,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
         bot.sendMessage(id, message);
     });
     return bot.sendMessage(msg.from.id, "Successful Revive!");
-});*/
+});
 
 bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
     const text = props.match[1];
