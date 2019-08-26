@@ -91,7 +91,7 @@ function reviveTribute(err, user, callback, callback2) {
         if (res !== null) {
             callback(res);
             for (var i in groupChats) {
-                //callback2(groupChats[i], user + " has been revived!");
+                callback2(groupChats[i], user + " has been revived!");
             }
         }
     });
