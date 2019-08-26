@@ -87,21 +87,13 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
     if (text === "all" || text === "/tributes all") {
         db.displayAllTributes((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
-        });
-    } else if (text === "district1" || text === "/tributes district1") {
-        db.displayTributes("district1", (message) => {
+        })
+    } else if (text === "resistance" || text === "/tributes resistance") {
+        db.displayTributes("resistance", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
-    } else if (text === "district2" || text === "/tributes district2") {
-        db.displayTributes("district2", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
-        })
-    } else if (text === "district6" || text === "/tributes district6") {
-        db.displayTributes("district6", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
-        })
-    } else if (text === "district12" || text === "/tributes district12") {
-        db.displayTributes("district12", (message) => {
+    } else if (text === "capitol" || text === "/tributes capitol") {
+        db.displayTributes("capitol", (message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else if (text === "spec" || text === "/tributes spec") {
@@ -113,7 +105,7 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
         })
     } else {
-        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC NATION, type:\n/tributes <District>\nWhere <District> is either district1, district2, district6 or district12.\n")
+        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
     }
 });
 
