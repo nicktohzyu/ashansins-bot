@@ -754,4 +754,4 @@ var tributeSchema = new mongoose.Schema({
 });
 
 var Message = mongoose.model('Messages', messageSchema);
-var Tribute = mongoose.model('ashansins6_tributes', tributeSchema);   
+var Tribute = mongoose.model('ENDGAME', tributeSchema);   
