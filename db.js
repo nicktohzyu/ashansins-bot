@@ -711,4 +711,4 @@ var tributeSchema = new mongoose.Schema({
 });
 
 var Message = mongoose.model('Messages', messageSchema);
-var Tribute = mongoose.model('ENDGAME', tributeSchema);   
+var Tribute = mongoose.model('ENDGAME', tributeSchema); 
