@@ -35,11 +35,12 @@ const district12_id = -358638029;//insert the group ids of the different group c
 const spies_id = 0;
 const allDistricts_id = -1001215955875;//insert the group ids of the different group chats with the participants;
 const groupChats = [district1_id, district12_id, district2_id, district6_id, allDistricts_id];
-const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
-const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
-const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
-const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
-const spiesTitle = "Capitol Spies"
+//const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
+//const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
+//const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
+//const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
+const resistanceTitle = "⚔️ Resistance ⚔️";
+const capitolTitle = "🌹 Capitol 🌹";
 
 /*
 // This command crashes the application. Also it it not used in the app. Commented out for ashansins6
@@ -184,14 +185,10 @@ function updateExterminatorCount(err, user_id, victim_id) {
 function displayAllTributes(callback) {
     Tribute.find({}).exec(function(err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
-        var district1Array = getDistrict("district1");
-        appendDistrict(district1Array, "district1");
-        var district2Array = getDistrict("district2");
-        appendDistrict(district2Array, "district2");
-        var district6Array = getDistrict("district6");
-        appendDistrict(district6Array, "district6");
-        var district12Array = getDistrict("district12");
-        appendDistrict(district12Array, "district12");
+        var resistanceArray = getDistrict("resistance");
+        appendDistrict(resistanceArray, "resistance");
+        var capitolArray = getDistrict("capitol");
+        appendDistrict(capitolArray, "capitol");
 
         // to be onz in phase 2
         /*var spiesArray = getDistrict("spies");
@@ -206,15 +203,11 @@ function displayAllTributes(callback) {
 
         function appendDistrict(districtArray, district) {
             var districtName = "Shan";
-            if (district === "district1") {
-                districtName = district1Title;
-            } else if (district === "district2") {
-                districtName = district2Title;
-            } else if (district === "district6") {
-                districtName = district6Title;
-            } else if (district === "district12") {
-                districtName = district12Title;
-            } else if (district === "🔪") {
+            if (district === "resistance") {
+                districtName = resistanceTitle;
+            } else if (district === "capitol") {
+                districtName = capitolTitle;
+            }  else if (district === "🔪") {
                 districtName = "Administrators";
             } else if (district === "spec") {
                 districtName = "Spectators";
@@ -276,19 +269,11 @@ function displayTributes(district, callback) {
 
         function appendDistrict(districtArray, district) {
             var districtName = "Shan";
-            if (district === "district1") {
-                districtName = district1Title;
-            } else if (district === "district2") {
-                districtName = district2Title;
-            } else if (district === "district6") {
-                districtName = district6Title;
-            } else if (district === "district12") {
-                districtName = district12Title;
-            } else if (district === "🔪") {
-                districtName = "Administrators";
-            } else if (district === "spec") {
-                districtName = "Spectators";
-            }
+            if (district === "resistance") {
+                districtName = resistanceTitle;
+            } else if (district === "capitol") {
+                districtName = capitolTitle;
+            } 
             // to be onz in Phase 2
             /*else if (district === "spies") {
                 districtName = spiesTitle;
@@ -453,7 +438,7 @@ function sendToAll(input, callback) {
 }
 
 function isValidDistrict(district) {
-    var arrayDistrict = ["district1", "district2", "district6", "district12", "🔪", "spec"];
+    var arrayDistrict = ["resistance", "capitol", "🔪", "spec"];
     console.log(district);
     for (var i in arrayDistrict) {
         if (district === arrayDistrict[i])
@@ -495,7 +480,7 @@ function processRegistration(msg, text, callback) {
             }
 
         } else {
-            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either district1, district2, district6 or district12. For example, if you're from district 2, please type: /register district2"
+            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
             callback(bad);
         }
     });
@@ -509,12 +494,8 @@ function processUnregistration(msg, user, callback) {
 
 function prekds(bot, msg, purpose, text) {
     let replyMarkup = bot.inlineKeyboard([
-        [bot.inlineButton("District 1", {callback: JSON.stringify({"target": "district1", "purpose": purpose})}),
-            bot.inlineButton("District 2", {callback: JSON.stringify({"target": "district2", "purpose": purpose})})],
-        [bot.inlineButton("District 6", {callback: JSON.stringify({"target": "district6", "purpose": purpose})}),
-            bot.inlineButton("District 12", {callback: JSON.stringify({"target": "district12", "purpose": purpose})})],
-        // [bot.inlineButton("Capitol Spies", {callback: JSON.stringify({"target": "spies", "purpose": purpose})}),
-        //      ],
+        [bot.inlineButton("Resistance", {callback: JSON.stringify({"target": "resistance", "purpose": purpose})}),
+            bot.inlineButton("Capitol", {callback: JSON.stringify({"target": "capitol", "purpose": purpose})})],
     ]);
 
     if (purpose == "random" || purpose == "register") {
@@ -619,20 +600,10 @@ function sendExterminatorScore(msg, callback) {
 function sendExterminatorTargets(callback) {
     Tribute.find({"user.state": "Alive"}).exec(function(err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
-        var district1Array = getDistrict("district1");
-        appendDistrict(district1Array, "district1");
-        var district2Array = getDistrict("district2");
-        appendDistrict(district2Array, "district2");
-        var district6Array = getDistrict("district6");
-        appendDistrict(district6Array, "district6");
-        var district12Array = getDistrict("district12");
-        appendDistrict(district12Array, "district12");
-
-        // to be onz in phase 2
-        /*
-        var spiesArray = getDistrict("spies");
-        appendDistrict(spiesArray, "spies");
-         */
+        var district1Array = getDistrict("resistance");
+        appendDistrict(district1Array, "resistance");
+        var district2Array = getDistrict("capitol");
+        appendDistrict(district2Array, "capitol");
 
         function getDistrict(district) {
             var districtArray = result.filter(function(el) {
@@ -643,27 +614,12 @@ function sendExterminatorTargets(callback) {
 
         function appendDistrict(districtArray, district) {
             var districtName = "Shan";
-            if (district === "district1") {
-                districtName = district1Title;
-            } else if (district === "district2") {
-                districtName = district2Title;
-            } else if (district === "district6") {
-                districtName = district6Title;
-            } else if (district === "district12") {
-                districtName = district12Title;
-            } else if (district === "🔪") {
-                districtName = "Administrators";
-            } else if (district === "spec") {
-                districtName = "Spectators";
-            }
-
-            //to be onz in phase 2
-            /*
-            } else if (district === "spies") {
-                districtName = spiesTitle;
-            }
-             */
-
+            if (district === "resistance") {
+                districtName = resistanceTitle;
+            } else if (district === "capitol.") {
+                districtName = capitolTitle;
+            } 
+            
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
