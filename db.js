@@ -32,9 +32,10 @@ const district1_id = -391986817;//insert the group ids of the different group ch
 const district2_id = -264119959;//insert the group ids of the different group chats with the participants;
 const district6_id = -364865565;//insert the group ids of the different group chats with the participants;
 const district12_id = -358638029;//insert the group ids of the different group chats with the participants;
-const spies_id = 0;
+const resistance_id = 0;
+const capitol_id = 0;
 const allDistricts_id = -1001215955875;//insert the group ids of the different group chats with the participants;
-const groupChats = [district1_id, district12_id, district2_id, district6_id, allDistricts_id];
+const groupChats = [resistance_id, capitol_id, district1_id, district12_id, district2_id, district6_id, allDistricts_id];
 //const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
 //const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
 //const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
@@ -600,10 +601,10 @@ function sendExterminatorScore(msg, callback) {
 function sendExterminatorTargets(callback) {
     Tribute.find({"user.state": "Alive"}).exec(function(err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
-        var district1Array = getDistrict("resistance");
-        appendDistrict(district1Array, "resistance");
-        var district2Array = getDistrict("capitol");
-        appendDistrict(district2Array, "capitol");
+        var resistanceArray = getDistrict("resistance");
+        appendDistrict(resistanceArray, "resistance");
+        var capitolArray = getDistrict("capitol");
+        appendDistrict(capitolArray, "capitol");
 
         function getDistrict(district) {
             var districtArray = result.filter(function(el) {
@@ -619,7 +620,7 @@ function sendExterminatorTargets(callback) {
             } else if (district === "capitol.") {
                 districtName = capitolTitle;
             } 
-            
+
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
             for (var i = 0; i < districtArray.length; i++) {
