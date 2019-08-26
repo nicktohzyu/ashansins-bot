@@ -74,9 +74,9 @@ bot.on('/help', (msg) => {
         + "/dead (and follow the prompts)\n\n"
         + "To view ALL tributes, type:\n"
         + "/tributes all\n\n"
-        + "To view tributes from a SPECIFIC DISTRICT, type:\n"
+        + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
         + "/tributes <District>\n"
-        + "Where <District> is either district1, district2, district6 or district12.\n\n" 
+        + "Where <District> is either resistance or capitol.\n\n" 
         + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
     return bot.sendMessage(msg.chat.id, text);
 })
