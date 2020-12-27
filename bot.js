@@ -1,15 +1,10 @@
-// your token from BotFather
-var botToken = '969817030:AAFSDOyJzpDk9X1tT4zRkLbWaSAlox8bkUk';
+const {adminIDs, botToken, isTeleLogActivate, teleLogAdminId} = require('./config');
 const TeleBot = require('telebot');
 const request = require('request');
 const bot = new TeleBot(botToken);
 const constants = require('./constants');
 const math = require('mathjs');
-var db = require('./db');
-const heman_id = 31031122;
-const johanna_id = 650290297;
-const yr_id = 41628748;
-var adminIDs = [heman_id, johanna_id, yr_id];
+const db = require('./db');
 
 // Listens for the invocation of /start command
 bot.on('/start', (msg) => {
@@ -109,19 +104,20 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
     }
 });
 
+if(isTeleLogActivate){
+    bot.on(/^(.+)$/, (msg, props) => {
+        db.addLog(false, {
+            name: msg.from.first_name,
+            id: msg.from.id
+        }, {
+            chat_id: msg.chat.id,
+            id: msg.message_id,
+            text: props.match[1]
+        })
 
-bot.on(/^(.+)$/, (msg, props) => {
-    db.addLog(false, {
-        name: msg.from.first_name,
-        id: msg.from.id
-    }, {
-        chat_id: msg.chat.id,
-        id: msg.message_id,
-        text: props.match[1]
-    })
-
-    bot.sendMessage(heman_id, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
-});
+        bot.sendMessage(teleLogAdminId, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
+    });
+}
 
 bot.on(/^\/register (.+)$/, (msg, props) => {
     const text = props.match[1].toLowerCase();
