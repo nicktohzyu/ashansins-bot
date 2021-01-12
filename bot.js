@@ -14,10 +14,10 @@ bot.on('/start', (msg) => {
 });
 
 bot.on(/^\/say (.+)$/, (msg, props) => {
-    console.log(msg);
-    console.log(props);
+    // console.log(msg);
+    // console.log(props);
     const text = props.match[1];
-    return bot.sendMessage(msg.from.id, text, { replyToMessage: msg.message_id });
+    return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
 });
 
 /*
@@ -31,26 +31,27 @@ bot.on('/get_logs', (msg) => {
 });*/
 
 bot.on('/compliment', (msg) => {
+    const INSULT_PROBABILITY = 0.6
     // Returns a floating value between 0 and 1
     const insultOrCompliment = Math.random();
-    // Insult 
-    if (insultOrCompliment > 0.6) {
-      const randPick = Math.floor(Math.random() * constants.insultsList.length);
-      let text = constants.insultsList[randPick];
-      return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}`);
+    if (insultOrCompliment > INSULT_PROBABILITY) {
+        // Insult
+        const randPick = Math.floor(Math.random() * constants.insultsList.length);
+        let text = constants.insultsList[randPick];
+        return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}`);
     } else {
-      // Compliment
-        request('https://complimentr.com/api', {json:true}, function(error, response, body) {
-          let text;
-          if (!error && response.statusCode == 200) {
-            text = body.compliment;
-          } else {
-              text = "I'm not in the mood to compliment you.";
-              console.log("error");
-          }
-          return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
+        // Compliment
+        request('https://complimentr.com/api', {json: true}, function (error, response, body) {
+            let text;
+            if (!error && response.statusCode == 200) {
+                text = body.compliment;
+            } else {
+                text = "I'm not in the mood to compliment you.";
+                console.log("error");
+            }
+            return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
         });
-      }
+    }
 });
 
 bot.on('/clear_logs', (msg) => {
@@ -71,7 +72,7 @@ bot.on('/help', (msg) => {
         + "/tributes all\n\n"
         + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
         + "/tributes <District>\n"
-        + "Where <District> is either resistance or capitol.\n\n" 
+        + "Where <District> is either resistance or capitol.\n\n"
         + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
     return bot.sendMessage(msg.chat.id, text);
 })
@@ -81,30 +82,30 @@ bot.on(/^\/tributes (.+)$/, (msg, props) => {
     console.log(text);
     if (text === "all" || text === "/tributes all") {
         db.displayAllTributes((message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         })
     } else if (text === "resistance" || text === "/tributes resistance") {
         db.displayTributes("resistance", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         })
     } else if (text === "capitol" || text === "/tributes capitol") {
         db.displayTributes("capitol", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         })
     } else if (text === "spec" || text === "/tributes spec") {
         db.displayTributes("spec", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         })
     } else if (text === "🔪" || text === "/tributes 🔪") {
         db.displayTributes("🔪", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         })
     } else {
         return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
     }
 });
 
-if(isTeleLogActivate){
+if (isTeleLogActivate) {
     bot.on(/^(.+)$/, (msg, props) => {
         db.addLog(false, {
             name: msg.from.first_name,
@@ -156,7 +157,7 @@ bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
 // Displays kill count of targets
 bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
     db.sendExterminatorTargets((message) => {
-        return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+        return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
     });
 });
 bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
@@ -181,13 +182,13 @@ bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
 
 bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
     db.displayAllTributes((message) => {
-        return bot.sendMessage(msg.chat.id, message, {parseMode:"HTML"});
+        return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
     });
 });
 
 bot.on('/*sudoTest', msg => {
     console.log("hello");
-    return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode:"HTML"});
+    return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
 });
 
 // Inline button callback
@@ -196,7 +197,7 @@ bot.on('callbackQuery', msg => {
     console.log("reached");
     console.log(msg);
 
-    bot.answerCallbackQuery(msg.id, `Inline button callback: ${ msg.data }`, true);
+    bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true);
 
     console.log(msg.data);
     var data = JSON.parse(msg.data);
@@ -257,7 +258,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
     var processed = extractLast(text);
     console.log(processed);
     if (processed[1] === "Coin" || processed[1] === "2Coin" || processed[1] === "3Coin" || processed[1] === "Remove") {
-        db.updateEquip(false, processed[0], processed[1], function(user, message) {
+        db.updateEquip(false, processed[0], processed[1], function (user, message) {
             bot.sendMessage(user.user.id, message);
         });
     } else {
@@ -267,7 +268,7 @@ bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
 
 bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
     const text = props.match[1];
-    db.reviveTribute(false, text, function(user) {
+    db.reviveTribute(false, text, function (user) {
         bot.sendMessage(user.user.id, "You got revived!");
     }, function (id, message) {
         bot.sendMessage(id, message);
@@ -342,7 +343,7 @@ bot.on('/generate_equations', (msg) => {
     var operands = [" + ", " - ", " * ", " / "];
     var reply = Math.floor(Math.random() * 100);
     for (var i = 0; i < 5; i++) {
-        reply += operands[Math.floor(Math.random()*operands.length)];
+        reply += operands[Math.floor(Math.random() * operands.length)];
         reply += Math.floor(Math.random() * 100);
     }
 
