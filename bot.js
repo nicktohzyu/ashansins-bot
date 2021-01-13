@@ -6,104 +6,258 @@ const constants = require('./constants');
 const math = require('mathjs');
 const db = require('./db');
 
+//user commands
+{
+
 // Listens for the invocation of /start command
-bot.on('/start', (msg) => {
-    // Sends welcome message to chat.
-    console.log("user started conversation with the bot");
-    return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Type /help to learn more about how this bot works.`);
-});
+    bot.on('/start', (msg) => {
+        // Sends welcome message to chat.
+        console.log("user started conversation with the bot");
+        return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Type /help to learn more about how this bot works.`);
+    });
 
-bot.on(/^\/say (.+)$/, (msg, props) => {
-    // console.log(msg);
-    // console.log(props);
-    const text = props.match[1];
-    return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
-});
+    /*
+    bot.on('/get_logs', (msg) => {
+        console.log("1");
+        db.getLogs(false, (res) => {
+            console.log(res);
+            var text = "User: " +  res[0].user.name + " text: " + res[0].message.text;
+            bot.sendMessage(msg.chat.id, text);
+        })
+    });*/
 
-/*
-bot.on('/get_logs', (msg) => {
-    console.log("1");
-    db.getLogs(false, (res) => {
-        console.log(res);
-        var text = "User: " +  res[0].user.name + " text: " + res[0].message.text;
-        bot.sendMessage(msg.chat.id, text);
-    })
-});*/
+    bot.on('/compliment', (msg) => {
+        const INSULT_PROBABILITY = 0.6
+        // Returns a floating value between 0 and 1
+        const insultOrCompliment = Math.random();
+        if (insultOrCompliment > INSULT_PROBABILITY) {
+            // Insult
+            const randPick = Math.floor(Math.random() * constants.insultsList.length);
+            let text = constants.insultsList[randPick];
+            return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}`);
+        } else {
+            // Compliment
+            request('https://complimentr.com/api', {json: true}, function (error, response, body) {
+                let text;
+                if (!error && response.statusCode == 200) {
+                    text = body.compliment;
+                } else {
+                    text = "I'm not in the mood to compliment you.";
+                    console.log("error");
+                }
+                return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
+            });
+        }
+    });
 
-bot.on('/compliment', (msg) => {
-    const INSULT_PROBABILITY = 0.6
-    // Returns a floating value between 0 and 1
-    const insultOrCompliment = Math.random();
-    if (insultOrCompliment > INSULT_PROBABILITY) {
-        // Insult
-        const randPick = Math.floor(Math.random() * constants.insultsList.length);
-        let text = constants.insultsList[randPick];
-        return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}`);
-    } else {
-        // Compliment
-        request('https://complimentr.com/api', {json: true}, function (error, response, body) {
-            let text;
-            if (!error && response.statusCode == 200) {
-                text = body.compliment;
-            } else {
-                text = "I'm not in the mood to compliment you.";
-                console.log("error");
-            }
-            return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
+    bot.on('/help', (msg) => {
+        var text = "The available commands for this game are:\n\n"
+            + "To register as a TRIBUTE, type:\n"
+            + "/register (and follow the prompts)\n\n"
+            + "To KILL someone, type:\n"
+            + "/kill (and follow the prompts)\n\n"
+            + "To STICK someone, type:\n"
+            + "/stick (and follow the prompts)\n\n"
+            + "To DIE, type:\n"
+            + "/dead (and follow the prompts)\n\n"
+            + "To view ALL tributes, type:\n"
+            + "/tributes all\n\n"
+            + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
+            + "/tributes <District>\n"
+            + "Where <District> is either resistance or capitol.\n\n"
+            + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
+        return bot.sendMessage(msg.chat.id, text);
+    });
+
+    bot.on(/^\/register (.+)$/, (msg, props) => {
+        const text = props.match[1].toLowerCase();
+        return db.processRegistration(msg, text, (message) => {
+            return bot.sendMessage(msg.chat.id, message);
         });
-    }
-});
+    });
 
-bot.on('/clear_logs', (msg) => {
-    db.clearLogs(false, (res) => console.log("Clearing the logs!"));
-})
+    bot.on(/^\/🔪Unregister (.+)$/, (msg, props) => {
+        const user = props.match[1]
+        console.log(user);
+        return db.processUnregistration(msg, user, (message) => {
+            return bot.sendMessage(msg.chat.id, message);
+        });
+    });
 
-bot.on('/help', (msg) => {
-    var text = "The available commands for this game are:\n\n"
-        + "To register as a TRIBUTE, type:\n"
-        + "/register (and follow the prompts)\n\n"
-        + "To KILL someone, type:\n"
-        + "/kill (and follow the prompts)\n\n"
-        + "To STICK someone, type:\n"
-        + "/stick (and follow the prompts)\n\n"
-        + "To DIE, type:\n"
-        + "/dead (and follow the prompts)\n\n"
-        + "To view ALL tributes, type:\n"
-        + "/tributes all\n\n"
-        + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
-        + "/tributes <District>\n"
-        + "Where <District> is either resistance or capitol.\n\n"
-        + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
-    return bot.sendMessage(msg.chat.id, text);
-})
+    bot.on(/^\/kill (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        console.log("KILLING");
+        return db.processKill(msg, text, (id, message) => {
+            return bot.sendMessage(id, message);
+        });
+    });
+    bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
+    });
 
-bot.on(/^\/tributes (.+)$/, (msg, props) => {
-    const text = props.match[1].toLowerCase();
-    console.log(text);
-    if (text === "all" || text === "/tributes all") {
+    /*
+    not used for ashansins 6 as ashansins 6 is not points based
+
+    bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
+        return db.sendExterminatorScore(msg, (message) => {
+            return bot.sendMessage(msg.chat.id, message);
+        });
+    });
+    */
+
+    // Displays kill count of targets
+    bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
+        db.sendExterminatorTargets((message) => {
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+        });
+    });
+
+    bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "predead", "From which District is your killer?");
+    });
+
+    bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
+    });
+
+    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
+    });
+
+    bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
+    });
+
+    bot.on(/^\/dead (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        return db.processDead(msg, text, (id, message) => {
+            return bot.sendMessage(id, message);
+        });
+    });
+
+    bot.on(/^\/stick (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        return db.processStick(msg, text,
+            (id, message) => {
+                return bot.sendMessage(id, message);
+            }, (message) => {
+                pingAdmins(bot, message);
+            });
+    });
+
+    // bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
+    //     const text = props.match[1];
+    //     var processed = extractLast(text);
+    //     console.log(processed);
+    //     if (processed[1] === "Coin" || processed[1] === "2Coin" || processed[1] === "3Coin" || processed[1] === "Remove") {
+    //         db.updateEquip(false, processed[0], processed[1], function (user, message) {
+    //             bot.sendMessage(user.user.id, message);
+    //         });
+    //     } else {
+    //         return bot.sendMessage(msg.from.id, "Please give valid inputs!");
+    //     }
+    // });
+}
+
+//admin commands
+{
+    bot.on(/^\/say (.+)$/, (msg, props) => {
+        // console.log(msg);
+        // console.log(props);
+        const text = props.match[1];
+        return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
+    });
+
+    bot.on('/clear_logs', (msg) => {
+        db.clearLogs(false, (res) => console.log("Clearing the logs!"));
+    });
+
+    bot.on(/^\/tributes (.+)$/, (msg, props) => {
+        const text = props.match[1].toLowerCase();
+        console.log(text);
+        if (text === "all" || text === "/tributes all") {
+            db.displayAllTributes((message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "resistance" || text === "/tributes resistance") {
+            db.displayTributes("resistance", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "capitol" || text === "/tributes capitol") {
+            db.displayTributes("capitol", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "spec" || text === "/tributes spec") {
+            db.displayTributes("spec", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "🔪" || text === "/tributes 🔪") {
+            db.displayTributes("🔪", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else {
+            return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
+        }
+    });
+
+    bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
         db.displayAllTributes((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        })
-    } else if (text === "resistance" || text === "/tributes resistance") {
-        db.displayTributes("resistance", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        })
-    } else if (text === "capitol" || text === "/tributes capitol") {
-        db.displayTributes("capitol", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        })
-    } else if (text === "spec" || text === "/tributes spec") {
-        db.displayTributes("spec", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        })
-    } else if (text === "🔪" || text === "/tributes 🔪") {
-        db.displayTributes("🔪", (message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        })
-    } else {
-        return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
-    }
-});
+        });
+    });
+
+    bot.on('/*sudoTest', msg => {
+        console.log("hello");
+        return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
+    });
+
+    bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        db.reviveTribute(false, text, function (user) {
+            bot.sendMessage(user.user.id, "You got revived!");
+        }, function (id, message) {
+            bot.sendMessage(id, message);
+        });
+        return bot.sendMessage(msg.from.id, "Successful Revive!");
+    });
+
+    bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        return db.sendToAll(text, (chat_id, message) => {
+            return bot.sendMessage(chat_id, message);
+        });
+    });
+
+    bot.on(/^\/🔪SendTo (.+)$/, (msg, props) => {
+        const text = props.match[1];
+        console.log(text);
+
+        var processed = extractFirst(text);
+        return db.sendTo(processed[0], processed[1], msg, (chat_id, message) => {
+            return bot.sendMessage(chat_id, message);
+        });
+    });
+}
+
+/*bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {
+    const text = props.match[1];
+    db.randomRevive(text, function(user) {
+        bot.sendMessage(user.user.id, "You got revived!")
+    }, function(id, message) {
+        bot.sendMessage(id, message);
+    });
+    return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
+});*/
+
+/*bot.on(/^\/🔪ReviveAll (.+)$/, (msg, props) => {
+    const text = props.match[1];
+    db.reviveAll(function(user) {
+        bot.sendMessage(user.user.id, "You got revived!")
+    }, function(id, message) {
+        bot.sendMessage(id, message);
+    });
+    return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
+});*/
 
 if (isTeleLogActivate) {
     bot.on(/^(.+)$/, (msg, props) => {
@@ -119,77 +273,6 @@ if (isTeleLogActivate) {
         bot.sendMessage(teleLogAdminId, msg.from.first_name + "(" + msg.from.id + "): " + props.match[0]);
     });
 }
-
-bot.on(/^\/register (.+)$/, (msg, props) => {
-    const text = props.match[1].toLowerCase();
-    return db.processRegistration(msg, text, (message) => {
-        return bot.sendMessage(msg.chat.id, message);
-    });
-});
-
-bot.on(/^\/🔪Unregister (.+)$/, (msg, props) => {
-    const user = props.match[1]
-    console.log(user);
-    return db.processUnregistration(msg, user, (message) => {
-        return bot.sendMessage(msg.chat.id, message);
-    });
-});
-
-
-bot.on(/^\/kill (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    console.log("KILLING");
-    return db.processKill(msg, text, (id, message) => {
-        return bot.sendMessage(id, message);
-    });
-});
-
-/*
-not used for ashansins 6 as ashansins 6 is not points based
-
-bot.on([/^\/☠️$/, /^\/☠️@Ashansins_bot$/], (msg) => {
-    return db.sendExterminatorScore(msg, (message) => {
-        return bot.sendMessage(msg.chat.id, message);
-    });
-});
-*/
-
-// Displays kill count of targets
-bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
-    db.sendExterminatorTargets((message) => {
-        return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-    });
-});
-bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
-});
-
-bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "predead", "From which District is your killer?");
-});
-
-bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
-});
-
-bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
-});
-
-bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
-    return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
-});
-
-bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
-    db.displayAllTributes((message) => {
-        return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-    });
-});
-
-bot.on('/*sudoTest', msg => {
-    console.log("hello");
-    return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
-});
 
 // Inline button callback
 bot.on('callbackQuery', msg => {
@@ -235,83 +318,6 @@ bot.on('callbackQuery', msg => {
     }
 
 });
-
-bot.on(/^\/dead (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    return db.processDead(msg, text, (id, message) => {
-        return bot.sendMessage(id, message);
-    });
-});
-
-bot.on(/^\/stick (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    return db.processStick(msg, text,
-        (id, message) => {
-            return bot.sendMessage(id, message);
-        }, (message) => {
-            pingAdmins(bot, message);
-        });
-});
-
-bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    var processed = extractLast(text);
-    console.log(processed);
-    if (processed[1] === "Coin" || processed[1] === "2Coin" || processed[1] === "3Coin" || processed[1] === "Remove") {
-        db.updateEquip(false, processed[0], processed[1], function (user, message) {
-            bot.sendMessage(user.user.id, message);
-        });
-    } else {
-        return bot.sendMessage(msg.from.id, "Please give valid inputs!");
-    }
-});
-
-bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    db.reviveTribute(false, text, function (user) {
-        bot.sendMessage(user.user.id, "You got revived!");
-    }, function (id, message) {
-        bot.sendMessage(id, message);
-    });
-    return bot.sendMessage(msg.from.id, "Successful Revive!");
-});
-
-bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    return db.sendToAll(text, (chat_id, message) => {
-        return bot.sendMessage(chat_id, message);
-    });
-});
-
-bot.on(/^\/🔪SendTo (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    console.log(text);
-
-    var processed = extractFirst(text);
-    return db.sendTo(processed[0], processed[1], msg, (chat_id, message) => {
-        return bot.sendMessage(chat_id, message);
-    });
-});
-
-/*bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    db.randomRevive(text, function(user) {
-        bot.sendMessage(user.user.id, "You got revived!")
-    }, function(id, message) {
-        bot.sendMessage(id, message);
-    });
-    return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
-});*/
-
-/*bot.on(/^\/🔪ReviveAll (.+)$/, (msg, props) => {
-    const text = props.match[1];
-    db.reviveAll(function(user) {
-        bot.sendMessage(user.user.id, "You got revived!")
-    }, function(id, message) {
-        bot.sendMessage(id, message);
-    });
-    return bot.sendMessage(msg.from.id, "Successful " + text + " Revive!");
-});*/
 
 function extractFirst(input) {
     var inputArray = input.split(" ");
