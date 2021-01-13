@@ -76,7 +76,7 @@ const db = require('./db');
         });
     });
 
-    bot.on(/^\/🔪Unregister (.+)$/, (msg, props) => {
+    bot.on(/^\/Unregister (.+)$/, (msg, props) => {
         const user = props.match[1]
         console.log(user);
         return db.processUnregistration(msg, user, (message) => {
@@ -106,7 +106,7 @@ const db = require('./db');
     */
 
     // Displays kill count of targets
-    bot.on([/^\/☠️Targets$/, /^\/☠️Targets@Ashansins_bot$/], (msg) => {
+    bot.on([/^\/Targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
         db.sendExterminatorTargets((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
@@ -206,12 +206,12 @@ const db = require('./db');
         });
     });
 
-    bot.on('/*sudoTest', msg => {
+    bot.on('/sudoTest', msg => {
         console.log("hello");
         return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
     });
 
-    bot.on(/^\/🔪Revive (.+)$/, (msg, props) => {
+    bot.on(/^\/Revive (.+)$/, (msg, props) => {
         const text = props.match[1];
         db.reviveTribute(false, text, function (user) {
             bot.sendMessage(user.user.id, "You got revived!");
@@ -221,14 +221,14 @@ const db = require('./db');
         return bot.sendMessage(msg.from.id, "Successful Revive!");
     });
 
-    bot.on(/^\/🔪SendToAll (.+)$/, (msg, props) => {
+    bot.on(/^\/SendToAll (.+)$/, (msg, props) => {
         const text = props.match[1];
         return db.sendToAll(text, (chat_id, message) => {
             return bot.sendMessage(chat_id, message);
         });
     });
 
-    bot.on(/^\/🔪SendTo (.+)$/, (msg, props) => {
+    bot.on(/^\/SendTo (.+)$/, (msg, props) => {
         const text = props.match[1];
         console.log(text);
 
