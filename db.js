@@ -455,8 +455,8 @@ function isRegistered(name) {
 
 function processRegistration(msg, text, callback) {
     isRegistered(msg.from.first_name).exec(function (err, res) {
-        var users = res.length;
-        if (users > 0) {
+        const numUsers = res.length;
+        if (numUsers > 0) {
             callback("Sorry, either you've already registered, or there is already another user with your name.");
         } else if (isValidDistrict(text)) {
             addTribute(false, {
@@ -481,7 +481,7 @@ function processRegistration(msg, text, callback) {
             }
 
         } else {
-            var bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
+            const bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
             callback(bad);
         }
     });

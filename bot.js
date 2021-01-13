@@ -76,14 +76,6 @@ const db = require('./db');
         });
     });
 
-    bot.on(/^\/Unregister (.+)$/, (msg, props) => {
-        const user = props.match[1]
-        console.log(user);
-        return db.processUnregistration(msg, user, (message) => {
-            return bot.sendMessage(msg.chat.id, message);
-        });
-    });
-
     bot.on(/^\/kill (.+)$/, (msg, props) => {
         const text = props.match[1];
         console.log("KILLING");
@@ -235,6 +227,14 @@ const db = require('./db');
         var processed = extractFirst(text);
         return db.sendTo(processed[0], processed[1], msg, (chat_id, message) => {
             return bot.sendMessage(chat_id, message);
+        });
+    });
+
+    bot.on(/^\/Unregister (.+)$/, (msg, props) => {
+        const user = props.match[1]
+        console.log(user);
+        return db.processUnregistration(msg, user, (message) => {
+            return bot.sendMessage(msg.chat.id, message);
         });
     });
 }
