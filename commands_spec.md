@@ -10,17 +10,14 @@ Compliments uses the complimentr.com API
 sends help text
 ##register
 registers a new tribute
-##🔪Unregister
 ##kill
-##☠️Targets
+record a kill (shan)
+##Targets
+get list of people still alive and their kill count
 ##dead
+record being killed
 ##stick
-##random
-##/*sudoTest
-##Equip
-##Revive
-##SendToAll
-##SendTo
+record a stick
 
 
 # admin commands
@@ -32,3 +29,13 @@ clears logs
 ##tributes
 takes additional parameter which can be 'all' or 'resistance' or 'capitol'
 sends list of tributes
+##Unregister
+unregisters a tribute
+##random
+select a random tribute from a district
+##/*sudoTest
+logs "hello" to console and replies with the sender's id
+##Revive
+revive a tribute
+##SendToAll
+##SendTo

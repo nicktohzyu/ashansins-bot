@@ -87,6 +87,14 @@ const db = require('./db');
         return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
     });
 
+    bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "predead", "From which District is your killer?");
+    });
+
+    bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
+    });
+
     /*
     not used for ashansins 6 as ashansins 6 is not points based
 
@@ -102,18 +110,6 @@ const db = require('./db');
         db.sendExterminatorTargets((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
-    });
-
-    bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "predead", "From which District is your killer?");
-    });
-
-    bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
-    });
-
-    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 
     bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
@@ -236,6 +232,10 @@ const db = require('./db');
         return db.processUnregistration(msg, user, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
+    });
+
+    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 }
 
