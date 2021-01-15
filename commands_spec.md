@@ -1,41 +1,45 @@
-#user commands
+# user commands
 
-##start
+## start
 sends welcome message
-##compliment
+## help
+sends help text
+## compliment
 sends an insult or compliment with adjustable probability.
 Insult is based on a local insult list.
 Compliments uses the complimentr.com API
-##help
-sends help text
-##register
+## register
 registers a new tribute
-##kill
+## kill
 record a kill (shan)
-##Targets
+## Targets
 get list of people still alive and their kill count
-##dead
+## dead
 record being killed
-##stick
+## stick
 record a stick
 
 
 # admin commands
-##say
+## say
 repeats a message back to the sender
 can log details, used for debugging
-##clear_logs
+## clear_logs
 clears logs
-##tributes
+## tributes
 takes additional parameter which can be 'all' or 'resistance' or 'capitol'
 sends list of tributes
-##Unregister
+## Unregister 
+**doesn't work**
 unregisters a tribute
-##random
+## random
 select a random tribute from a district
-##/*sudoTest
+## sudoTest
 logs "hello" to console and replies with the sender's id
-##Revive
+## Revive (tributeName)
 revive a tribute
-##SendToAll
-##SendTo
+**works but causes an error**
+## SendToAll
+**have not tested**
+## SendTo
+**works but will have an issue for people with space in their names**

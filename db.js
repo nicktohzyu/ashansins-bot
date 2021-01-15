@@ -35,7 +35,7 @@ const district12_id = -358638029;//insert the group ids of the different group c
 const resistance_id = -390663740;
 const capitol_id = -338862508;
 const allDistricts_id = -1001215955875;//insert the group ids of the different group chats with the participants;
-const groupChats = [resistance_id, capitol_id, allDistricts_id];
+const groupChats = []; //[resistance_id, capitol_id, allDistricts_id];
 //const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
 //const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
 //const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
@@ -83,13 +83,19 @@ function addTribute(err, user, message, district, state, cb) {
 
 function killTribute(err, user_id) {
     console.log("KILLING HERE")
-    Tribute.findOneAndUpdate({"user.id": user_id}, { $set: {"user.state": "Dead"}, $inc: {"user.deaths" : 1}}, function(res) {
+    Tribute.findOneAndUpdate({"user.id": user_id}, {
+        $set: {"user.state": "Dead"},
+        $inc: {"user.deaths": 1}
+    }, function (res) {
         console.log(res);
     });
 }
 
 function reviveTribute(err, user, callback, callback2) {
-    Tribute.findOneAndUpdate({"user.name": user}, { $set: {"user.state": "Alive"}, $inc: {"user.revives" : 1}}, function(err, res) {
+    Tribute.findOneAndUpdate({"user.name": user}, {
+        $set: {"user.state": "Alive"},
+        $inc: {"user.revives": 1}
+    }, function (err, res) {
         if (res !== null) {
             callback(res);
             for (var i in groupChats) {
@@ -99,6 +105,7 @@ function reviveTribute(err, user, callback, callback2) {
     });
 
 }
+
 /*
 function reviveAll(callback, callback2) {
     Tribute.find({"user.state": "Dead"}).exec(function(err, res){
@@ -128,7 +135,7 @@ function randomRevive(district, callback, callback2) {
 }
 */
 function updateEquip(err, user, newEquip, callback) {
-    Tribute.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function(err, result) {
+    Tribute.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function (err, result) {
         var message;
         if (result !== null) {
             if (newEquip === "Coin") {
@@ -146,19 +153,22 @@ function updateEquip(err, user, newEquip, callback) {
 }
 
 function updateKiller(err, user_id, killer_id) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killer_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killer_id}, function () {
+    });
 }
 
 function updateSticker(err, user_id, sticker_id) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function () {
+    });
 }
 
 function updateVictim(err, user_id, victim_id) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.victim": victim_id}, function() {});
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.victim": victim_id}, function () {
+    });
 }
 
 function updateVictimArray(err, user_id, victim) {
-    Tribute.findOne({"user.id": user_id}).exec(function(err, res) {
+    Tribute.findOne({"user.id": user_id}).exec(function (err, res) {
         if (res !== null) {
             var updatedVictims = JSON.parse(res.user.victims);
             console.log(updatedVictims);
@@ -168,23 +178,28 @@ function updateVictimArray(err, user_id, victim) {
                 updatedVictims[victim.user.district] = [victim.user.name];
             }
             console.log(updatedVictims);
-            Tribute.findOneAndUpdate({"user.id": user_id}, { $set: {"user.victims": JSON.stringify(updatedVictims)}, $inc: {"user.kills" : 1}}, function() {});
+            Tribute.findOneAndUpdate({"user.id": user_id}, {
+                $set: {"user.victims": JSON.stringify(updatedVictims)},
+                $inc: {"user.kills": 1}
+            }, function () {
+            });
         }
     });
 
 }
 
 function updateExterminatorCount(err, user_id, victim_id) {
-    Tribute.findOne({"user.id": victim_id}).exec(function(err, res) {
+    Tribute.findOne({"user.id": victim_id}).exec(function (err, res) {
         if (res !== null) {
-            Tribute.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks" : res.user.kills}}, function() {});
+            Tribute.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks": res.user.kills}}, function () {
+            });
         }
     });
 
 }
 
 function displayAllTributes(callback) {
-    Tribute.find({}).exec(function(err, result) {
+    Tribute.find({}).exec(function (err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
         var resistanceArray = getDistrict("resistance");
         appendDistrict(resistanceArray, "resistance");
@@ -196,7 +211,7 @@ function displayAllTributes(callback) {
         appendDistrict(spiesArray, "spies");*/
 
         function getDistrict(district) {
-            var districtArray = result.filter(function(el) {
+            var districtArray = result.filter(function (el) {
                 return el.user.district === district;
             });
             return districtArray;
@@ -208,7 +223,7 @@ function displayAllTributes(callback) {
                 districtName = resistanceTitle;
             } else if (district === "capitol") {
                 districtName = capitolTitle;
-            }  else if (district === "🔪") {
+            } else if (district === "🔪") {
                 districtName = "Administrators";
             } else if (district === "spec") {
                 districtName = "Spectators";
@@ -231,10 +246,10 @@ function displayAllTributes(callback) {
                     emoji = "💰💰💰";
                 } else if (state === "Dead") {
                     var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random()*dead.length)];
+                    emoji = dead[Math.floor(Math.random() * dead.length)];
                 } else if (state === "Alive") {
-                    var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
-                    emoji = alive[Math.floor(Math.random()*alive.length)];
+                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
+                    emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
                 response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
             }
@@ -247,7 +262,7 @@ function displayAllTributes(callback) {
     })
 }
 
-function compareState(a,b) {
+function compareState(a, b) {
     if (a.user.state < b.user.state)
         return -1;
     if (a.user.state > b.user.state)
@@ -257,12 +272,13 @@ function compareState(a,b) {
 
 
 function displayTributes(district, callback) {
-    Tribute.find({"user.district": district}).exec(function(err, result) {
+    Tribute.find({"user.district": district}).exec(function (err, result) {
         var response = "";
         var districtArray = getDistrict(district);
         appendDistrict(districtArray, district);
+
         function getDistrict(district) {
-            var districtArray = result.filter(function(el) {
+            var districtArray = result.filter(function (el) {
                 return el.user.district === district;
             });
             return districtArray;
@@ -274,7 +290,7 @@ function displayTributes(district, callback) {
                 districtName = resistanceTitle;
             } else if (district === "capitol") {
                 districtName = capitolTitle;
-            } 
+            }
             // to be onz in Phase 2
             /*else if (district === "spies") {
                 districtName = spiesTitle;
@@ -294,10 +310,10 @@ function displayTributes(district, callback) {
                     emoji = "💰💰💰";
                 } else if (state === "Dead") {
                     var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random()*dead.length)];
+                    emoji = dead[Math.floor(Math.random() * dead.length)];
                 } else if (state === "Alive") {
-                    var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
-                    emoji = alive[Math.floor(Math.random()*alive.length)];
+                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
+                    emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
                 response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
             }
@@ -309,10 +325,11 @@ function displayTributes(district, callback) {
         callback(response);
     })
 }
+
 function processDead(msg, target, callback) {
     var toDead = false;
-    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, victim) {
-        Tribute.findOne({"user.name": target}).exec(function(err, res) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function (err, victim) {
+        Tribute.findOne({"user.name": target}).exec(function (err, res) {
             if (res !== null) {
                 if (res.user.victim == msg.from.id)
                     toDead = true;
@@ -342,13 +359,13 @@ function processDead(msg, target, callback) {
 
 function processKill(msg, target, callback) {
     var toKill = false;
-    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, killer) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
             callback(msg.from.id, "Error!");
         } else if (killer.user.state === "Dead") {
             callback("Invalid command, you're already dead!");
         } else {
-            Tribute.findOne({"user.name": target}).exec(function(err, res) {
+            Tribute.findOne({"user.name": target}).exec(function (err, res) {
                 if (res !== null) {
                     if (res.user.killer == msg.from.id) {
                         toKill = true;
@@ -378,11 +395,11 @@ function processKill(msg, target, callback) {
 
 function processStick(msg, target, callback, callback2) {
     var toStick = false;
-    Tribute.findOne({"user.id": msg.from.id}).exec(function(err, sticker) {
+    Tribute.findOne({"user.id": msg.from.id}).exec(function (err, sticker) {
         if (sticker.user.state === "Dead") {
             callback("Invalid command, you're already dead!");
         } else {
-            Tribute.findOne({"user.name": target}).exec(function(err, res) {
+            Tribute.findOne({"user.name": target}).exec(function (err, res) {
                 if (res !== null) {
                     if (res.user.sticker == msg.from.id) {
                         toStick = true;
@@ -413,18 +430,19 @@ function processStick(msg, target, callback, callback2) {
 }
 
 function sendTo(user, input, msg, callback) {
-    Tribute.findOne({"user.name": user}).exec(function (err, result) {
-        if (result !== null) {
-            callback(result.user.id, input);
-        } else {
-            Tribute.findOne({"user.id": user}).exec(function (err, result) {
-                if (result !== null) {
-                    callback(result.user.id, input);
-                    callback(msg.from.id, "Sucessfully sent: " + input);
-                }
-            })
-        }
-    })
+    Tribute.findOne({"user.name": user})
+        .exec(function (err, result) {
+            if (result !== null) {
+                callback(result.user.id, input);
+            } else {
+                Tribute.findOne({"user.id": user}).exec(function (err, result) {
+                    if (result !== null) {
+                        callback(result.user.id, input);
+                        callback(msg.from.id, "Sucessfully sent: " + input);
+                    }
+                })
+            }
+        })
 }
 
 function sendToAll(input, callback) {
@@ -488,9 +506,10 @@ function processRegistration(msg, text, callback) {
 }
 
 function processUnregistration(msg, user, callback) {
-    Tribute.remove({"user.name": user}).exec(function(err) {
-        callback("Sucessfully unregistered!")
-    });
+    Tribute.remove({"user.name": user})
+        .exec(function (err) {
+            callback("Sucessfully unregistered!")
+        });
 }
 
 function prekds(bot, msg, purpose, text) {
@@ -507,13 +526,15 @@ function prekds(bot, msg, purpose, text) {
 }
 
 function kill(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
-            var packet = {"target": alive[i].user.name,
-                "purpose": "kill"};
+            var packet = {
+                "target": alive[i].user.name,
+                "purpose": "kill"
+            };
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -529,13 +550,15 @@ function kill(bot, msg, district) {
 }
 
 function dead(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
-            var packet = {"target": alive[i].user.name,
-                "purpose": "dead"};
+            var packet = {
+                "target": alive[i].user.name,
+                "purpose": "dead"
+            };
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -550,13 +573,15 @@ function dead(bot, msg, district) {
 
 function stick(bot, msg, district) {
 
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
         var alive = res;
         var hitlist = [];
 
         for (var i = 0; i < alive.length; i++) {
-            var packet = {"target": alive[i].user.name,
-                "purpose": "stick"};
+            var packet = {
+                "target": alive[i].user.name,
+                "purpose": "stick"
+            };
             hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
         }
 
@@ -570,11 +595,11 @@ function stick(bot, msg, district) {
 }
 
 function rollDistrict(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
+    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function (err, res) {
         var alive = res;
         console.log(msg);
         if (alive.length > 0) {
-            var luckyGuy = alive[Math.floor(Math.random()*alive.length)];
+            var luckyGuy = alive[Math.floor(Math.random() * alive.length)];
             bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from " + district + " has been chosen!");
         } else {
             bot.sendMessage(msg.message.chat.id, "No one in " + district + " is dead.");
@@ -584,7 +609,7 @@ function rollDistrict(bot, msg, district) {
 }
 
 function sendExterminatorScore(msg, callback) {
-    Tribute.find({}).exec(function(err, res){
+    Tribute.find({}).exec(function (err, res) {
         var sum = 0;
         var possiblePoints = 0;
         for (var i = 0; i < res.length; i++) {
@@ -599,7 +624,7 @@ function sendExterminatorScore(msg, callback) {
 }
 
 function sendExterminatorTargets(callback) {
-    Tribute.find({"user.state": "Alive"}).exec(function(err, result) {
+    Tribute.find({"user.state": "Alive"}).exec(function (err, result) {
         var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
         var resistanceArray = getDistrict("resistance");
         appendDistrict(resistanceArray, "resistance");
@@ -607,7 +632,7 @@ function sendExterminatorTargets(callback) {
         appendDistrict(capitolArray, "capitol");
 
         function getDistrict(district) {
-            var districtArray = result.filter(function(el) {
+            var districtArray = result.filter(function (el) {
                 return el.user.district === district;
             });
             return districtArray;
@@ -619,7 +644,7 @@ function sendExterminatorTargets(callback) {
                 districtName = resistanceTitle;
             } else if (district === "capitol.") {
                 districtName = capitolTitle;
-            } 
+            }
 
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
@@ -635,10 +660,10 @@ function sendExterminatorTargets(callback) {
                     emoji = "💰💰💰";
                 } else if (state === "Dead") {
                     var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random()*dead.length)];
+                    emoji = dead[Math.floor(Math.random() * dead.length)];
                 } else if (state === "Alive") {
-                    var alive = ["😀","😃","😄","😁","😆","😆","😅","😂","😜","😏","😒","🤤","😬","😍","😘","🤓","😎","😑"];
-                    emoji = alive[Math.floor(Math.random()*alive.length)];
+                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
+                    emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
 
                 emoji += ": " + districtArray[i].user.kills;
@@ -658,6 +683,7 @@ function sendExterminatorTargets(callback) {
 var mongoose = require("mongoose");
 
 var uristring = "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/test?retryWrites=true&w=majority";
+
 //  process.env.MONGODB_URI;
 
 function handleError(err) {

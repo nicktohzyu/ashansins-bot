@@ -51,21 +51,40 @@ const db = require('./db');
     });
 
     bot.on('/help', (msg) => {
-        var text = "The available commands for this game are:\n\n"
-            + "To register as a TRIBUTE, type:\n"
-            + "/register (and follow the prompts)\n\n"
-            + "To KILL someone, type:\n"
-            + "/kill (and follow the prompts)\n\n"
-            + "To STICK someone, type:\n"
-            + "/stick (and follow the prompts)\n\n"
-            + "To DIE, type:\n"
-            + "/dead (and follow the prompts)\n\n"
-            + "To view ALL tributes, type:\n"
-            + "/tributes all\n\n"
-            + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
-            + "/tributes <District>\n"
-            + "Where <District> is either resistance or capitol.\n\n"
-            + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
+        var text =
+            `The available commands for this game are:
+
+To register as a TRIBUTE, type:
+/register (and follow the prompts)
+
+To KILL someone, type:
+/kill (and follow the prompts)
+
+To STICK someone, type:
+/stick (and follow the prompts)
+
+To DIE, type:
+/dead (and follow the prompts)
+
+To view ALL tributes, type:
+/tributes
+
+Please start a conversation with @ashansins7_bot first if you have not done so :)`
+        // "The available commands for this game are:\n\n"
+        // + "To register as a TRIBUTE, type:\n"
+        // + "/register (and follow the prompts)\n\n"
+        // + "To KILL someone, type:\n"
+        // + "/kill (and follow the prompts)\n\n"
+        // + "To STICK someone, type:\n"
+        // + "/stick (and follow the prompts)\n\n"
+        // + "To DIE, type:\n"
+        // + "/dead (and follow the prompts)\n\n"
+        // + "To view ALL tributes, type:\n"
+        // + "/tributes all\n\n"
+        // + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
+        // + "/tributes <District>\n"
+        // + "Where <District> is either resistance or capitol.\n\n"
+        // + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
         return bot.sendMessage(msg.chat.id, text);
     });
 
@@ -195,7 +214,7 @@ const db = require('./db');
     });
 
     bot.on('/sudoTest', msg => {
-        console.log("hello");
+        console.log("entered sudoTest");
         return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
     });
 
@@ -228,7 +247,7 @@ const db = require('./db');
 
     bot.on(/^\/Unregister (.+)$/, (msg, props) => {
         const user = props.match[1]
-        console.log(user);
+        console.log("Attempting to unregister " + user);
         return db.processUnregistration(msg, user, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
