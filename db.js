@@ -38,9 +38,8 @@ const resistanceTitle = "⚔️ Resistance ⚔️";
 const capitolTitle = "🌹 Capitol 🌹";
 
 
-var mongoose = require("mongoose");
-
-var DbUriString = require("./config").DbUriString
+const mongoose = require("mongoose");
+const {DbUriString, SUCCESSFUL_DEATH_MESSAGE, TEAMS} = require("./config")
 
 // "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/ashansins7?retryWrites=true&w=majority";
 
@@ -76,7 +75,6 @@ var tributeSchema = new mongoose.Schema({
         name: String, //first name
         username: String,
         id: Number,
-        //TODO: add username
         district: String,
         state: String,
         equipment: String,
@@ -398,7 +396,7 @@ function processDead(msg, killerUsername, callback) {
             recordUserKilled(false, msg.from.id);
             updateKiller(false, msg.from.id, killer.user.id);
             // updateVictimArray(false, killer.user.id, victim);
-            callback(msg.from.id, "Congratulation, you have died successfully!");
+            callback(msg.from.id, SUCCESSFUL_DEATH_MESSAGE);
             // updateExterminatorCount(false, killer.user.id, msg.from.id);
             // for (var i in groupChats) {
             //     callback(groupChats[i], victim.user.username + " has been killed by " + killer.user.username + "!");
@@ -514,7 +512,7 @@ function sendToAll(input, callback) {
 
 function isValidDistrict(district) {
     //TODO: revamp teams
-    var arrayDistrict = ["resistance", "capitol", "🔪", "spec"];
+    var arrayDistrict = TEAMS;
     console.log(district);
     for (var i in arrayDistrict) {
         if (district === arrayDistrict[i])
@@ -555,7 +553,7 @@ async function processRegistration(msg, text, callback) {
             // revives: 0,
             victims: "{}"
         });
-    } catch (e){
+    } catch (e) {
         callback("An error occured in registration!");
         return;
     }
