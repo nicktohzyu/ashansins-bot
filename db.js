@@ -124,10 +124,8 @@ function addLog(err, user, message, cb) {
     }).save(cb);
 }
 
-function addTribute(err, user, message, district, state, cb) {
-    // TODO: remove useless err param
+function addTribute(user, message, district, state, cb) {
     // TODO: error catching
-    if (err) return handleError(err);
     dbmsg = new Tribute({
         user: user,
         message: message,
@@ -541,8 +539,8 @@ async function processRegistration(msg, text, callback) {
         callback(bad);
         return;
     }
-    try{
-        addTribute(false, {
+    try {
+        addTribute({
             name: msg.from.first_name,
             username: msg.from.username,
             id: msg.from.id,
