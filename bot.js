@@ -246,9 +246,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/Unregister (.+)$/, (msg, props) => {
-        const user = props.match[1]
-        console.log("Attempting to unregister " + user);
-        return db.processUnregistration(msg, user, (message) => {
+        const userName = props.match[1]
+        console.log("Attempting to unregister " + userName);
+        return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
     });

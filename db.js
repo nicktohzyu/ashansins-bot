@@ -505,12 +505,29 @@ function processRegistration(msg, text, callback) {
     });
 }
 
-function processUnregistration(msg, user, callback) {
-    Tribute.remove({"user.name": user})
-        .exec(function (err) {
-            callback("Sucessfully unregistered!")
-        });
+// function processUnregistration(msg, user, callback) {
+//     Tribute.remove({"user.name": user})
+//         .exec(function (err) {
+//             callback("Sucessfully unregistered!")
+//         });
+// }
+
+async function processUnregistration(msg, userName, callback) {
+    const doc = await Tribute.findOneAndDelete({"user.name": userName})
+        .exec();
+    if (doc) {
+        //doc not null means user exists
+        callback("User successfully unregistered")
+    } else {
+        callback("Invalid user");
+    }
 }
+
+// try {
+//
+// } catch (e) {
+//     callback("An error occured:\n" + e);
+// }
 
 function prekds(bot, msg, purpose, text) {
     let replyMarkup = bot.inlineKeyboard([
