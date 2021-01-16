@@ -54,37 +54,23 @@ const db = require('./db');
         var text =
             `The available commands for this game are:
 
-To register as a TRIBUTE, type:
+To register, use:
 /register (and follow the prompts)
 
-To KILL someone, type:
-/kill (and follow the prompts)
-
-To STICK someone, type:
-/stick (and follow the prompts)
-
-To DIE, type:
+To record being killed (whether Shan or Stick), use:
 /dead (and follow the prompts)
 
-To view ALL tributes, type:
-/tributes
+To record your kill (whether Shan or Stick), use:
+/kill (and follow the prompts)
+Do this after your victim has recorded their death.
+
+To view ALL players, use:
+/players
+
+To view living players and their kill counts, use:
+/targets
 
 Please start a conversation with @ashansins7_bot first if you have not done so :)`
-        // "The available commands for this game are:\n\n"
-        // + "To register as a TRIBUTE, type:\n"
-        // + "/register (and follow the prompts)\n\n"
-        // + "To KILL someone, type:\n"
-        // + "/kill (and follow the prompts)\n\n"
-        // + "To STICK someone, type:\n"
-        // + "/stick (and follow the prompts)\n\n"
-        // + "To DIE, type:\n"
-        // + "/dead (and follow the prompts)\n\n"
-        // + "To view ALL tributes, type:\n"
-        // + "/tributes all\n\n"
-        // + "To view tributes from a SPECIFIC SIDE OF THE REBELLION type:\n"
-        // + "/tributes <District>\n"
-        // + "Where <District> is either resistance or capitol.\n\n"
-        // + "This feature however, requires you to start a conversation with @ashansins6_bot first :)";
         return bot.sendMessage(msg.chat.id, text);
     });
 
@@ -127,8 +113,8 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
     */
 
-    bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
-        db.displayAllTributes((message) => {
+    bot.on([/^\/players$/, /^\/players@Ashansins_bot$/], (msg) => {
+        db.displayAllPlayers((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
     });
@@ -180,7 +166,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on([/^\/Random$/, /^\/random@Ashansins_bot$/], (msg) => {
-        return db.selectTeamDialog(bot, msg, "random", "From which District do you want to select a random tribute?");
+        return db.selectTeamDialog(bot, msg, "random", "From which District do you want to select a random player?");
     });
 
     bot.on('/SudoTest', msg => {
@@ -200,7 +186,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
             return;
         }
         const text = props.match[1];
-        db.reviveTribute(false, text, function (user) {
+        db.revivePlayer(false, text, function (user) {
             bot.sendMessage(user.user.id, "You got revived!");
         }, function (id, message) {
             bot.sendMessage(id, message);
