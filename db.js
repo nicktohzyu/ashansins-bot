@@ -43,6 +43,66 @@ const groupChats = []; //[resistance_id, capitol_id, allDistricts_id];
 const resistanceTitle = "⚔️ Resistance ⚔️";
 const capitolTitle = "🌹 Capitol 🌹";
 
+
+var mongoose = require("mongoose");
+
+var DbUriString = require("./config").DbUriString
+// "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/ashansins7?retryWrites=true&w=majority";
+
+function handleError(err) {
+    if (err) {
+        return "Error occured in db.js";
+    }
+}
+
+mongoose.connect(DbUriString, function (err, res) {
+    if (err) {
+        console.log('ERROR connecting to: ' + DbUriString + '. ' + err);
+    } else {
+        console.log('Succeeded connected to: ' + DbUriString);
+    }
+});
+
+var messageSchema = new mongoose.Schema({
+    user: {
+        name: String,
+        id: Number
+    },
+    message: {
+        chat_id: String,
+        id: String,
+        text: String
+    },
+    timestamp: String
+});
+
+var tributeSchema = new mongoose.Schema({
+    user: {
+        name: String,
+        id: Number,
+        //TODO: add username
+        district: String,
+        state: String,
+        equipment: String,
+        killer: String,
+        victim: String,
+        sticker: String,
+        kills: Number,
+        deaths: Number,
+        sticks: Number,
+        // revives: Number,
+        victims: String
+    },
+    message: {
+        chat_id: String,
+        id: String,
+    }
+});
+
+var Message = mongoose.model('Message', messageSchema);
+var Tribute = mongoose.model('Phase1Tribute', tributeSchema);
+// var Tribute = mongoose.model('Phase2Tribute', tributeSchema);
+
 /*
 // This command crashes the application. Also it it not used in the app. Commented out for ashansins6
 function getLogs(err, cb) {
@@ -695,63 +755,3 @@ function sendExterminatorTargets(callback) {
     })
 }
 
-
-var mongoose = require("mongoose");
-
-var uristring = "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/test?retryWrites=true&w=majority";
-
-//  process.env.MONGODB_URI;
-
-function handleError(err) {
-    if (err) {
-        return "Error occured in db.js";
-    }
-}
-
-
-mongoose.connect(uristring, function (err, res) {
-    if (err) {
-        console.log('ERROR connecting to: ' + uristring + '. ' + err);
-    } else {
-        console.log('Succeeded connected to: ' + uristring);
-    }
-});
-
-var messageSchema = new mongoose.Schema({
-    user: {
-        name: String,
-        id: Number
-    },
-    message: {
-        chat_id: String,
-        id: String,
-        text: String
-    },
-    timestamp: String
-});
-
-var tributeSchema = new mongoose.Schema({
-    user: {
-        name: String,
-        id: Number,
-        //TODO: add username
-        district: String,
-        state: String,
-        equipment: String,
-        killer: String,
-        victim: String,
-        sticker: String,
-        kills: Number,
-        deaths: Number,
-        sticks: Number,
-        // revives: Number,
-        victims: String
-    },
-    message: {
-        chat_id: String,
-        id: String,
-    }
-});
-
-var Message = mongoose.model('Messages', messageSchema);
-var Tribute = mongoose.model('ENDGAME', tributeSchema); 
