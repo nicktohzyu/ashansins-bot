@@ -199,23 +199,23 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
 
 //admin commands
 {
-    bot.on(/^\/say (.+)$/, (msg, props) => {
+    bot.on(/^\/Say (.+)$/, (msg, props) => {
         // console.log(msg);
         // console.log(props);
         const text = props.match[1];
         return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
     });
 
-    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
+    bot.on([/^\/Random$/, /^\/random@Ashansins_bot$/], (msg) => {
         return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 
-    bot.on('/sudoTest', msg => {
+    bot.on('/SudoTest', msg => {
         console.log("entered sudoTest");
         return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
     });
 
-    bot.on('/clear_logs', (msg) => {
+    bot.on('/Clear_logs', (msg) => {
         if(!validateAdmin(msg.from.id)){
             return;
         }
