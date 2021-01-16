@@ -696,8 +696,9 @@ function sendExterminatorScore(msg, callback) {
 }
 
 function sendExterminatorTargets(callback) {
+    //TODO: remove duplicate by implementing alive filter
     Tribute.find({"user.state": "Alive"}).exec(function (err, result) {
-        var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
+        var response = "☆*:.｡. Targets remaining .｡.:*☆\n\n";
         var resistanceArray = getDistrict("resistance");
         appendDistrict(resistanceArray, "resistance");
         var capitolArray = getDistrict("capitol");
@@ -711,12 +712,12 @@ function sendExterminatorTargets(callback) {
         }
 
         function appendDistrict(districtArray, district) {
-            var districtName = "Shan";
-            if (district === "resistance") {
-                districtName = resistanceTitle;
-            } else if (district === "capitol.") {
-                districtName = capitolTitle;
-            }
+            var districtName = district;
+            // if (district === "resistance") {
+            //     districtName = resistanceTitle;
+            // } else if (district === "capitol.") {
+            //     districtName = capitolTitle;
+            // }
 
             response += "<b>" + districtName + "</b>\n";
             districtArray.sort(compareState);
@@ -724,13 +725,7 @@ function sendExterminatorTargets(callback) {
                 var state = districtArray[i].user.state;
                 var equip = districtArray[i].user.equipment;
                 var emoji = "";
-                if (equip === "Coin") {
-                    emoji = "💰";
-                } else if (equip === "2Coin") {
-                    emoji = "💰💰";
-                } else if (equip === "3Coin") {
-                    emoji = "💰💰💰";
-                } else if (state === "Dead") {
+                if (state === "Dead") {
                     var dead = ["👻", "💀", "☠️"];
                     emoji = dead[Math.floor(Math.random() * dead.length)];
                 } else if (state === "Alive") {

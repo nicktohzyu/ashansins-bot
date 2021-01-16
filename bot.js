@@ -160,7 +160,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         }
     });
 
-    bot.on([/^\/Targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
+    bot.on([/^\/targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
         db.sendExterminatorTargets((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
