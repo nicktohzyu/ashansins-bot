@@ -88,6 +88,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         return bot.sendMessage(msg.chat.id, text);
     });
 
+    bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
+    });
     bot.on(/^\/register (.+)$/, (msg, props) => {
         const text = props.match[1].toLowerCase();
         return db.processRegistration(msg, text, (message) => {
@@ -124,15 +127,43 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
     */
 
-    // Displays kill count of targets
+    bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
+        db.displayAllTributes((message) => {
+            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+        });
+    });
+    bot.on(/^\/tributes (.+)$/, (msg, props) => {
+        const text = props.match[1].toLowerCase();
+        console.log(text);
+        if (text === "all" || text === "/tributes all") {
+            db.displayAllTributes((message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "resistance" || text === "/tributes resistance") {
+            db.displayTributes("resistance", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "capitol" || text === "/tributes capitol") {
+            db.displayTributes("capitol", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "spec" || text === "/tributes spec") {
+            db.displayTributes("spec", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else if (text === "🔪" || text === "/tributes 🔪") {
+            db.displayTributes("🔪", (message) => {
+                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
+            })
+        } else {
+            return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
+        }
+    });
+
     bot.on([/^\/Targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
         db.sendExterminatorTargets((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
-    });
-
-    bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
     });
 
     bot.on(/^\/dead (.+)$/, (msg, props) => {
@@ -175,50 +206,20 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
     });
 
-    bot.on('/clear_logs', (msg) => {
-        if(!validateAdmin(msg.from.id)){
-            return;
-        }
-        db.clearLogs(false, (res) => console.log("Clearing the logs!"));
-    });
-
-    bot.on(/^\/tributes (.+)$/, (msg, props) => {
-        const text = props.match[1].toLowerCase();
-        console.log(text);
-        if (text === "all" || text === "/tributes all") {
-            db.displayAllTributes((message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "resistance" || text === "/tributes resistance") {
-            db.displayTributes("resistance", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "capitol" || text === "/tributes capitol") {
-            db.displayTributes("capitol", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "spec" || text === "/tributes spec") {
-            db.displayTributes("spec", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "🔪" || text === "/tributes 🔪") {
-            db.displayTributes("🔪", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else {
-            return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
-        }
-    });
-
-    bot.on([/^\/tributes$/, /^\/tributes@Ashansins_bot$/], (msg) => {
-        db.displayAllTributes((message) => {
-            return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-        });
+    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
+        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 
     bot.on('/sudoTest', msg => {
         console.log("entered sudoTest");
         return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
+    });
+
+    bot.on('/clear_logs', (msg) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
+        db.clearLogs(false, (res) => console.log("Clearing the logs!"));
     });
 
     bot.on(/^\/Revive (.+)$/, (msg, props) => {
@@ -266,10 +267,6 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
-    });
-
-    bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 
     /**
