@@ -89,7 +89,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "register", "To which District do you pledge your allegiance?");
+        return db.selectTeamDialog(bot, msg, "register", "To which District do you pledge your allegiance?");
     });
     bot.on(/^\/register (.+)$/, (msg, props) => {
         const text = props.match[1].toLowerCase();
@@ -106,15 +106,15 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     //     });
     // });
     bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
+        return db.selectTeamDialog(bot, msg, "prekill", "From which District is your target to kill?");
     });
 
     bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "predead", "From which District is your killer?");
+        return db.selectTeamDialog(bot, msg, "predead", "From which District is your killer?");
     });
 
     bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "prestick", "From which District is your target to stick?");
+        return db.selectTeamDialog(bot, msg, "prestick", "From which District is your target to stick?");
     });
 
     /*
@@ -131,33 +131,6 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         db.displayAllTributes((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
-    });
-    bot.on(/^\/tributes (.+)$/, (msg, props) => {
-        const text = props.match[1].toLowerCase();
-        console.log(text);
-        if (text === "all" || text === "/tributes all") {
-            db.displayAllTributes((message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "resistance" || text === "/tributes resistance") {
-            db.displayTributes("resistance", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "capitol" || text === "/tributes capitol") {
-            db.displayTributes("capitol", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "spec" || text === "/tributes spec") {
-            db.displayTributes("spec", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else if (text === "🔪" || text === "/tributes 🔪") {
-            db.displayTributes("🔪", (message) => {
-                return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
-            })
-        } else {
-            return bot.sendMessage(msg.chat.id, "Sorry, invalid command.\n\nTo view ALL tributes, type:\n/tributes all\n\nTo view tributes from a SPECIFIC side of the rebellion, type:\n/tributes <District>\nWhere <District> is either resistance or capitol.\n")
-        }
     });
 
     bot.on([/^\/targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
@@ -207,7 +180,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on([/^\/Random$/, /^\/random@Ashansins_bot$/], (msg) => {
-        return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
+        return db.selectTeamDialog(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
 
     bot.on('/SudoTest', msg => {
@@ -366,7 +339,7 @@ bot.on('callbackQuery', msg => {
     } else if (data.purpose == "random") {
         return db.rollDistrict(bot, msg, data.target);
     } else if (data.purpose == "register") {
-        return db.processRegistration(msg, data.target.toLowerCase(), (message) => {
+        return db.processRegistration(msg, data.target, (message) => {
             return bot.sendMessage(msg.from.id, message);
         });
     }

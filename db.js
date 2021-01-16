@@ -11,31 +11,30 @@ module.exports = {
     sendToAll: sendToAll,
     sendTo: sendTo,
     displayAllTributes: displayAllTributes,
-    displayTributes: displayTributes,
     processStick: processStick,
     kill: kill,
     dead: dead,
     stick: stick,
-    prekds: prekds,
-    rollDistrict: rollDistrict,
-    sendExterminatorTargets: sendExterminatorTargets,
+    selectTeamDialog: selectTeamDialog,
+    rollDistrict: rollTeam,
+    // sendExterminatorTargets: sendExterminatorTargets, //to merge into tributes command
     // reviveAll: reviveAll
 }
 
-const district1_id = -391986817;//insert the group ids of the different group chats with the participants;
-const district2_id = -264119959;//insert the group ids of the different group chats with the participants;
-const district6_id = -364865565;//insert the group ids of the different group chats with the participants;
-const district12_id = -358638029;//insert the group ids of the different group chats with the participants;
+const team1_id = -391986817;//insert the group ids of the different group chats with the participants;
+const team2_id = -264119959;//insert the group ids of the different group chats with the participants;
+const team6_id = -364865565;//insert the group ids of the different group chats with the participants;
+const team12_id = -358638029;//insert the group ids of the different group chats with the participants;
 const resistance_id = -390663740;
 const capitol_id = -338862508;
-const allDistricts_id = -1001215955875;//insert the group ids of the different group chats with the participants;
-const groupChats = []; //[resistance_id, capitol_id, allDistricts_id];
-//const district1Title = "💎 District 1 💎";//"✈️💨🌬 District 1 🌪🦅🎈";
-//const district2Title = "🛡 District 2 🛡";//"🚰🌊☔️ District 2 ❄️🐳🍵";
-//const district6Title = "🌋 District 6 🌋";//"🌍⛰🍄 District 6 🗻🐛🌚";
-//const district12Title = "🔥 District 12 🔥"//"🌋🚒☀️ District 12 🔥💥👩🏻‍🚒";
-const resistanceTitle = "⚔️ Resistance ⚔️";
-const capitolTitle = "🌹 Capitol 🌹";
+const allTeams_id = -1001215955875;//insert the group ids of the different group chats with the participants;
+const groupChats = []; //[resistance_id, capitol_id, allTeams_id];
+//const team1Title = "💎 Team 1 💎";//"✈️💨🌬 Team 1 🌪🦅🎈";
+//const team2Title = "🛡 Team 2 🛡";//"🚰🌊☔️ Team 2 ❄️🐳🍵";
+//const team6Title = "🌋 Team 6 🌋";//"🌍⛰🍄 Team 6 🗻🐛🌚";
+//const team12Title = "🔥 Team 12 🔥"//"🌋🚒☀️ Team 12 🔥💥👩🏻‍🚒";
+// const resistanceTitle = "⚔️ Resistance ⚔️";
+// const capitolTitle = "🌹 Capitol 🌹";
 
 
 const mongoose = require("mongoose");
@@ -75,7 +74,7 @@ var tributeSchema = new mongoose.Schema({
         name: String, //first name
         username: String,
         id: Number,
-        district: String,
+        team: String,
         state: String,
         equipment: String,
         killer_id: Number,
@@ -122,12 +121,12 @@ function addLog(err, user, message, cb) {
     }).save(cb);
 }
 
-function addTribute(user, message, district, state, cb) {
+function addTribute(user, message, team, state, cb) {
     // TODO: error catching
     dbmsg = new Tribute({
         user: user,
         message: message,
-        district: district,
+        team: team,
         state: state,
         equipment: "None",
         killer: "None",
@@ -177,8 +176,8 @@ function reviveAll(callback, callback2) {
     })
 }
 
-function randomRevive(district, callback, callback2) {
-    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function(err, res){
+function randomRevive(team, callback, callback2) {
+    Tribute.find({"user.team": team, "user.state": "Dead"}).exec(function(err, res){
         var dead = res;
         console.log(dead);
         if (dead.length > 0) {
@@ -228,10 +227,10 @@ function updateVictimArray(err, user_id, victim) {
         if (res !== null) {
             var updatedVictims = JSON.parse(res.user.victims);
             console.log(updatedVictims);
-            if (updatedVictims[victim.user.district] !== null && Array.isArray(updatedVictims[victim.user.district])) {
-                updatedVictims[victim.user.district].push(victim.user.username);
+            if (updatedVictims[victim.user.team] !== null && Array.isArray(updatedVictims[victim.user.team])) {
+                updatedVictims[victim.user.team].push(victim.user.username);
             } else {
-                updatedVictims[victim.user.district] = [victim.user.username];
+                updatedVictims[victim.user.team] = [victim.user.username];
             }
             console.log(updatedVictims);
             Tribute.findOneAndUpdate({"user.id": user_id}, {
@@ -256,67 +255,53 @@ function updateExterminatorCount(err, user_id, victim_id) {
 
 }
 
+function getTeamMembers(team) {
+    const teamArray = tributes.filter(function (tribute) {
+        return tribute.user.team === team;
+    });
+    return teamArray;
+}
+
+function getTeamStr(members, teamName) {
+    let teamStr = "";
+    //to be onz in Phase 2
+    /*else if (team === "spies") {
+        teamName = spiesTitle;
+    }*/
+    teamStr += "<b>" + teamName + "</b>\n";
+    members.sort(compareState); //alive ahead of dead
+    for (var i = 0; i < members.length; i++) {
+        var state = members[i].user.state;
+        var equip = members[i].user.equipment;
+        var emoji = "";
+        if (equip === "Coin") {
+            emoji = "💰";
+        } else if (equip === "2Coin") {
+            emoji = "💰💰";
+        } else if (equip === "3Coin") {
+            emoji = "💰💰💰";
+        } else if (state === "Dead") {
+            var dead = ["👻", "💀", "☠️"];
+            emoji = dead[Math.floor(Math.random() * dead.length)];
+        } else if (state === "Alive") {
+            var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
+            emoji = alive[Math.floor(Math.random() * alive.length)];
+        }
+        teamStr += ((i + 1) + ". " + members[i].user.username + " [" + members[i].user.state + "] " + emoji + " \n");
+    }
+    teamStr += "\n";
+    return teamStr;
+}
+
 function displayAllTributes(callback) {
-    Tribute.find({}).exec(function (err, result) {
-        var response = "☆*:.｡. All Tributes .｡.:*☆\n\n";
-        var resistanceArray = getDistrict("resistance");
-        appendDistrict(resistanceArray, "resistance");
-        var capitolArray = getDistrict("capitol");
-        appendDistrict(capitolArray, "capitol");
-
-        // to be onz in phase 2
-        /*var spiesArray = getDistrict("spies");
-        appendDistrict(spiesArray, "spies");*/
-
-        function getDistrict(district) {
-            var districtArray = result.filter(function (el) {
-                return el.user.district === district;
-            });
-            return districtArray;
+    Tribute.find({}).exec(function (err, tributes) {
+        let str = "☆*:.｡. All Tributes .｡.:*☆\n\n";
+        for(const team of TEAMS){
+            const members = getTeamMembers(team);
+            const teamStr = getTeamStr(members, team);
+            str += teamStr;
         }
-
-        function appendDistrict(districtArray, district) {
-            var districtName = "Shan";
-            if (district === "resistance") {
-                districtName = resistanceTitle;
-            } else if (district === "capitol") {
-                districtName = capitolTitle;
-            } else if (district === "🔪") {
-                districtName = "Administrators";
-            } else if (district === "spec") {
-                districtName = "Spectators";
-            }
-            //to be onz in Phase 2
-            /*else if (district === "spies") {
-                districtName = spiesTitle;
-            }*/
-            response += "<b>" + districtName + "</b>\n";
-            districtArray.sort(compareState);
-            for (var i = 0; i < districtArray.length; i++) {
-                var state = districtArray[i].user.state;
-                var equip = districtArray[i].user.equipment;
-                var emoji = "";
-                if (equip === "Coin") {
-                    emoji = "💰";
-                } else if (equip === "2Coin") {
-                    emoji = "💰💰";
-                } else if (equip === "3Coin") {
-                    emoji = "💰💰💰";
-                } else if (state === "Dead") {
-                    var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random() * dead.length)];
-                } else if (state === "Alive") {
-                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
-                    emoji = alive[Math.floor(Math.random() * alive.length)];
-                }
-                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
-            }
-
-            response += "\n";
-        }
-
-        console.log(response);
-        callback(response);
+        callback(str);
     })
 }
 
@@ -326,61 +311,6 @@ function compareState(a, b) {
     if (a.user.state > b.user.state)
         return 1;
     return 0;
-}
-
-function displayTributes(district, callback) {
-    Tribute.find({"user.district": district}).exec(function (err, result) {
-        var response = "";
-        var districtArray = getDistrict(district);
-        appendDistrict(districtArray, district);
-
-        function getDistrict(district) {
-            var districtArray = result.filter(function (el) {
-                return el.user.district === district;
-            });
-            return districtArray;
-        }
-
-        function appendDistrict(districtArray, district) {
-            var districtName = "Shan";
-            if (district === "resistance") {
-                districtName = resistanceTitle;
-            } else if (district === "capitol") {
-                districtName = capitolTitle;
-            }
-            // to be onz in Phase 2
-            /*else if (district === "spies") {
-                districtName = spiesTitle;
-            }*/
-
-            response += "<b>" + districtName + "</b>\n";
-            districtArray.sort(compareState);
-            for (var i = 0; i < districtArray.length; i++) {
-                var state = districtArray[i].user.state;
-                var equip = districtArray[i].user.equipment;
-                var emoji = "";
-                if (equip === "Coin") {
-                    emoji = "💰";
-                } else if (equip === "2Coin") {
-                    emoji = "💰💰";
-                } else if (equip === "3Coin") {
-                    emoji = "💰💰💰";
-                } else if (state === "Dead") {
-                    var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random() * dead.length)];
-                } else if (state === "Alive") {
-                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
-                    emoji = alive[Math.floor(Math.random() * alive.length)];
-                }
-                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
-            }
-
-            response += "\n";
-        }
-
-        console.log(response);
-        callback(response);
-    })
 }
 
 function processDead(msg, killerUsername, callback) {
@@ -510,15 +440,14 @@ function sendToAll(input, callback) {
     }
 }
 
-function isValidDistrict(district) {
+function isValidTeam(team) {
     //TODO: revamp teams
-    var arrayDistrict = TEAMS;
-    console.log(district);
-    for (var i in arrayDistrict) {
-        if (district === arrayDistrict[i])
+    console.log(team);
+    for (const t of TEAMS) {
+        if (team === t){
             return true;
+        }
     }
-
     return false;
 }
 
@@ -527,13 +456,14 @@ async function isRegistered(userId) {
     return matches.length > 0;
 }
 
-async function processRegistration(msg, text, callback) {
+async function processRegistration(msg, team, callback) {
     if (await isRegistered(msg.from.id)) {
         callback("Either you've already registered, or we have encountered an error.");
         return;
     }
-    if (!isValidDistrict(text)) {
-        const bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
+    if (!isValidTeam(team)) {
+        console.log("Error in processing registration, invalid team");
+        const bad = "An unknown error in team selection has occurred, please contact the bot developer"
         callback(bad);
         return;
     }
@@ -542,7 +472,7 @@ async function processRegistration(msg, text, callback) {
             name: msg.from.first_name,
             username: msg.from.username,
             id: msg.from.id,
-            district: text,
+            team: team,
             state: "Alive",
             equipment: "None",
             killer_id: 0,
@@ -584,11 +514,21 @@ async function processUnregistration(msg, userName, callback) {
 //     callback("An error occured:\n" + e);
 // }
 
-function prekds(bot, msg, purpose, text) {
-    let replyMarkup = bot.inlineKeyboard([
-        [bot.inlineButton("Resistance", {callback: JSON.stringify({"target": "resistance", "purpose": purpose})}),
-            bot.inlineButton("Capitol", {callback: JSON.stringify({"target": "capitol", "purpose": purpose})})],
-    ]);
+function selectTeamDialog(bot, msg, purpose, text) {
+    // choose team
+    const buttons = [];
+    for (const team of TEAMS) {
+        const button = bot.inlineButton(team, {
+            callback: JSON.stringify({
+                "target": team,
+                "purpose": purpose
+            })
+        });
+        buttons.push([button]);
+    }
+    const replyMarkup = bot.inlineKeyboard(
+        buttons
+    );
 
     if (purpose == "random" || purpose == "register") {
         bot.sendMessage(msg.chat.id, text, {replyMarkup});
@@ -597,9 +537,9 @@ function prekds(bot, msg, purpose, text) {
     }
 }
 
-function kill(bot, msg, district) {
+function kill(bot, msg, team) {
     //TODO: only show unclaimed kills
-    Tribute.find({"user.district": district}).exec(function (err, res) {
+    Tribute.find({"user.team": team}).exec(function (err, res) {
         var victims = res;
         var hitlist = [];
 
@@ -621,8 +561,8 @@ function kill(bot, msg, district) {
     })
 }
 
-function dead(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
+function dead(bot, msg, team) {
+    Tribute.find({"user.team": team, "user.state": "Alive"}).exec(function (err, res) {
         var alive = res;
         var hitlist = [];
 
@@ -643,9 +583,9 @@ function dead(bot, msg, district) {
     })
 }
 
-function stick(bot, msg, district) {
+function stick(bot, msg, team) {
 
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
+    Tribute.find({"user.team": team, "user.state": "Alive"}).exec(function (err, res) {
         var alive = res;
         var hitlist = [];
 
@@ -666,32 +606,17 @@ function stick(bot, msg, district) {
     })
 }
 
-function rollDistrict(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Dead"}).exec(function (err, res) {
+function rollTeam(bot, msg, team) {
+    Tribute.find({"user.team": team, "user.state": "Dead"}).exec(function (err, res) {
         var alive = res;
         console.log(msg);
         if (alive.length > 0) {
             var luckyGuy = alive[Math.floor(Math.random() * alive.length)];
-            bot.sendMessage(msg.message.chat.id, luckyGuy.user.username + " from " + district + " has been chosen!");
+            bot.sendMessage(msg.message.chat.id, luckyGuy.user.username + " from " + team + " has been chosen!");
         } else {
-            bot.sendMessage(msg.message.chat.id, "No one in " + district + " is dead.");
+            bot.sendMessage(msg.message.chat.id, "No one in " + team + " is dead.");
         }
 
-    })
-}
-
-function sendExterminatorScore(msg, callback) {
-    Tribute.find({}).exec(function (err, res) {
-        var sum = 0;
-        var possiblePoints = 0;
-        for (var i = 0; i < res.length; i++) {
-            if (res[i].user.district == "district2") {
-                sum += res[i].user.sticks;
-            } else if (res[i].user.state == "Alive") {
-                possiblePoints += res[i].user.kills;
-            }
-        }
-        return callback("The current score is: " + sum + "\nThere are " + possiblePoints + " points up for grabs.");
     })
 }
 
@@ -699,31 +624,31 @@ function sendExterminatorTargets(callback) {
     //TODO: remove duplicate by implementing alive filter
     Tribute.find({"user.state": "Alive"}).exec(function (err, result) {
         var response = "☆*:.｡. Targets remaining .｡.:*☆\n\n";
-        var resistanceArray = getDistrict("resistance");
-        appendDistrict(resistanceArray, "resistance");
-        var capitolArray = getDistrict("capitol");
-        appendDistrict(capitolArray, "capitol");
+        var resistanceArray = getTeam("resistance");
+        appendTeam(resistanceArray, "resistance");
+        var capitolArray = getTeam("capitol");
+        appendTeam(capitolArray, "capitol");
 
-        function getDistrict(district) {
-            var districtArray = result.filter(function (el) {
-                return el.user.district === district;
+        function getTeam(team) {
+            var teamArray = result.filter(function (el) {
+                return el.user.team === team;
             });
-            return districtArray;
+            return teamArray;
         }
 
-        function appendDistrict(districtArray, district) {
-            var districtName = district;
-            // if (district === "resistance") {
-            //     districtName = resistanceTitle;
-            // } else if (district === "capitol.") {
-            //     districtName = capitolTitle;
+        function appendTeam(teamArray, team) {
+            var teamName = team;
+            // if (team === "resistance") {
+            //     teamName = resistanceTitle;
+            // } else if (team === "capitol.") {
+            //     teamName = capitolTitle;
             // }
 
-            response += "<b>" + districtName + "</b>\n";
-            districtArray.sort(compareState);
-            for (var i = 0; i < districtArray.length; i++) {
-                var state = districtArray[i].user.state;
-                var equip = districtArray[i].user.equipment;
+            response += "<b>" + teamName + "</b>\n";
+            teamArray.sort(compareState); //TODO: compare by kills
+            for (var i = 0; i < teamArray.length; i++) {
+                var state = teamArray[i].user.state;
+                var equip = teamArray[i].user.equipment;
                 var emoji = "";
                 if (state === "Dead") {
                     var dead = ["👻", "💀", "☠️"];
@@ -733,9 +658,9 @@ function sendExterminatorTargets(callback) {
                     emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
 
-                emoji += ": " + districtArray[i].user.kills;
+                emoji += ": " + teamArray[i].user.kills;
 
-                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+                response += ((i + 1) + ". " + teamArray[i].user.username + " [" + teamArray[i].user.state + "] " + emoji + " \n");
             }
 
             response += "\n";
