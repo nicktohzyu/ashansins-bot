@@ -331,8 +331,8 @@ if (isTeleLogActivate) {
 // Inline button callback
 bot.on('callbackQuery', msg => {
     // User message alert
-    console.log("reached");
-    console.log(msg);
+    // console.log("in callback");
+    // console.log(msg);
 
     bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true);
 
