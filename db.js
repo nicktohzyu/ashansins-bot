@@ -3,7 +3,7 @@ module.exports = {
     clearLogs: clearLogs,
     addLog: addLog,
     addTribute: addTribute,
-    killTribute: killTribute,
+    killTribute: recordUserKilled,
     reviveTribute: reviveTribute,
     updateEquip: updateEquip,
     updateKiller: updateKiller,
@@ -47,6 +47,7 @@ const capitolTitle = "🌹 Capitol 🌹";
 var mongoose = require("mongoose");
 
 var DbUriString = require("./config").DbUriString
+
 // "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/ashansins7?retryWrites=true&w=majority";
 
 function handleError(err) {
@@ -78,7 +79,8 @@ var messageSchema = new mongoose.Schema({
 
 var tributeSchema = new mongoose.Schema({
     user: {
-        name: String,
+        name: String, //first name
+        username: String,
         id: Number,
         //TODO: add username
         district: String,
@@ -141,18 +143,20 @@ function addTribute(err, user, message, district, state, cb) {
     }).save(cb);
 }
 
-function killTribute(err, user_id) {
-    console.log("KILLING HERE")
+function recordUserKilled(err, user_id) {
+    console.log("recording " + user_id + " as dead");
     Tribute.findOneAndUpdate({"user.id": user_id}, {
-        $set: {"user.state": "Dead"},
+        $set: {
+            "user.state": "Dead"
+        },
         $inc: {"user.deaths": 1}
     }, function (res) {
-        console.log(res);
+        // console.log(res);
     });
 }
 
 function reviveTribute(err, user, callback, callback2) {
-    Tribute.findOneAndUpdate({"user.name": user}, {
+    Tribute.findOneAndUpdate({"user.username": user}, {
         $set: {"user.state": "Alive"},
         $inc: {"user.revives": 1}
     }, function (err, res) {
@@ -173,7 +177,7 @@ function reviveAll(callback, callback2) {
         console.log(dead);
         if (dead.length > 0) {
             for (var i = 0; i < dead.length; i++) {
-                reviveTribute(false, dead[i].user.name, function(res) {
+                reviveTribute(false, dead[i].user.username, function(res) {
                     callback(res);
                 }, callback2);
             }
@@ -187,7 +191,7 @@ function randomRevive(district, callback, callback2) {
         console.log(dead);
         if (dead.length > 0) {
             var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
-            reviveTribute(false, luckyGuy.user.name, function(res) {
+            reviveTribute(false, luckyGuy.user.username, function(res) {
                 callback(res);
             }, callback2);
         }
@@ -195,7 +199,7 @@ function randomRevive(district, callback, callback2) {
 }
 */
 function updateEquip(err, user, newEquip, callback) {
-    Tribute.findOneAndUpdate({"user.name": user}, {"user.equipment": newEquip}, function (err, result) {
+    Tribute.findOneAndUpdate({"user.username": user}, {"user.equipment": newEquip}, function (err, result) {
         var message;
         if (result !== null) {
             if (newEquip === "Coin") {
@@ -212,8 +216,8 @@ function updateEquip(err, user, newEquip, callback) {
     });
 }
 
-function updateKiller(err, user_id, killer_id) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killer_id}, function () {
+function updateKiller(err, user_id, killerUsername) {
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killerUsername}, function () {
     });
 }
 
@@ -222,8 +226,8 @@ function updateSticker(err, user_id, sticker_id) {
     });
 }
 
-function updateVictim(err, user_id, victim_id) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.victim": victim_id}, function () {
+function updateVictim(err, killer_id, victim_id) {
+    Tribute.findOneAndUpdate({"user.id": killer_id}, {"user.victim": victim_id}, function () {
     });
 }
 
@@ -233,9 +237,9 @@ function updateVictimArray(err, user_id, victim) {
             var updatedVictims = JSON.parse(res.user.victims);
             console.log(updatedVictims);
             if (updatedVictims[victim.user.district] !== null && Array.isArray(updatedVictims[victim.user.district])) {
-                updatedVictims[victim.user.district].push(victim.user.name);
+                updatedVictims[victim.user.district].push(victim.user.username);
             } else {
-                updatedVictims[victim.user.district] = [victim.user.name];
+                updatedVictims[victim.user.district] = [victim.user.username];
             }
             console.log(updatedVictims);
             Tribute.findOneAndUpdate({"user.id": user_id}, {
@@ -249,10 +253,12 @@ function updateVictimArray(err, user_id, victim) {
 }
 
 function updateExterminatorCount(err, user_id, victim_id) {
+    // TODO: nani?
     Tribute.findOne({"user.id": victim_id}).exec(function (err, res) {
-        if (res !== null) {
-            Tribute.findOneAndUpdate({"user.id": user_id}, {$inc: {"user.sticks": res.user.kills}}, function () {
-            });
+        if (res !== null) { //if victim exists
+            Tribute.findOneAndUpdate({"user.id": user_id},
+                {$inc: {"user.sticks": res.user.kills}}, function () {
+                }); //increment killer #sticks by victim #kills
         }
     });
 
@@ -311,7 +317,7 @@ function displayAllTributes(callback) {
                     var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
                     emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
-                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
             }
 
             response += "\n";
@@ -374,7 +380,7 @@ function displayTributes(district, callback) {
                     var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
                     emoji = alive[Math.floor(Math.random() * alive.length)];
                 }
-                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
             }
 
             response += "\n";
@@ -385,31 +391,25 @@ function displayTributes(district, callback) {
     })
 }
 
-function processDead(msg, target, callback) {
+function processDead(msg, killerUsername, callback) {
     var toDead = false;
     Tribute.findOne({"user.id": msg.from.id}).exec(function (err, victim) {
-        Tribute.findOne({"user.name": target}).exec(function (err, res) {
-            if (res !== null) {
-                if (res.user.victim == msg.from.id)
-                    toDead = true;
-
-                if (toDead) {
-                    killTribute(false, msg.from.id);
-                    updateVictimArray(false, res.user.id, victim);
-                    callback(msg.from.id, "You've died successfully!");
-                    updateExterminatorCount(false, res.user.id, msg.from.id);
-                    for (var i in groupChats) {
-                        callback(groupChats[i], victim.user.name + " has been killed by " + res.user.name + "!");
-                    }
-                } else {
-                    updateKiller(false, msg.from.id, res.user.id);
-                    updateSticker(false, msg.from.id, res.user.id);
-                    callback(msg.from.id, "Your response has been recorded!");
-                }
-            } else {
+        Tribute.findOne({"user.username": killerUsername}).exec(function (err, killer) {
+            if (killer === null) {
                 callback(msg.chat.id, "You've entered an invalid target!");
+                return;
             }
-            console.log(toDead);
+            console.log("processing death of " + msg.from.username + " by " + killerUsername);
+
+            recordUserKilled(false, msg.from.id);
+            updateKiller(false, msg.from.id, killerUsername);
+            // updateVictimArray(false, killer.user.id, victim);
+            callback(msg.from.id, "Congratulation, you have died successfully!");
+            // updateExterminatorCount(false, killer.user.id, msg.from.id);
+            // for (var i in groupChats) {
+            //     callback(groupChats[i], victim.user.username + " has been killed by " + killer.user.username + "!");
+            // }
+            // updateSticker(false, msg.from.id, killer.user.id);
 
         });
     });
@@ -417,38 +417,41 @@ function processDead(msg, target, callback) {
 }
 
 function processKill(msg, target, callback) {
-    var toKill = false;
     Tribute.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
-            callback(msg.from.id, "Error!");
+            callback(msg.from.id, "Sorry, an unexpected error occured!");
+            return;
         } else if (killer.user.state === "Dead") {
-            callback("Invalid command, you're already dead!");
-        } else {
-            Tribute.findOne({"user.name": target}).exec(function (err, res) {
-                if (res !== null) {
-                    if (res.user.killer == msg.from.id) {
-                        toKill = true;
-                    }
-
-                    if (toKill) {
-                        killTribute(false, res.user.id);
-                        updateVictimArray(false, msg.from.id, res);
-                        updateExterminatorCount(false, msg.from.id, res.user.id);
-                        callback(msg.from.id, "You SHANed successfully!");
-                        for (var i in groupChats) {
-                            callback(groupChats[i], target + " has been killed by " + killer.user.name + "!");
-                        }
-                    } else {
-                        updateVictim(false, msg.from.id, res.user.id);
-                        callback(msg.from.id, "Your response has been recorded!");
-                    }
-                } else {
-                    callback(msg.chat.id, "You've entered an invalid target!");
+            callback("Invalid command, you can't kill someone when you're already dead!");
+            return;
+        }
+        Tribute.findOne({"user.username": target}).exec(async function (err, victim) {
+            if (victim !== null) {
+                //TODO: ensure people can't kill themselves (or same team?)
+                if (victim.user.state !== "Dead") {
+                    await callback(msg.from.id, "Your victim is not recorded as dead, they should first record being killed");
+                    return;
+                }
+                if (victim.user.killer !== msg.from.username) {
+                    await callback(msg.from.id, "Error: your victim did not record being killed by you");
+                    return;
                 }
 
+                // recordUserKilled(false, victim.user.id); //victim should register death themselves
+                updateVictim(false, msg.from.id, victim.user.id);
+                updateVictimArray(false, msg.from.id, victim);
+                updateExterminatorCount(false, msg.from.id, victim.user.id);
 
-            });
-        }
+                // TODO: abstract notify groupchats method
+                // for (var i in groupChats) {
+                //     callback(groupChats[i], target + " has been killed by " + killer.user.username + "!");
+                // }
+                callback(msg.from.id, "Your kill has been recorded, you SHANed successfully!");
+            } else {
+                callback(msg.chat.id, "You've entered an invalid target!");
+            }
+        });
+
     });
 }
 
@@ -458,24 +461,24 @@ function processStick(msg, target, callback, callback2) {
         if (sticker.user.state === "Dead") {
             callback("Invalid command, you're already dead!");
         } else {
-            Tribute.findOne({"user.name": target}).exec(function (err, res) {
+            Tribute.findOne({"user.username": target}).exec(function (err, res) {
                 if (res !== null) {
                     if (res.user.sticker == msg.from.id) {
                         toStick = true;
                     }
 
                     if (toStick) {
-                        killTribute(false, res.user.id);
+                        recordUserKilled(false, res.user.id);
                         updateVictimArray(false, msg.from.id, res);
-                        callback2(target + "  got sticked by " + sticker.user.name + "!");
+                        callback2(target + "  got sticked by " + sticker.user.username + "!");
                         callback(msg.from.id, "You sticked successfully!");
                         updateExterminatorCount(false, msg.from.id, res.user.id);
                         for (var i in groupChats) {
-                            callback(groupChats[i], target + " has been sticked by " + sticker.user.name + "!");
+                            callback(groupChats[i], target + " has been sticked by " + sticker.user.username + "!");
                         }
                     } else {
                         updateVictim(false, msg.from.id, res.user.id);
-                        callback2(sticker.user.name + " is trying to stick " + target + "!");
+                        callback2(sticker.user.username + " is trying to stick " + target + "!");
                         callback(msg.from.id, "Your response has been recorded!");
                     }
                 } else {
@@ -489,7 +492,7 @@ function processStick(msg, target, callback, callback2) {
 }
 
 function sendTo(user, input, msg, callback) {
-    Tribute.findOne({"user.name": user})
+    Tribute.findOne({"user.username": user})
         .exec(function (err, result) {
             if (result !== null) {
                 callback(result.user.id, input);
@@ -526,8 +529,8 @@ function isValidDistrict(district) {
     return false;
 }
 
-function isRegistered(name) {
-    return Tribute.find({"user.name": name});
+function isRegistered(username) {
+    return Tribute.find({"user.username": username});
 }
 
 function processRegistration(msg, text, callback) {
@@ -538,6 +541,7 @@ function processRegistration(msg, text, callback) {
         } else if (isValidDistrict(text)) {
             addTribute(false, {
                 name: msg.from.first_name,
+                username: msg.from.username,
                 id: msg.from.id,
                 district: text,
                 state: "Alive",
@@ -565,14 +569,14 @@ function processRegistration(msg, text, callback) {
 }
 
 // function processUnregistration(msg, user, callback) {
-//     Tribute.remove({"user.name": user})
+//     Tribute.remove({"user.username": user})
 //         .exec(function (err) {
 //             callback("Sucessfully unregistered!")
 //         });
 // }
 
 async function processUnregistration(msg, userName, callback) {
-    const doc = await Tribute.findOneAndDelete({"user.name": userName})
+    const doc = await Tribute.findOneAndDelete({"user.username": userName})
         .exec();
     if (doc) {
         //doc not null means user exists
@@ -602,18 +606,18 @@ function prekds(bot, msg, purpose, text) {
 }
 
 function kill(bot, msg, district) {
-    Tribute.find({"user.district": district, "user.state": "Alive"}).exec(function (err, res) {
-        var alive = res;
+    //TODO: only show unclaimed kills
+    Tribute.find({"user.district": district}).exec(function (err, res) {
+        var victims = res;
         var hitlist = [];
 
-        for (var i = 0; i < alive.length; i++) {
+        for (var i = 0; i < victims.length; i++) {
             var packet = {
-                "target": alive[i].user.name,
+                "target": victims[i].user.username,
                 "purpose": "kill"
             };
-            hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
+            hitlist.push([bot.inlineButton(victims[i].user.username, {callback: JSON.stringify(packet)})]);
         }
-
 
         console.log(hitlist);
 
@@ -632,10 +636,10 @@ function dead(bot, msg, district) {
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {
-                "target": alive[i].user.name,
+                "target": alive[i].user.username,
                 "purpose": "dead"
             };
-            hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
+            hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
         }
 
 
@@ -655,10 +659,10 @@ function stick(bot, msg, district) {
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {
-                "target": alive[i].user.name,
+                "target": alive[i].user.username,
                 "purpose": "stick"
             };
-            hitlist.push([bot.inlineButton(alive[i].user.name, {callback: JSON.stringify(packet)})]);
+            hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
         }
 
 
@@ -676,7 +680,7 @@ function rollDistrict(bot, msg, district) {
         console.log(msg);
         if (alive.length > 0) {
             var luckyGuy = alive[Math.floor(Math.random() * alive.length)];
-            bot.sendMessage(msg.message.chat.id, luckyGuy.user.name + " from " + district + " has been chosen!");
+            bot.sendMessage(msg.message.chat.id, luckyGuy.user.username + " from " + district + " has been chosen!");
         } else {
             bot.sendMessage(msg.message.chat.id, "No one in " + district + " is dead.");
         }
@@ -744,7 +748,7 @@ function sendExterminatorTargets(callback) {
 
                 emoji += ": " + districtArray[i].user.kills;
 
-                response += ((i + 1) + ". " + districtArray[i].user.name + " [" + districtArray[i].user.state + "] " + emoji + " \n");
+                response += ((i + 1) + ". " + districtArray[i].user.username + " [" + districtArray[i].user.state + "] " + emoji + " \n");
             }
 
             response += "\n";
