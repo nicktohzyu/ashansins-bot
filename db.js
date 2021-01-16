@@ -17,7 +17,7 @@ module.exports = {
     stick: stick,
     selectTeamDialog: selectTeamDialog,
     rollDistrict: rollTeam,
-    // sendExterminatorTargets: sendExterminatorTargets, //to merge into tributes command
+    sendExterminatorTargets: displayLivingTributes,
     // reviveAll: reviveAll
 }
 
@@ -255,54 +255,52 @@ function updateExterminatorCount(err, user_id, victim_id) {
 
 }
 
-function getTeamMembers(team) {
-    const teamArray = tributes.filter(function (tribute) {
-        return tribute.user.team === team;
-    });
+/**
+ * Gets list of team members as array.
+ * @param team team name
+ * @returns array of team members.
+ */
+async function getTeamMembers(team) {
+    const teamArray = await Tribute.find({"user.team": team}).exec();
     return teamArray;
 }
 
 function getTeamStr(members, teamName) {
     let teamStr = "";
-    //to be onz in Phase 2
-    /*else if (team === "spies") {
-        teamName = spiesTitle;
-    }*/
     teamStr += "<b>" + teamName + "</b>\n";
-    members.sort(compareState); //alive ahead of dead
     for (var i = 0; i < members.length; i++) {
-        var state = members[i].user.state;
-        var equip = members[i].user.equipment;
-        var emoji = "";
-        if (equip === "Coin") {
-            emoji = "💰";
-        } else if (equip === "2Coin") {
-            emoji = "💰💰";
-        } else if (equip === "3Coin") {
-            emoji = "💰💰💰";
-        } else if (state === "Dead") {
-            var dead = ["👻", "💀", "☠️"];
-            emoji = dead[Math.floor(Math.random() * dead.length)];
-        } else if (state === "Alive") {
-            var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
-            emoji = alive[Math.floor(Math.random() * alive.length)];
-        }
-        teamStr += ((i + 1) + ". " + members[i].user.username + " [" + members[i].user.state + "] " + emoji + " \n");
+        teamStr += (i + 1) + ". " + getPlayerStatusStr(members[i]);
     }
     teamStr += "\n";
     return teamStr;
 }
 
-function displayAllTributes(callback) {
-    Tribute.find({}).exec(function (err, tributes) {
-        let str = "☆*:.｡. All Tributes .｡.:*☆\n\n";
-        for(const team of TEAMS){
-            const members = getTeamMembers(team);
-            const teamStr = getTeamStr(members, team);
-            str += teamStr;
-        }
-        callback(str);
-    })
+function getPlayerStatusStr(player) {
+    var state = player.user.state;
+    var emoji = "";
+    if (state === "Dead") {
+        var dead = ["👻", "💀", "☠️"];
+        emoji = dead[Math.floor(Math.random() * dead.length)];
+    } else if (state === "Alive") {
+        var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
+        emoji = alive[Math.floor(Math.random() * alive.length)];
+    }
+    return player.user.username + " [" + player.user.state + "] " + emoji + " \n";
+}
+
+/**
+ * Creates list of all players grouped by team and their status.
+ * @param callback
+ */
+async function displayAllTributes(callback) {
+    let str = "☆*:.｡. All Tributes .｡.:*☆\n\n";
+    for (const team of TEAMS) {
+        const members = await getTeamMembers(team);
+        members.sort(compareState); //alive ahead of dead
+        const teamStr = getTeamStr(members, team);
+        str += teamStr;
+    }
+    callback(str);
 }
 
 function compareState(a, b) {
@@ -444,7 +442,7 @@ function isValidTeam(team) {
     //TODO: revamp teams
     console.log(team);
     for (const t of TEAMS) {
-        if (team === t){
+        if (team === t) {
             return true;
         }
     }
@@ -620,54 +618,58 @@ function rollTeam(bot, msg, team) {
     })
 }
 
-function sendExterminatorTargets(callback) {
-    //TODO: remove duplicate by implementing alive filter
-    Tribute.find({"user.state": "Alive"}).exec(function (err, result) {
-        var response = "☆*:.｡. Targets remaining .｡.:*☆\n\n";
-        var resistanceArray = getTeam("resistance");
-        appendTeam(resistanceArray, "resistance");
-        var capitolArray = getTeam("capitol");
-        appendTeam(capitolArray, "capitol");
-
-        function getTeam(team) {
-            var teamArray = result.filter(function (el) {
-                return el.user.team === team;
-            });
-            return teamArray;
-        }
-
-        function appendTeam(teamArray, team) {
-            var teamName = team;
-            // if (team === "resistance") {
-            //     teamName = resistanceTitle;
-            // } else if (team === "capitol.") {
-            //     teamName = capitolTitle;
-            // }
-
-            response += "<b>" + teamName + "</b>\n";
-            teamArray.sort(compareState); //TODO: compare by kills
-            for (var i = 0; i < teamArray.length; i++) {
-                var state = teamArray[i].user.state;
-                var equip = teamArray[i].user.equipment;
-                var emoji = "";
-                if (state === "Dead") {
-                    var dead = ["👻", "💀", "☠️"];
-                    emoji = dead[Math.floor(Math.random() * dead.length)];
-                } else if (state === "Alive") {
-                    var alive = ["😀", "😃", "😄", "😁", "😆", "😆", "😅", "😂", "😜", "😏", "😒", "🤤", "😬", "😍", "😘", "🤓", "😎", "😑"];
-                    emoji = alive[Math.floor(Math.random() * alive.length)];
-                }
-
-                emoji += ": " + teamArray[i].user.kills;
-
-                response += ((i + 1) + ". " + teamArray[i].user.username + " [" + teamArray[i].user.state + "] " + emoji + " \n");
-            }
-
-            response += "\n";
-        }
-
-        console.log(response);
-        callback(response);
-    })
+/**
+ * Gets list of living team members as array.
+ * @param team team name
+ * @returns array of living team members.
+ */
+async function getLivingTeamMembers(team) {
+    const teamArray = await Tribute.find({
+        "user.team": team,
+        "user.state": "Alive"
+    }).exec();
+    return teamArray;
 }
 
+function getLivingTeamStr(members, teamName) {
+    let teamStr = "";
+    teamStr += "<b>" + teamName + "</b>\n";
+    for (var i = 0; i < members.length; i++) {
+        teamStr += (i + 1) + ". " + getPlayerKillsStr(members[i]);
+    }
+    teamStr += "\n";
+    return teamStr;
+}
+
+function getPlayerKillsStr(player) {
+    const numShans = player.user.kills;
+    const numSticks = player.user.sticks;
+    return player.user.username + " [Shans: " + numShans + ", Sticks: " + numSticks + "] " + " \n";
+}
+
+function killsComparator(a, b) {
+    const aKills = a.user.kills + a.user.sticks;
+    const bKills = b.user.kills + b.user.sticks;
+    if (aKills < bKills){
+        return 1;
+    }
+    if (aKills > bKills) {
+        return -1;
+    }
+    return 0;
+}
+
+/**
+ * Creates list of still living players grouped by team and their number of kills.
+ * @param callback
+ */
+async function displayLivingTributes(callback) {
+    let str = "☆*:.｡. Living Tributes .｡.:*☆\n\n";
+    for (const team of TEAMS) {
+        const members = await getLivingTeamMembers(team);
+        members.sort(killsComparator);
+        const teamStr = getLivingTeamStr(members, team);
+        str += teamStr;
+    }
+    callback(str);
+}
