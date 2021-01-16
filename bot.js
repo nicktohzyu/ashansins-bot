@@ -176,6 +176,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on('/clear_logs', (msg) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
         db.clearLogs(false, (res) => console.log("Clearing the logs!"));
     });
 
@@ -219,6 +222,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/Revive (.+)$/, (msg, props) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
         const text = props.match[1];
         db.reviveTribute(false, text, function (user) {
             bot.sendMessage(user.user.id, "You got revived!");
@@ -229,6 +235,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/SendToAll (.+)$/, (msg, props) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
         const text = props.match[1];
         return db.sendToAll(text, (chat_id, message) => {
             return bot.sendMessage(chat_id, message);
@@ -236,6 +245,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/SendTo (.+)$/, (msg, props) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
         const text = props.match[1];
         console.log(text);
 
@@ -246,6 +258,9 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/Unregister (.+)$/, (msg, props) => {
+        if(!validateAdmin(msg.from.id)){
+            return;
+        }
         const userName = props.match[1]
         console.log("Attempting to unregister " + userName);
         return db.processUnregistration(msg, userName, (message) => {
@@ -256,6 +271,29 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     bot.on([/^\/random$/, /^\/random@Ashansins_bot$/], (msg) => {
         return db.prekds(bot, msg, "random", "From which District do you want to select a random tribute?");
     });
+
+    /**
+     * Returns true IFF userId is an admin
+     * @param userId
+     * @returns true IFF userId is an admin
+     */
+    function isAdmin(userId) {
+        return adminIDs.includes(userId);
+    }
+
+    /**
+     * Checks if userId is an admin. If they are not, sends an error message to the user.
+     * @param userId
+     * @returns true IFF userId is an admin
+     */
+    function validateAdmin(userId) {
+        if (isAdmin(userId)) {
+            return true;
+        } else {
+            bot.sendMessage(userId, "Error: you are not authorized to use this command");
+            return false;
+        }
+    }
 }
 
 /*bot.on(/^\/🔪RandomRevive (.+)$/, (msg, props) => {

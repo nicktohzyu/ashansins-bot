@@ -25,21 +25,25 @@ record a stick
 repeats a message back to the sender  
 can log details, used for debugging  
 ## clear_logs  
+**requires authorization**  
 clears logs  
 ## tributes  
 takes additional parameter which can be 'all' or 'resistance' or 'capitol'  
 sends list of tributes  
-## Unregister 
-**doesn't work**  
+## Unregister
+**requires authorization**  
 unregisters a tribute  
 ## random  
 select a random tribute from a district  
 ## sudoTest  
 logs "hello" to console and replies with the sender's id  
-## Revive (tributeName)  
+## Revive (tributeName)
+**requires authorization**  
 revive a tribute  
 **works but causes an error**  
-## SendToAll  
+## SendToAll
+**requires authorization**  
 **have not tested**  
-## SendTo  
+## SendTo
+**requires authorization**  
 **works but will have an issue for people with space in their names**
