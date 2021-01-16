@@ -98,13 +98,13 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         });
     });
 
-    bot.on(/^\/kill (.+)$/, (msg, props) => {
-        const text = props.match[1];
-        console.log("KILLING");
-        return db.processKill(msg, text, (id, message) => {
-            return bot.sendMessage(id, message);
-        });
-    });
+    // bot.on(/^\/kill (.+)$/, (msg, props) => {
+    //     const text = props.match[1];
+    //     console.log("KILLING");
+    //     return db.processKill(msg, text, (id, message) => {
+    //         return bot.sendMessage(id, message);
+    //     });
+    // });
     bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
         return db.prekds(bot, msg, "prekill", "From which District is your target to kill?");
     });
