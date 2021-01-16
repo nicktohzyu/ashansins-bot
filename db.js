@@ -337,6 +337,7 @@ function processDead(msg, killerUsername, callback) {
 }
 
 function processKill(msg, target, callback) {
+    //TODO: check whether stick or shan
     Player.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
             callback(msg.from.id, "Sorry, an unexpected error occured!");
@@ -439,7 +440,6 @@ function sendToAll(input, callback) {
 }
 
 function isValidTeam(team) {
-    //TODO: revamp teams
     console.log(team);
     for (const t of TEAMS) {
         if (team === t) {
