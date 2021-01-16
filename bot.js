@@ -399,19 +399,19 @@ function pingAdmins(bot, message) {
     }
 }
 
-bot.on('/generate_equations', (msg) => {
-    var operands = [" + ", " - ", " * ", " / "];
-    var reply = Math.floor(Math.random() * 100);
-    for (var i = 0; i < 5; i++) {
-        reply += operands[Math.floor(Math.random() * operands.length)];
-        reply += Math.floor(Math.random() * 100);
-    }
-
-    var answer = math.eval(reply);
-
-    reply += " = " + answer;
-    bot.sendMessage(msg.chat.id, reply);
-});
+// bot.on('/generate_equations', (msg) => { //nani?
+//     var operands = [" + ", " - ", " * ", " / "];
+//     var reply = Math.floor(Math.random() * 100);
+//     for (var i = 0; i < 5; i++) {
+//         reply += operands[Math.floor(Math.random() * operands.length)];
+//         reply += Math.floor(Math.random() * 100);
+//     }
+//
+//     var answer = math.eval(reply);
+//
+//     reply += " = " + answer;
+//     bot.sendMessage(msg.chat.id, reply);
+// });
 
 /*
 bot.on('/spy', (msg) => {
