@@ -2,12 +2,8 @@ module.exports = {
     //getLogs: getLogs,
     clearLogs: clearLogs,
     addLog: addLog,
-    addTribute: addTribute,
     killTribute: recordUserKilled,
     reviveTribute: reviveTribute,
-    updateEquip: updateEquip,
-    updateKiller: updateKiller,
-    updateVictim: updateVictim,
     processDead: processDead,
     processKill: processKill,
     processRegistration: processRegistration,
@@ -17,13 +13,11 @@ module.exports = {
     displayAllTributes: displayAllTributes,
     displayTributes: displayTributes,
     processStick: processStick,
-    // randomRevive: randomRevive,
     kill: kill,
     dead: dead,
     stick: stick,
     prekds: prekds,
     rollDistrict: rollDistrict,
-    sendExterminatorScore: sendExterminatorScore,
     sendExterminatorTargets: sendExterminatorTargets,
     // reviveAll: reviveAll
 }
@@ -86,9 +80,9 @@ var tributeSchema = new mongoose.Schema({
         district: String,
         state: String,
         equipment: String,
-        killer: String,
-        victim: String,
-        sticker: String,
+        killer_id: Number,
+        victim_id: Number,
+        sticker_id: Number,
         kills: Number,
         deaths: Number,
         sticks: Number,
@@ -131,6 +125,8 @@ function addLog(err, user, message, cb) {
 }
 
 function addTribute(err, user, message, district, state, cb) {
+    // TODO: remove useless err param
+    // TODO: error catching
     if (err) return handleError(err);
     dbmsg = new Tribute({
         user: user,
@@ -216,8 +212,8 @@ function updateEquip(err, user, newEquip, callback) {
     });
 }
 
-function updateKiller(err, user_id, killerUsername) {
-    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer": killerUsername}, function () {
+function updateKiller(err, user_id, killerId) {
+    Tribute.findOneAndUpdate({"user.id": user_id}, {"user.killer_id": killerId}, function () {
     });
 }
 
@@ -402,7 +398,7 @@ function processDead(msg, killerUsername, callback) {
             console.log("processing death of " + msg.from.username + " by " + killerUsername);
 
             recordUserKilled(false, msg.from.id);
-            updateKiller(false, msg.from.id, killerUsername);
+            updateKiller(false, msg.from.id, killer.user.id);
             // updateVictimArray(false, killer.user.id, victim);
             callback(msg.from.id, "Congratulation, you have died successfully!");
             // updateExterminatorCount(false, killer.user.id, msg.from.id);
@@ -432,7 +428,7 @@ function processKill(msg, target, callback) {
                     await callback(msg.from.id, "Your victim is not recorded as dead, they should first record being killed");
                     return;
                 }
-                if (victim.user.killer !== msg.from.username) {
+                if (victim.user.killer_id !== msg.from.id) {
                     await callback(msg.from.id, "Error: your victim did not record being killed by you");
                     return;
                 }
@@ -519,6 +515,7 @@ function sendToAll(input, callback) {
 }
 
 function isValidDistrict(district) {
+    //TODO: revamp teams
     var arrayDistrict = ["resistance", "capitol", "🔪", "spec"];
     console.log(district);
     for (var i in arrayDistrict) {
@@ -529,43 +526,42 @@ function isValidDistrict(district) {
     return false;
 }
 
-function isRegistered(username) {
-    return Tribute.find({"user.username": username});
+async function isRegistered(userId) {
+    const matches = await Tribute.find({"user.id": userId}).exec();
+    return matches.length > 0;
 }
 
-function processRegistration(msg, text, callback) {
-    isRegistered(msg.from.first_name).exec(function (err, res) {
-        const numUsers = res.length;
-        if (numUsers > 0) {
-            callback("Sorry, either you've already registered, or there is already another user with your name.");
-        } else if (isValidDistrict(text)) {
-            addTribute(false, {
-                name: msg.from.first_name,
-                username: msg.from.username,
-                id: msg.from.id,
-                district: text,
-                state: "Alive",
-                equipment: "None",
-                killer: "None yet",
-                victim: "None yet",
-                kills: 0,
-                deaths: 0,
-                sticks: 0,
-                // revives: 0,
-                victims: "{}"
-            });
-
-            if (text === "🔪") {
-                callback("Successful 🔪 registration!");
-            } else {
-                callback("Successful registration!");
-            }
-
-        } else {
-            const bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
-            callback(bad);
-        }
-    });
+async function processRegistration(msg, text, callback) {
+    if (await isRegistered(msg.from.id)) {
+        callback("Either you've already registered, or we have encountered an error.");
+        return;
+    }
+    if (!isValidDistrict(text)) {
+        const bad = "You've entered an invalid command! Please type: /register <your district>, where <your district> can be either resistance or capitol. For example, if you're from capitol, please type: /register capitol"
+        callback(bad);
+        return;
+    }
+    try{
+        addTribute(false, {
+            name: msg.from.first_name,
+            username: msg.from.username,
+            id: msg.from.id,
+            district: text,
+            state: "Alive",
+            equipment: "None",
+            killer_id: 0,
+            victim_id: 0,
+            kills: 0,
+            deaths: 0,
+            sticks: 0,
+            // revives: 0,
+            victims: "{}"
+        });
+    } catch (e){
+        callback("An error occured in registration!");
+        return;
+    }
+    callback("Successful registration!");
 }
 
 // function processUnregistration(msg, user, callback) {

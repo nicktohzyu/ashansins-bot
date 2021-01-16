@@ -336,9 +336,9 @@ bot.on('callbackQuery', msg => {
 
     bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true);
 
-    console.log(msg.data);
+    // console.log(msg.data);
     var data = JSON.parse(msg.data);
-    console.log(data);
+    // console.log(data);
     if (data.purpose == "kill") {
         console.log("killing: " + data.target);
         return db.processKill(msg, data.target, (id, message) => {
