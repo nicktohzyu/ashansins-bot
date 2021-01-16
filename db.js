@@ -270,7 +270,6 @@ function compareState(a, b) {
     return 0;
 }
 
-
 function displayTributes(district, callback) {
     Tribute.find({"user.district": district}).exec(function (err, result) {
         var response = "";
@@ -735,6 +734,7 @@ var tributeSchema = new mongoose.Schema({
     user: {
         name: String,
         id: Number,
+        //TODO: add username
         district: String,
         state: String,
         equipment: String,
