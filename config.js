@@ -8,3 +8,24 @@ module.exports.DbUriString = process.env.MONGODB_URI;
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
 module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
 module.exports.GROUP_CHATS = [-350775032];
+module.exports.HELP_MSG =
+    `The available commands for this game are:
+
+To register, use:
+/register (and follow the prompts)
+
+To record being killed (whether Shan or Stick), use:
+/dead (and follow the prompts)
+
+To record your kill (whether Shan or Stick), use:
+/kill (and follow the prompts)
+Do this only after your victim has recorded their death.
+
+To view ALL players, use:
+/players
+
+To view living players and their kill counts, use:
+/targets
+
+Please start a conversation with @ashansins7_bot first if you have not done so :)`
+

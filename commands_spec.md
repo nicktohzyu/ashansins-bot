@@ -7,17 +7,17 @@ sends help text
 ## compliment  
 sends an insult or compliment with adjustable probability.  
 Insult is based on a local insult list.  
-Uses the complimentr.com API  
-## register  
-registers a new tribute  
+Uses the complimentr.com API
+## register
+registers a new tribute
+## dead
+record being killed
 ## kill  
 record a kill (shan or stick)
 ## players
 get list of players
 ## Targets  
 get list of people still alive, and their kill count  
-## dead  
-record being killed  
   
   
 # admin commands  

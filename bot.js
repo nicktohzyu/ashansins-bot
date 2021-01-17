@@ -1,4 +1,4 @@
-const {adminIDs, botToken, isTeleLogActivate, teleLogAdminId} = require('./config');
+const {adminIDs, botToken, isTeleLogActivate, teleLogAdminId, HELP_MSG} = require('./config');
 const TeleBot = require('telebot');
 const request = require('request');
 const bot = new TeleBot(botToken);
@@ -13,7 +13,7 @@ const db = require('./db');
     bot.on('/start', (msg) => {
         // Sends welcome message to chat.
         console.log("user started conversation with the bot");
-        return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Type /help to learn more about how this bot works.`);
+        return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Use /help to learn more about how this bot works.`);
     });
 
     /*
@@ -51,27 +51,7 @@ const db = require('./db');
     });
 
     bot.on('/help', (msg) => {
-        var text =
-            `The available commands for this game are:
-
-To register, use:
-/register (and follow the prompts)
-
-To record being killed (whether Shan or Stick), use:
-/dead (and follow the prompts)
-
-To record your kill (whether Shan or Stick), use:
-/kill (and follow the prompts)
-Do this after your victim has recorded their death.
-
-To view ALL players, use:
-/players
-
-To view living players and their kill counts, use:
-/targets
-
-Please start a conversation with @ashansins7_bot first if you have not done so :)`
-        return bot.sendMessage(msg.chat.id, text);
+        return bot.sendMessage(msg.chat.id, HELP_MSG);
     });
 
     bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
