@@ -43,7 +43,7 @@ const db = require('./db');
                     text = body.compliment;
                 } else {
                     text = "I'm not in the mood to compliment you.";
-                    console.log("error");
+                    console.log("Error with complimenting");
                 }
                 return bot.sendMessage(msg.chat.id, `${msg.from.first_name}, ${text}.`);
             });
@@ -209,7 +209,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
             return;
         }
         const text = props.match[1];
-        console.log(text);
+        // console.log(text);
 
         var processed = extractFirst(text);
         return db.sendTo(processed[0], processed[1], msg, (chat_id, message) => {
@@ -222,7 +222,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
             return;
         }
         const userName = props.match[1]
-        console.log("Attempting to unregister " + userName);
+        // console.log("Attempting to unregister " + userName);
         return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
@@ -293,49 +293,64 @@ bot.on('callbackQuery', msg => {
     // console.log("in callback");
     // console.log(msg);
 
-    bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true); // nani?
+    bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true); //TODO: nani?
 
     // console.log(msg.data);
-    //Data format: {t: target, p:purpose}
+    //Data format: {t: target, p:purpose, m:shan/stick}
     var data = JSON.parse(msg.data);
     // console.log(data);
-    if (data.p == "kill") {
-        console.log("killing: " + data.t);
-        return db.processKill(msg, data.t, (id, message) => {
-            return bot.sendMessage(id, message);
-        });
-    } else if (data.p == "dead") {
-        console.log("deading: " + data.t);
-        return db.processDead(msg, data.t, (id, message) => {
-            return bot.sendMessage(id, message);
-        });
-    } else if (data.p == "stick") {
-        console.log("sticking: " + data.t);
-        return db.processStick(msg, data.t,
-            (id, message) => {
+    switch (data.p) {
+        case "dead":
+            // console.log("deading: " + data.t);
+            return db.processDead(msg, data.t, (id, message) => {
                 return bot.sendMessage(id, message);
-            }, (message) => {
-                pingAdmins(bot, message);
             });
-    } else if (data.p == "killVictim") {
-        return db.killVictim(bot, msg, data.t);
-    } else if (data.p == "predead") {
-        return db.dead(bot, msg, data.t);
-    } else if (data.p == "prestick") {
-        return db.stick(bot, msg, data.t);
-    } else if (data.p == "random") {
-        return db.rollDistrict(bot, msg, data.t);
-    } else if (data.p == "register") {
-        return db.processRegistration(msg, data.t, (message) => {
-            return bot.sendMessage(msg.from.id, message);
-        });
+            break;
+        // case "stick":
+        //     // console.log("sticking: " + data.t);
+        //     return db.processStick(msg, data.t,
+        //         (id, message) => {
+        //             return bot.sendMessage(id, message);
+        //         }, (message) => {
+        //             pingAdmins(bot, message);
+        //         });
+        //     break;
+        case "killVictim":
+            return db.selectVictimDialog(bot, msg, data.t);
+            break;
+        case "killType":
+            return db.selectKillTypeDialog(bot, msg, data.t);
+            break;
+        case "kill":
+            // console.log("killing: " + data.t);
+            return db.processKill(msg, data.t, data.m,(id, message) => {
+                return bot.sendMessage(id, message);
+            });
+            break;
+        case "predead":
+            return db.dead(bot, msg, data.t);
+            break;
+        case "prestick":
+            return db.stick(bot, msg, data.t);
+            break;
+        case "random":
+            return db.rollDistrict(bot, msg, data.t);
+            break;
+        case "register":
+            return db.processRegistration(msg, data.t, (message) => {
+                return bot.sendMessage(msg.from.id, message);
+            });
+            break;
+        default:
+            bot.sendMessage(msg.from.id, "An unexpected error has occurred in the callback");
+            break;
     }
 
 });
 
 function extractFirst(input) {
     var inputArray = input.split(" ");
-    console.log(inputArray);
+    // console.log(inputArray);
     var remainder = "";
     for (var i = 1; i < inputArray.length; i++) {
         remainder += inputArray[i] + " ";

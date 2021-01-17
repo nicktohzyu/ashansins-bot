@@ -12,7 +12,8 @@ module.exports = {
     sendTo: sendTo,
     displayAllPlayers: displayAllPlayers,
     processStick: processStick,
-    killVictim: killVictim,
+    selectVictimDialog: selectVictimDialog,
+    selectKillTypeDialog: selectKillTypeDialog,
     dead: dead,
     stick: stick,
     selectTeamDialog: selectTeamDialog,
@@ -80,7 +81,7 @@ var playerSchema = new mongoose.Schema({
         killer_id: Number,
         victim_id: Number,
         sticker_id: Number,
-        kills: Number,
+        shans: Number,
         deaths: Number,
         sticks: Number,
         // revives: Number,
@@ -235,7 +236,6 @@ function updateVictimArray(err, user_id, victim) {
             console.log(updatedVictims);
             Player.findOneAndUpdate({"user.id": user_id}, {
                 $set: {"user.victims": JSON.stringify(updatedVictims)},
-                $inc: {"user.kills": 1}
             }, function () {
             });
         }
@@ -243,16 +243,26 @@ function updateVictimArray(err, user_id, victim) {
 
 }
 
-function updateExterminatorCount(err, user_id, victim_id) {
-    // TODO: nani?
-    Player.findOne({"user.id": victim_id}).exec(function (err, res) {
-        if (res !== null) { //if victim exists
+async function updateExterminatorCount(err, user_id, victim_id, killType) {
+    try {
+        if (killType === "shan") {
             Player.findOneAndUpdate({"user.id": user_id},
-                {$inc: {"user.sticks": res.user.kills}}, function () {
-                }); //increment killer #sticks by victim #kills
+                {$inc: {"user.shans": 1}},
+                function () {
+                });
+        } else if (killType === "stick") {
+            Player.findOneAndUpdate({"user.id": user_id},
+                {$inc: {"user.sticks": 1}},
+                function () {
+                });
+        } else {
+            console.log("Error: Invalid kill type");
         }
-    });
-
+    } catch (e) {
+        console.log("Unknown error encountered in updating kill count");
+        console.log(e);
+        throw(e);
+    }
 }
 
 /**
@@ -336,7 +346,7 @@ function processDead(msg, killerUsername, callback) {
 
 }
 
-function processKill(msg, target, callback) {
+function processKill(msg, victimUsername, killType, callback) {
     //TODO: check whether stick or shan
     Player.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
@@ -346,9 +356,10 @@ function processKill(msg, target, callback) {
             callback("Invalid command, you can't kill someone when you're already dead!");
             return;
         }
-        Player.findOne({"user.username": target}).exec(async function (err, victim) {
+        Player.findOne({"user.username": victimUsername}).exec(async function (err, victim) {
+            //TODO: ensure exactly one
+            //TODO: use ID instead of username
             if (victim !== null) {
-                //TODO: ensure people can't kill themselves (or same team?)
                 if (victim.user.state !== "Dead") {
                     await callback(msg.from.id, "Your victim is not recorded as dead, they should first record being killed");
                     return;
@@ -357,17 +368,19 @@ function processKill(msg, target, callback) {
                     await callback(msg.from.id, "Error: your victim did not record being killed by you");
                     return;
                 }
+                //TODO: check that victim is unclaimed (can only be claimed once)
 
                 // recordUserKilled(false, victim.user.id); //victim should register death themselves
                 updateVictim(false, msg.from.id, victim.user.id);
                 updateVictimArray(false, msg.from.id, victim);
-                updateExterminatorCount(false, msg.from.id, victim.user.id);
+                updateExterminatorCount(false, msg.from.id, victim.user.id, killType);
 
                 // TODO: abstract notify groupchats method
                 // for (var i in groupChats) {
                 //     callback(groupChats[i], target + " has been killed by " + killer.user.username + "!");
                 // }
-                callback(msg.from.id, "Your kill has been recorded, you SHANed successfully!");
+                // TODO: wait for update DB to complete without error before sending success message
+                callback(msg.from.id, "Your kill has been recorded, you " + killType.toUpperCase() + "ed successfully!");
             } else {
                 callback(msg.chat.id, "You've entered an invalid target!");
             }
@@ -475,7 +488,7 @@ async function processRegistration(msg, team, callback) {
             equipment: "None",
             killer_id: 0,
             victim_id: 0,
-            kills: 0,
+            shans: 0,
             deaths: 0,
             sticks: 0,
             // revives: 0,
@@ -535,33 +548,56 @@ function selectTeamDialog(bot, msg, purpose, text) {
     }
 }
 
-function killVictim(bot, msg, team) {
+function selectVictimDialog(bot, msg, team) {
     //TODO: only show unclaimed kills
-    Player.find({"user.team": team}).exec(function (err, res) {
-        var victims = res;
-        var hitlist = [];
+    Player.find({"user.team": team}).exec(function (err, victims) {
+        //TODO: check for empty victims list
+        const buttons = [];
 
         for (var i = 0; i < victims.length; i++) {
             var packet = {
                 "t": victims[i].user.username,
-                "p": "kill"
+                "p": "killType"
             };
-            hitlist.push([bot.inlineButton(victims[i].user.username, {callback: JSON.stringify(packet)})]);
+            buttons.push([bot.inlineButton(victims[i].user.username, {callback: JSON.stringify(packet)})]);
         }
 
-        console.log(hitlist);
+        // console.log(hitlist);
 
         let replyMarkup = bot.inlineKeyboard(
-            hitlist
+            buttons
         );
 
         bot.sendMessage(msg.from.id, "Who did you kill?", {replyMarkup});
     })
 }
 
+function selectKillTypeDialog(bot, msg, target) {
+    const buttons = [];
+    const shanPacket = {
+        "t": target,
+        "p": "kill",
+        "m": "shan"
+    };
+    buttons.push([bot.inlineButton("shan", {callback: JSON.stringify(shanPacket)})]);
+    var stickPacket = {
+        "t": target,
+        "p": "kill",
+        "m": "stick"
+    };
+    buttons.push([bot.inlineButton("stick", {callback: JSON.stringify(stickPacket)})]);
+
+
+    let replyMarkup = bot.inlineKeyboard(
+        buttons
+    );
+
+    bot.sendMessage(msg.from.id, "How did you kill " + target + "?", {replyMarkup});
+}
+
 function dead(bot, msg, team) {
     Player.find({"user.team": team, "user.state": "Alive"}).exec(function (err, alive) {
-        if(alive.length < 1){
+        if (alive.length < 1) {
             bot.sendMessage(msg.from.id, "Error, it appears that there are no players alive in team " + team);
             return;
         }
@@ -642,15 +678,15 @@ function getLivingTeamStr(members, teamName) {
 }
 
 function getPlayerKillsStr(player) {
-    const numShans = player.user.kills;
+    const numShans = player.user.shans;
     const numSticks = player.user.sticks;
     return player.user.username + " [Shans: " + numShans + ", Sticks: " + numSticks + "] " + " \n";
 }
 
 function killsComparator(a, b) {
-    const aKills = a.user.kills + a.user.sticks;
-    const bKills = b.user.kills + b.user.sticks;
-    if (aKills < bKills){
+    const aKills = a.user.shans + a.user.sticks;
+    const bKills = b.user.shans + b.user.sticks;
+    if (aKills < bKills) {
         return 1;
     }
     if (aKills > bKills) {
