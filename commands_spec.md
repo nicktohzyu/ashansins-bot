@@ -11,16 +11,13 @@ Uses the complimentr.com API
 ## register  
 registers a new tribute  
 ## kill  
-record a kill (shan)
-## tributes
-[comment]: <> (takes additional parameter which can be 'all' or 'resistance' or 'capitol'  )
-get list of tributes
+record a kill (shan or stick)
+## players
+get list of players
 ## Targets  
 get list of people still alive, and their kill count  
 ## dead  
 record being killed  
-## stick  
-record a stick
   
   
 # admin commands  

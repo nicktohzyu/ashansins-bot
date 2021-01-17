@@ -11,11 +11,11 @@ module.exports = {
     sendToAll: sendToAll,
     sendTo: sendTo,
     displayAllPlayers: displayAllPlayers,
-    processStick: processStick,
+    // processStick: processStick,
     selectVictimDialog: selectVictimDialog,
     selectKillTypeDialog: selectKillTypeDialog,
     dead: dead,
-    stick: stick,
+    // stick: stick,
     selectTeamDialog: selectTeamDialog,
     rollDistrict: rollTeam,
     sendExterminatorTargets: displayLivingPlayers,
@@ -80,7 +80,7 @@ var playerSchema = new mongoose.Schema({
         equipment: String,
         killer_id: Number,
         victim_id: Number,
-        sticker_id: Number,
+        // sticker_id: Number,
         shans: Number,
         deaths: Number,
         sticks: Number,
@@ -213,10 +213,10 @@ function updateKiller(err, user_id, killerId) {
     });
 }
 
-function updateSticker(err, user_id, sticker_id) {
-    Player.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function () {
-    });
-}
+// function updateSticker(err, user_id, sticker_id) {
+//     Player.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function () {
+//     });
+// }
 
 function updateVictim(err, killer_id, victim_id) {
     Player.findOneAndUpdate({"user.id": killer_id}, {"user.victim": victim_id}, function () {
@@ -389,41 +389,41 @@ function processKill(msg, victimUsername, killType, callback) {
     });
 }
 
-function processStick(msg, target, callback, callback2) {
-    var toStick = false;
-    Player.findOne({"user.id": msg.from.id}).exec(function (err, sticker) {
-        if (sticker.user.state === "Dead") {
-            callback("Invalid command, you're already dead!");
-        } else {
-            Player.findOne({"user.username": target}).exec(function (err, res) {
-                if (res !== null) {
-                    if (res.user.sticker == msg.from.id) {
-                        toStick = true;
-                    }
-
-                    if (toStick) {
-                        recordUserKilled(false, res.user.id);
-                        updateVictimArray(false, msg.from.id, res);
-                        callback2(target + "  got sticked by " + sticker.user.username + "!");
-                        callback(msg.from.id, "You sticked successfully!");
-                        updateExterminatorCount(false, msg.from.id, res.user.id);
-                        for (var i in groupChats) {
-                            callback(groupChats[i], target + " has been sticked by " + sticker.user.username + "!");
-                        }
-                    } else {
-                        updateVictim(false, msg.from.id, res.user.id);
-                        callback2(sticker.user.username + " is trying to stick " + target + "!");
-                        callback(msg.from.id, "Your response has been recorded!");
-                    }
-                } else {
-                    callback(msg.chat.id, "You've entered an invalid target!");
-                }
-
-
-            });
-        }
-    });
-}
+// function processStick(msg, target, callback, callback2) {
+//     var toStick = false;
+//     Player.findOne({"user.id": msg.from.id}).exec(function (err, sticker) {
+//         if (sticker.user.state === "Dead") {
+//             callback("Invalid command, you're already dead!");
+//         } else {
+//             Player.findOne({"user.username": target}).exec(function (err, res) {
+//                 if (res !== null) {
+//                     if (res.user.sticker == msg.from.id) {
+//                         toStick = true;
+//                     }
+//
+//                     if (toStick) {
+//                         recordUserKilled(false, res.user.id);
+//                         updateVictimArray(false, msg.from.id, res);
+//                         callback2(target + "  got sticked by " + sticker.user.username + "!");
+//                         callback(msg.from.id, "You sticked successfully!");
+//                         updateExterminatorCount(false, msg.from.id, res.user.id);
+//                         for (var i in groupChats) {
+//                             callback(groupChats[i], target + " has been sticked by " + sticker.user.username + "!");
+//                         }
+//                     } else {
+//                         updateVictim(false, msg.from.id, res.user.id);
+//                         callback2(sticker.user.username + " is trying to stick " + target + "!");
+//                         callback(msg.from.id, "Your response has been recorded!");
+//                     }
+//                 } else {
+//                     callback(msg.chat.id, "You've entered an invalid target!");
+//                 }
+//
+//
+//             });
+//         }
+//     });
+// }
 
 function sendTo(user, input, msg, callback) {
     Player.findOne({"user.username": user})
@@ -617,28 +617,28 @@ function dead(bot, msg, team) {
     })
 }
 
-function stick(bot, msg, team) {
-
-    Player.find({"user.team": team, "user.state": "Alive"}).exec(function (err, res) {
-        var alive = res;
-        var hitlist = [];
-
-        for (var i = 0; i < alive.length; i++) {
-            var packet = {
-                "t": alive[i].user.username,
-                "p": "stick"
-            };
-            hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
-        }
-
-
-        let replyMarkup = bot.inlineKeyboard(
-            hitlist
-        );
-
-        bot.sendMessage(msg.from.id, "Who would you like to stick?", {replyMarkup});
-    })
-}
+// function stick(bot, msg, team) {
+//
+//     Player.find({"user.team": team, "user.state": "Alive"}).exec(function (err, res) {
+//         var alive = res;
+//         var hitlist = [];
+//
+//         for (var i = 0; i < alive.length; i++) {
+//             var packet = {
+//                 "t": alive[i].user.username,
+//                 "p": "stick"
+//             };
+//             hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
+//         }
+//
+//
+//         let replyMarkup = bot.inlineKeyboard(
+//             hitlist
+//         );
+//
+//         bot.sendMessage(msg.from.id, "Who would you like to stick?", {replyMarkup});
+//     })
+// }
 
 function rollTeam(bot, msg, team) {
     Player.find({"user.team": team, "user.state": "Dead"}).exec(function (err, res) {

@@ -132,15 +132,15 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
         });
     });
 
-    bot.on(/^\/stick (.+)$/, (msg, props) => {
-        const text = props.match[1];
-        return db.processStick(msg, text,
-            (id, message) => {
-                return bot.sendMessage(id, message);
-            }, (message) => {
-                pingAdmins(bot, message);
-            });
-    });
+    // bot.on(/^\/stick (.+)$/, (msg, props) => {
+    //     const text = props.match[1];
+    //     return db.processStick(msg, text,
+    //         (id, message) => {
+    //             return bot.sendMessage(id, message);
+    //         }, (message) => {
+    //             pingAdmins(bot, message);
+    //         });
+    // });
 
     // bot.on(/^\/🔪Equip (.+)$/, (msg, props) => {
     //     const text = props.match[1];
@@ -330,9 +330,9 @@ bot.on('callbackQuery', msg => {
         case "predead":
             return db.dead(bot, msg, data.t);
             break;
-        case "prestick":
-            return db.stick(bot, msg, data.t);
-            break;
+        // case "prestick":
+        //     return db.stick(bot, msg, data.t);
+        //     break;
         case "random":
             return db.rollDistrict(bot, msg, data.t);
             break;
