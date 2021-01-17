@@ -364,37 +364,37 @@ function processKill(msg, victimUsername, killType, callback) {
             return;
         }
         Player.findOne({"user.username": victimUsername}).exec(async function (err, victim) {
-            //TODO: ensure exactly one
+            //TODO: ensure exactly one matching victim
             //TODO: use ID instead of username
-            if (victim !== null) {
-                if (victim.user.state !== "Dead") {
-                    await callback(msg.from.id, "Your victim is not recorded as dead, they should first record being killed");
-                    return;
-                }
-                if (victim.user.killer_id !== msg.from.id) {
-                    await callback(msg.from.id, "Error: your victim did not record being killed by you");
-                    return;
-                }
-                if (victim.user.can_claim_kill !== true) {
-                    await callback(msg.from.id, "Error: this kill has already been claimed");
-                    return;
-                }
-
-                // recordUserKilled(false, victim.user.id); //victim should register death themselves
-                recordKillClaimed(false, victim.user.id)
-                updateVictim(false, msg.from.id, victim.user.id);
-                updateVictimArray(false, msg.from.id, victim);
-                updateKillCount(false, msg.from.id, victim.user.id, killType);
-
-                // TODO: abstract notify groupchats method
-                // for (var i in groupChats) {
-                //     callback(groupChats[i], target + " has been killed by " + killer.user.username + "!");
-                // }
-                // TODO: wait for update DB to complete without error before sending success message
-                callback(msg.from.id, "Your kill has been recorded, you " + killType.toUpperCase() + "ed successfully!");
-            } else {
+            if (victim === null) {
                 callback(msg.chat.id, "You've entered an invalid target!");
+                return;
             }
+            if (victim.user.state !== "Dead") {
+                callback(msg.from.id, "Your victim is not recorded as dead, they should first record being killed");
+                return;
+            }
+            if (victim.user.killer_id !== msg.from.id) {
+                callback(msg.from.id, "Error: your victim did not record being killed by you");
+                return;
+            }
+            if (victim.user.can_claim_kill !== true) {
+                callback(msg.from.id, "Error: this kill has already been claimed");
+                return;
+            }
+
+            // recordUserKilled(false, victim.user.id); //victim should register death themselves
+            recordKillClaimed(false, victim.user.id)
+            updateVictim(false, msg.from.id, victim.user.id);
+            updateVictimArray(false, msg.from.id, victim);
+            updateKillCount(false, msg.from.id, victim.user.id, killType);
+
+            // TODO: abstract notify groupchats method
+            // for (var i in groupChats) {
+            //     callback(groupChats[i], target + " has been killed by " + killer.user.username + "!");
+            // }
+            // TODO: wait for update DB to complete without error before sending success message
+            callback(msg.from.id, "Your kill has been recorded, you " + killType.toUpperCase() + "ed successfully!");
         });
 
     });
