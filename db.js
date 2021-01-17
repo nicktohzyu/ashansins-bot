@@ -243,7 +243,7 @@ function updateVictimArray(err, user_id, victim) {
 
 }
 
-async function updateExterminatorCount(err, user_id, victim_id, killType) {
+async function updateKillCount(err, user_id, victim_id, killType) {
     try {
         if (killType === "shan") {
             Player.findOneAndUpdate({"user.id": user_id},
@@ -373,7 +373,7 @@ function processKill(msg, victimUsername, killType, callback) {
                 // recordUserKilled(false, victim.user.id); //victim should register death themselves
                 updateVictim(false, msg.from.id, victim.user.id);
                 updateVictimArray(false, msg.from.id, victim);
-                updateExterminatorCount(false, msg.from.id, victim.user.id, killType);
+                updateKillCount(false, msg.from.id, victim.user.id, killType);
 
                 // TODO: abstract notify groupchats method
                 // for (var i in groupChats) {
