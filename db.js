@@ -84,6 +84,7 @@ var playerSchema = new mongoose.Schema({
         shans: Number,
         deaths: Number,
         sticks: Number,
+        can_claim_kill: Boolean,
         // revives: Number,
         victims: String
     },
@@ -135,13 +136,26 @@ function addPlayer(user, message, team, state, cb) {
     }).save(cb);
 }
 
-function recordUserKilled(err, user_id) {
-    console.log("recording " + user_id + " as dead");
-    Player.findOneAndUpdate({"user.id": user_id}, {
+function recordUserKilled(err, victimId, killerId) {
+    console.log("recording " + victimId + " as dead");
+    Player.findOneAndUpdate({"user.id": victimId}, {
         $set: {
-            "user.state": "Dead"
+            "user.state": "Dead",
+            "user.killer_id": killerId,
+            "user.can_claim_kill": true
         },
         $inc: {"user.deaths": 1}
+    }, function (res) {
+        // console.log(res);
+    });
+}
+
+function recordKillClaimed(err, victimId) {
+    console.log("recording " + victimId + " as dead");
+    Player.findOneAndUpdate({"user.id": victimId}, {
+        $set: {
+            "user.can_claim_kill": false
+        }
     }, function (res) {
         // console.log(res);
     });
@@ -161,57 +175,52 @@ function revivePlayer(err, user, callback, callback2) {
     });
 
 }
+//
+//
+// function reviveAll(callback, callback2) {
+//     Player.find({"user.state": "Dead"}).exec(function(err, res){
+//         var dead = res;
+//         console.log(dead);
+//         if (dead.length > 0) {
+//             for (var i = 0; i < dead.length; i++) {
+//                 revivePlayer(false, dead[i].user.username, function(res) {
+//                     callback(res);
+//                 }, callback2);
+//             }
+//         }
+//     })
+// }
 
-/*
-function reviveAll(callback, callback2) {
-    Player.find({"user.state": "Dead"}).exec(function(err, res){
-        var dead = res;
-        console.log(dead);
-        if (dead.length > 0) {
-            for (var i = 0; i < dead.length; i++) {
-                revivePlayer(false, dead[i].user.username, function(res) {
-                    callback(res);
-                }, callback2);
-            }
-        }
-    })
-}
+// function randomRevive(team, callback, callback2) {
+//     Player.find({"user.team": team, "user.state": "Dead"}).exec(function(err, res){
+//         var dead = res;
+//         console.log(dead);
+//         if (dead.length > 0) {
+//             var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
+//             revivePlayer(false, luckyGuy.user.username, function(res) {
+//                 callback(res);
+//             }, callback2);
+//         }
+//     })
+// }
 
-function randomRevive(team, callback, callback2) {
-    Player.find({"user.team": team, "user.state": "Dead"}).exec(function(err, res){
-        var dead = res;
-        console.log(dead);
-        if (dead.length > 0) {
-            var luckyGuy = dead[Math.floor(Math.random()*dead.length)];
-            revivePlayer(false, luckyGuy.user.username, function(res) {
-                callback(res);
-            }, callback2);
-        }
-    })
-}
-*/
-function updateEquip(err, user, newEquip, callback) {
-    Player.findOneAndUpdate({"user.username": user}, {"user.equipment": newEquip}, function (err, result) {
-        var message;
-        if (result !== null) {
-            if (newEquip === "Coin") {
-                message = "You've found, One Gold Bar!💰";
-            } else if (newEquip === "2Coin") {
-                message = "You've found, Two Gold Bars!💰💰";
-            } else if (newEquip === "3Coin") {
-                message = "You've found, Three Gold Bars!💰💰💰";
-            } else {
-                message = "Your inventory is now empty!";
-            }
-            callback(result, message);
-        }
-    });
-}
-
-function updateKiller(err, user_id, killerId) {
-    Player.findOneAndUpdate({"user.id": user_id}, {"user.killer_id": killerId}, function () {
-    });
-}
+// function updateEquip(err, user, newEquip, callback) {
+//     Player.findOneAndUpdate({"user.username": user}, {"user.equipment": newEquip}, function (err, result) {
+//         var message;
+//         if (result !== null) {
+//             if (newEquip === "Coin") {
+//                 message = "You've found, One Gold Bar!💰";
+//             } else if (newEquip === "2Coin") {
+//                 message = "You've found, Two Gold Bars!💰💰";
+//             } else if (newEquip === "3Coin") {
+//                 message = "You've found, Three Gold Bars!💰💰💰";
+//             } else {
+//                 message = "Your inventory is now empty!";
+//             }
+//             callback(result, message);
+//         }
+//     });
+// }
 
 // function updateSticker(err, user_id, sticker_id) {
 //     Player.findOneAndUpdate({"user.id": user_id}, {"user.sticker": sticker_id}, function () {
@@ -331,8 +340,7 @@ function processDead(msg, killerUsername, callback) {
             }
             console.log("processing death of " + msg.from.username + " by " + killerUsername);
 
-            recordUserKilled(false, msg.from.id);
-            updateKiller(false, msg.from.id, killer.user.id);
+            recordUserKilled(false, msg.from.id, killer.user.id);
             // updateVictimArray(false, killer.user.id, victim);
             callback(msg.from.id, SUCCESSFUL_DEATH_MESSAGE);
             // updateExterminatorCount(false, killer.user.id, msg.from.id);
@@ -347,7 +355,6 @@ function processDead(msg, killerUsername, callback) {
 }
 
 function processKill(msg, victimUsername, killType, callback) {
-    //TODO: check whether stick or shan
     Player.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
             callback(msg.from.id, "Sorry, an unexpected error occured!");
@@ -368,9 +375,13 @@ function processKill(msg, victimUsername, killType, callback) {
                     await callback(msg.from.id, "Error: your victim did not record being killed by you");
                     return;
                 }
-                //TODO: check that victim is unclaimed (can only be claimed once)
+                if (victim.user.can_claim_kill !== true) {
+                    await callback(msg.from.id, "Error: this kill has already been claimed");
+                    return;
+                }
 
                 // recordUserKilled(false, victim.user.id); //victim should register death themselves
+                recordKillClaimed(false, victim.user.id)
                 updateVictim(false, msg.from.id, victim.user.id);
                 updateVictimArray(false, msg.from.id, victim);
                 updateKillCount(false, msg.from.id, victim.user.id, killType);
@@ -491,6 +502,7 @@ async function processRegistration(msg, team, callback) {
             shans: 0,
             deaths: 0,
             sticks: 0,
+            can_claim_kill: false,
             // revives: 0,
             victims: "{}"
         });
