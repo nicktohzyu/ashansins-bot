@@ -8,6 +8,7 @@ module.exports = {
     processKill: processKill,
     processRegistration: processRegistration,
     processUnregistration: processUnregistration,
+    notifyGroupChats:notifyGroupChats,
     sendToAll: sendToAll,
     sendTo: sendTo,
     displayAllPlayers: displayAllPlayers,
@@ -37,9 +38,13 @@ const groupChats = []; //[resistance_id, capitol_id, allTeams_id];
 // const resistanceTitle = "⚔️ Resistance ⚔️";
 // const capitolTitle = "🌹 Capitol 🌹";
 
-
 const mongoose = require("mongoose");
-const {DbUriString, SUCCESSFUL_DEATH_MESSAGE, TEAMS} = require("./config")
+const {
+    DbUriString,
+    SUCCESSFUL_DEATH_MESSAGE,
+    TEAMS,
+    GROUP_CHATS
+} = require("./config")
 
 // "mongodb+srv://hemanshu:ebjtugBI6pV9s5MQ@cluster1-xpdov.mongodb.net/ashansins7?retryWrites=true&w=majority";
 
@@ -161,20 +166,19 @@ function recordKillClaimed(err, victimId) {
     });
 }
 
-function revivePlayer(err, user, callback, callback2) {
+function revivePlayer(err, bot, user, callback) {
     Player.findOneAndUpdate({"user.username": user}, {
         $set: {"user.state": "Alive"},
         $inc: {"user.revives": 1}
     }, function (err, res) {
         if (res !== null) {
             callback(res);
-            for (var i in groupChats) {
-                callback2(groupChats[i], user + " has been revived!");
-            }
+            notifyGroupChats(bot, user + " has been revived!")
         }
     });
 
 }
+
 //
 //
 // function reviveAll(callback, callback2) {
@@ -354,7 +358,7 @@ function processDead(msg, killerUsername, callback) {
 
 }
 
-function processKill(msg, victimUsername, killType, callback) {
+function processKill(bot, msg, victimUsername, killType, callback) {
     Player.findOne({"user.id": msg.from.id}).exec(function (err, killer) {
         if (killer == null) {
             callback(msg.from.id, "Sorry, an unexpected error occured!");
@@ -389,15 +393,23 @@ function processKill(msg, victimUsername, killType, callback) {
             updateVictimArray(false, msg.from.id, victim);
             updateKillCount(false, msg.from.id, victim.user.id, killType);
 
-            // TODO: abstract notify groupchats method
-            // for (var i in groupChats) {
-            //     callback(groupChats[i], target + " has been killed by " + killer.user.username + "!");
-            // }
-            // TODO: wait for update DB to complete without error before sending success message
+            // TODO: wait for update DB to complete without error before sending success messages
+            //notify group chats
+            const groupMsgStr = victim.user.username + " has been " +
+                killType.toUpperCase() + "ed by " + killer.user.username + "!"
+            notifyGroupChats(bot, groupMsgStr);
+
             callback(msg.from.id, "Your kill has been recorded, you " + killType.toUpperCase() + "ed successfully!");
         });
 
     });
+}
+
+function notifyGroupChats(bot, msgStr) {
+    //TODO: test this
+    for (const chatId of GROUP_CHATS) {
+        bot.sendMessage(chatId, msgStr);
+    }
 }
 
 // function processStick(msg, target, callback, callback2) {
@@ -452,15 +464,13 @@ function sendTo(user, input, msg, callback) {
         })
 }
 
-function sendToAll(input, callback) {
+function sendToAll(bot, msgStr) {
     Player.find({}).exec(function (err, result) {
         for (var i in result) {
-            callback(result[i].user.id, input);
+            callback(result[i].user.id, msgStr);
         }
     })
-    for (var i in groupChats) {
-        callback(groupChats[i], input);
-    }
+    notifyGroupChats(bot, msgStr);
 }
 
 function isValidTeam(team) {

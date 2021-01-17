@@ -186,10 +186,8 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
             return;
         }
         const text = props.match[1];
-        db.revivePlayer(false, text, function (user) {
+        db.revivePlayer(false, bot, text, function (user) {
             bot.sendMessage(user.user.id, "You got revived!");
-        }, function (id, message) {
-            bot.sendMessage(id, message);
         });
         return bot.sendMessage(msg.from.id, "Successful Revive!");
     });
@@ -199,9 +197,15 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
             return;
         }
         const text = props.match[1];
-        return db.sendToAll(text, (chat_id, message) => {
-            return bot.sendMessage(chat_id, message);
-        });
+        return db.sendToAll(bot, text);
+    });
+
+    bot.on(/^\/SendToGroups (.+)$/, (msg, props) => {
+        if (!validateAdmin(msg.from.id)) {
+            return;
+        }
+        const text = props.match[1];
+        return db.notifyGroupChats(bot, text);
     });
 
     bot.on(/^\/SendTo (.+)$/, (msg, props) => {
@@ -323,7 +327,7 @@ bot.on('callbackQuery', msg => {
             break;
         case "kill":
             // console.log("killing: " + data.t);
-            return db.processKill(msg, data.t, data.m,(id, message) => {
+            return db.processKill(bot, msg, data.t, data.m,(id, message) => {
                 return bot.sendMessage(id, message);
             });
             break;
