@@ -142,7 +142,7 @@ function addPlayer(user, message, team, state, cb) {
 }
 
 function recordUserKilled(err, victimId, killerId) {
-    console.log("recording " + victimId + " as dead");
+    // console.log("recording " + victimId + " as dead");
     Player.findOneAndUpdate({"user.id": victimId}, {
         $set: {
             "user.state": "Dead",
@@ -156,7 +156,6 @@ function recordUserKilled(err, victimId, killerId) {
 }
 
 function recordKillClaimed(err, victimId) {
-    console.log("recording " + victimId + " as dead");
     Player.findOneAndUpdate({"user.id": victimId}, {
         $set: {
             "user.can_claim_kill": false
@@ -240,13 +239,13 @@ function updateVictimArray(err, user_id, victim) {
     Player.findOne({"user.id": user_id}).exec(function (err, res) {
         if (res !== null) {
             var updatedVictims = JSON.parse(res.user.victims);
-            console.log(updatedVictims);
+            // console.log(updatedVictims);
             if (updatedVictims[victim.user.team] !== null && Array.isArray(updatedVictims[victim.user.team])) {
                 updatedVictims[victim.user.team].push(victim.user.username);
             } else {
                 updatedVictims[victim.user.team] = [victim.user.username];
             }
-            console.log(updatedVictims);
+            // console.log(updatedVictims);
             Player.findOneAndUpdate({"user.id": user_id}, {
                 $set: {"user.victims": JSON.stringify(updatedVictims)},
             }, function () {
@@ -474,7 +473,7 @@ function sendToAll(bot, msgStr) {
 }
 
 function isValidTeam(team) {
-    console.log(team);
+    // console.log(team);
     for (const t of TEAMS) {
         if (team === t) {
             return true;
@@ -665,7 +664,7 @@ function dead(bot, msg, team) {
 function rollTeam(bot, msg, team) {
     Player.find({"user.team": team, "user.state": "Dead"}).exec(function (err, res) {
         var alive = res;
-        console.log(msg);
+        // console.log(msg);
         if (alive.length > 0) {
             var luckyGuy = alive[Math.floor(Math.random() * alive.length)];
             bot.sendMessage(msg.message.chat.id, luckyGuy.user.username + " from " + team + " has been chosen!");
