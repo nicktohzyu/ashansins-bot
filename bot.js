@@ -92,7 +92,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     //     });
     // });
     bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
-        return db.selectTeamDialog(bot, msg, "prekill", "From which District is your target to kill?");
+        return db.selectTeamDialog(bot, msg, "killVictim", "From which District is your target to kill?");
     });
 
     bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
@@ -175,14 +175,14 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on('/Clear_logs', (msg) => {
-        if(!validateAdmin(msg.from.id)){
+        if (!validateAdmin(msg.from.id)) {
             return;
         }
         db.clearLogs(false, (res) => console.log("Clearing the logs!"));
     });
 
     bot.on(/^\/Revive (.+)$/, (msg, props) => {
-        if(!validateAdmin(msg.from.id)){
+        if (!validateAdmin(msg.from.id)) {
             return;
         }
         const text = props.match[1];
@@ -195,7 +195,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/SendToAll (.+)$/, (msg, props) => {
-        if(!validateAdmin(msg.from.id)){
+        if (!validateAdmin(msg.from.id)) {
             return;
         }
         const text = props.match[1];
@@ -205,7 +205,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/SendTo (.+)$/, (msg, props) => {
-        if(!validateAdmin(msg.from.id)){
+        if (!validateAdmin(msg.from.id)) {
             return;
         }
         const text = props.match[1];
@@ -218,7 +218,7 @@ Please start a conversation with @ashansins7_bot first if you have not done so :
     });
 
     bot.on(/^\/Unregister (.+)$/, (msg, props) => {
-        if(!validateAdmin(msg.from.id)){
+        if (!validateAdmin(msg.from.id)) {
             return;
         }
         const userName = props.match[1]
@@ -289,43 +289,44 @@ if (isTeleLogActivate) {
 
 // Inline button callback
 bot.on('callbackQuery', msg => {
-    // User message alert
+
     // console.log("in callback");
     // console.log(msg);
 
-    bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true);
+    bot.answerCallbackQuery(msg.id, `Inline button callback: ${msg.data}`, true); // nani?
 
     // console.log(msg.data);
+    //Data format: {t: target, p:purpose}
     var data = JSON.parse(msg.data);
     // console.log(data);
-    if (data.purpose == "kill") {
-        console.log("killing: " + data.target);
-        return db.processKill(msg, data.target, (id, message) => {
+    if (data.p == "kill") {
+        console.log("killing: " + data.t);
+        return db.processKill(msg, data.t, (id, message) => {
             return bot.sendMessage(id, message);
         });
-    } else if (data.purpose == "dead") {
-        console.log("deading: " + data.target);
-        return db.processDead(msg, data.target, (id, message) => {
+    } else if (data.p == "dead") {
+        console.log("deading: " + data.t);
+        return db.processDead(msg, data.t, (id, message) => {
             return bot.sendMessage(id, message);
         });
-    } else if (data.purpose == "stick") {
-        console.log("sticking: " + data.target);
-        return db.processStick(msg, data.target,
+    } else if (data.p == "stick") {
+        console.log("sticking: " + data.t);
+        return db.processStick(msg, data.t,
             (id, message) => {
                 return bot.sendMessage(id, message);
             }, (message) => {
                 pingAdmins(bot, message);
             });
-    } else if (data.purpose == "prekill") {
-        return db.kill(bot, msg, data.target);
-    } else if (data.purpose == "predead") {
-        return db.dead(bot, msg, data.target);
-    } else if (data.purpose == "prestick") {
-        return db.stick(bot, msg, data.target);
-    } else if (data.purpose == "random") {
-        return db.rollDistrict(bot, msg, data.target);
-    } else if (data.purpose == "register") {
-        return db.processRegistration(msg, data.target, (message) => {
+    } else if (data.p == "killVictim") {
+        return db.killVictim(bot, msg, data.t);
+    } else if (data.p == "predead") {
+        return db.dead(bot, msg, data.t);
+    } else if (data.p == "prestick") {
+        return db.stick(bot, msg, data.t);
+    } else if (data.p == "random") {
+        return db.rollDistrict(bot, msg, data.t);
+    } else if (data.p == "register") {
+        return db.processRegistration(msg, data.t, (message) => {
             return bot.sendMessage(msg.from.id, message);
         });
     }

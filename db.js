@@ -12,7 +12,7 @@ module.exports = {
     sendTo: sendTo,
     displayAllPlayers: displayAllPlayers,
     processStick: processStick,
-    kill: kill,
+    killVictim: killVictim,
     dead: dead,
     stick: stick,
     selectTeamDialog: selectTeamDialog,
@@ -518,8 +518,8 @@ function selectTeamDialog(bot, msg, purpose, text) {
     for (const team of TEAMS) {
         const button = bot.inlineButton(team, {
             callback: JSON.stringify({
-                "target": team,
-                "purpose": purpose
+                "t": team,
+                "p": purpose
             })
         });
         buttons.push([button]);
@@ -535,7 +535,7 @@ function selectTeamDialog(bot, msg, purpose, text) {
     }
 }
 
-function kill(bot, msg, team) {
+function killVictim(bot, msg, team) {
     //TODO: only show unclaimed kills
     Player.find({"user.team": team}).exec(function (err, res) {
         var victims = res;
@@ -543,8 +543,8 @@ function kill(bot, msg, team) {
 
         for (var i = 0; i < victims.length; i++) {
             var packet = {
-                "target": victims[i].user.username,
-                "purpose": "kill"
+                "t": victims[i].user.username,
+                "p": "kill"
             };
             hitlist.push([bot.inlineButton(victims[i].user.username, {callback: JSON.stringify(packet)})]);
         }
@@ -555,28 +555,28 @@ function kill(bot, msg, team) {
             hitlist
         );
 
-        bot.sendMessage(msg.from.id, "Who would you like to kill?", {replyMarkup});
+        bot.sendMessage(msg.from.id, "Who did you kill?", {replyMarkup});
     })
 }
 
 function dead(bot, msg, team) {
-    Player.find({"user.team": team, "user.state": "Alive"}).exec(function (err, res) {
-        var alive = res;
-        var hitlist = [];
-
-        for (var i = 0; i < alive.length; i++) {
-            var packet = {
-                "target": alive[i].user.username,
-                "purpose": "dead"
-            };
-            hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
+    Player.find({"user.team": team, "user.state": "Alive"}).exec(function (err, alive) {
+        if(alive.length < 1){
+            bot.sendMessage(msg.from.id, "Error, it appears that there are no players alive in team " + team);
+            return;
         }
 
-
+        var buttons = [];
+        for (var i = 0; i < alive.length; i++) {
+            var packet = {
+                "t": alive[i].user.username,
+                "p": "dead"
+            };
+            buttons.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
+        }
         let replyMarkup = bot.inlineKeyboard(
-            hitlist
+            buttons
         );
-
         bot.sendMessage(msg.from.id, "Who did you get killed by?", {replyMarkup});
     })
 }
@@ -589,8 +589,8 @@ function stick(bot, msg, team) {
 
         for (var i = 0; i < alive.length; i++) {
             var packet = {
-                "target": alive[i].user.username,
-                "purpose": "stick"
+                "t": alive[i].user.username,
+                "p": "stick"
             };
             hitlist.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
         }
