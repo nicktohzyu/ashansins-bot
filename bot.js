@@ -12,7 +12,7 @@ const db = require('./db');
 // Listens for the invocation of /start command
     bot.on('/start', (msg) => {
         // Sends welcome message to chat.
-        console.log("user started conversation with the bot");
+        console.log(msg.from.username + "user started conversation with the bot");
         return bot.sendMessage(msg.chat.id, `Welcome ${msg.from.first_name}! Use /help to learn more about how this bot works.`);
     });
 
