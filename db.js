@@ -18,7 +18,7 @@ module.exports = {
     dead: dead,
     // stick: stick,
     selectTeamDialog: selectTeamDialog,
-    rollDistrict: rollTeam,
+    rollTeam: rollTeam,
     sendExterminatorTargets: displayLivingPlayers,
     // reviveAll: reviveAll
 }

@@ -73,7 +73,7 @@ function validateDm(msg) {
         if(!validateDm(msg)){
             return;
         }
-        return db.selectTeamDialog(bot, msg, "register", "To which District do you pledge your allegiance?");
+        return db.selectTeamDialog(bot, msg, "register", "To which Team do you pledge your allegiance?");
     });
     bot.on(/^\/register (.+)$/, (msg, props) => {
         const text = props.match[1].toLowerCase();
@@ -93,18 +93,18 @@ function validateDm(msg) {
         if(!validateDm(msg)){
             return;
         }
-        return db.selectTeamDialog(bot, msg, "killVictim", "From which District is your target to kill?");
+        return db.selectTeamDialog(bot, msg, "killVictim", "From which Team is your target to kill?");
     });
 
     bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
         if(!validateDm(msg)){
             return;
         }
-        return db.selectTeamDialog(bot, msg, "predead", "From which District is your killer?");
+        return db.selectTeamDialog(bot, msg, "predead", "From which Team is your killer?");
     });
 
     // bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-    //     return db.selectTeamDialog(bot, msg, "prestick", "From which District is your target to stick?");
+    //     return db.selectTeamDialog(bot, msg, "prestick", "From which Team is your target to stick?");
     // });
 
     /*
@@ -170,7 +170,7 @@ function validateDm(msg) {
     });
 
     bot.on([/^\/Random$/, /^\/random@Ashansins_bot$/], (msg) => {
-        return db.selectTeamDialog(bot, msg, "random", "From which District do you want to select a random player?");
+        return db.selectTeamDialog(bot, msg, "random", "From which Team do you want to select a random player?");
     });
 
     bot.on('/SudoTest', msg => {
@@ -342,7 +342,7 @@ bot.on('callbackQuery', msg => {
         //     return db.stick(bot, msg, data.t);
         //     break;
         case "random":
-            return db.rollDistrict(bot, msg, data.t);
+            return db.rollTeam(bot, msg, data.t);
             break;
         case "register":
             return db.processRegistration(msg, data.t, (message) => {
