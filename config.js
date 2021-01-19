@@ -7,7 +7,12 @@ module.exports.DbUriString = process.env.MONGODB_URI;
 
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
 module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
-module.exports.GROUP_CHATS = [-350775032];
+module.exports.GROUP_CHATS = [-350775032, -479881289,
+    -483192819, // wakanda
+    -428372620, // guardians
+    -458788961, // shield
+    -330611685 //asgard
+];
 module.exports.HELP_MSG =
     `The available commands for this game are:
 
