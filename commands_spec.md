@@ -11,7 +11,7 @@ Uses the complimentr.com API
 ## register
 registers a new tribute
 ## dead
-record being killed
+record being killed. self kill not allowed.
 ## kill  
 record a kill (shan or stick)
 ## players
@@ -31,7 +31,7 @@ logs "hello" to console and replies with the sender's id
 ## clear_logs  
 **requires authorization**  
 clears logs  
-## Unregister
+## Unregister (tributeName)
 **requires authorization**  
 unregisters a tribute  
 ## Revive (tributeName)
