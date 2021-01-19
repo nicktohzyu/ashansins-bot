@@ -335,7 +335,7 @@ function compareState(a, b) {
 
 function processDead(msg, killerUsername, callback) {
     if (msg.from.username === killerUsername) {
-        callback(msg.chat.id, "You're not allowed to kill yourself, nincompoop!");
+        callback(msg.from.id, "You're not allowed to kill yourself, nincompoop!");
         return;
     }
     Player.findOne({"user.id": msg.from.id}).exec(function (err, victim) {
