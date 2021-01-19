@@ -6,6 +6,21 @@ const constants = require('./constants');
 const math = require('mathjs');
 const db = require('./db');
 
+/**
+ * Checks if the message was sent directly to the bot, and not in a group.
+ * If it was not a direct message, sends an error message to the user and returns false
+ * @param userId
+ * @returns true IFF the messsage was sent directly
+ */
+function validateDm(msg) {
+    if(msg.from.id !== msg.chat.id){
+        bot.sendMessage(msg.chat.id, "Error: use this command should only be used as a direct message.");
+        return false
+    } else{
+        return true;
+    }
+}
+
 //user commands
 {
 
@@ -55,6 +70,9 @@ const db = require('./db');
     });
 
     bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
+        if(!validateDm(msg)){
+            return;
+        }
         return db.selectTeamDialog(bot, msg, "register", "To which District do you pledge your allegiance?");
     });
     bot.on(/^\/register (.+)$/, (msg, props) => {
@@ -72,16 +90,22 @@ const db = require('./db');
     //     });
     // });
     bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
+        if(!validateDm(msg)){
+            return;
+        }
         return db.selectTeamDialog(bot, msg, "killVictim", "From which District is your target to kill?");
     });
 
     bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
+        if(!validateDm(msg)){
+            return;
+        }
         return db.selectTeamDialog(bot, msg, "predead", "From which District is your killer?");
     });
 
-    bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
-        return db.selectTeamDialog(bot, msg, "prestick", "From which District is your target to stick?");
-    });
+    // bot.on([/^\/stick$/, /^\/stick@Ashansins_bot$/], (msg) => {
+    //     return db.selectTeamDialog(bot, msg, "prestick", "From which District is your target to stick?");
+    // });
 
     /*
     not used for ashansins 6 as ashansins 6 is not points based
@@ -105,12 +129,12 @@ const db = require('./db');
         });
     });
 
-    bot.on(/^\/dead (.+)$/, (msg, props) => {
-        const text = props.match[1];
-        return db.processDead(msg, text, (id, message) => {
-            return bot.sendMessage(id, message);
-        });
-    });
+    // bot.on(/^\/dead (.+)$/, (msg, props) => {
+    //     const text = props.match[1];
+    //     return db.processDead(msg, text, (id, message) => {
+    //         return bot.sendMessage(id, message);
+    //     });
+    // });
 
     // bot.on(/^\/stick (.+)$/, (msg, props) => {
     //     const text = props.match[1];
