@@ -23,21 +23,6 @@ module.exports = {
     // reviveAll: reviveAll
 }
 
-const team1_id = -391986817;//insert the group ids of the different group chats with the participants;
-const team2_id = -264119959;//insert the group ids of the different group chats with the participants;
-const team6_id = -364865565;//insert the group ids of the different group chats with the participants;
-const team12_id = -358638029;//insert the group ids of the different group chats with the participants;
-const resistance_id = -390663740;
-const capitol_id = -338862508;
-const allTeams_id = -1001215955875;//insert the group ids of the different group chats with the participants;
-const groupChats = []; //[resistance_id, capitol_id, allTeams_id];
-//const team1Title = "💎 Team 1 💎";//"✈️💨🌬 Team 1 🌪🦅🎈";
-//const team2Title = "🛡 Team 2 🛡";//"🚰🌊☔️ Team 2 ❄️🐳🍵";
-//const team6Title = "🌋 Team 6 🌋";//"🌍⛰🍄 Team 6 🗻🐛🌚";
-//const team12Title = "🔥 Team 12 🔥"//"🌋🚒☀️ Team 12 🔥💥👩🏻‍🚒";
-// const resistanceTitle = "⚔️ Resistance ⚔️";
-// const capitolTitle = "🌹 Capitol 🌹";
-
 const mongoose = require("mongoose");
 const {
     DbUriString,
