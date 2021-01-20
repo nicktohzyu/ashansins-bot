@@ -3,13 +3,13 @@ const TeleBot = require('telebot');
 const request = require('request');
 const bot = new TeleBot(botToken);
 const constants = require('./constants');
-const math = require('mathjs');
+// const math = require('mathjs');
 const db = require('./db');
 
 /**
  * Checks if the message was sent directly to the bot, and not in a group.
  * If it was not a direct message, sends an error message to the user and returns false
- * @param userId
+ * @param msg
  * @returns true IFF the messsage was sent directly
  */
 function validateDm(msg) {
@@ -75,12 +75,12 @@ function validateDm(msg) {
         }
         return db.selectTeamDialog(bot, msg, "register", "To which Team do you pledge your allegiance?");
     });
-    bot.on(/^\/register (.+)$/, (msg, props) => {
-        const text = props.match[1].toLowerCase();
-        return db.processRegistration(msg, text, (message) => {
-            return bot.sendMessage(msg.chat.id, message);
-        });
-    });
+    // bot.on(/^\/register (.+)$/, (msg, props) => {
+    //     const text = props.match[1].toLowerCase();
+    //     return db.processRegistration(msg, text, (message) => {
+    //         return bot.sendMessage(msg.chat.id, message);
+    //     });
+    // });
 
     // bot.on(/^\/kill (.+)$/, (msg, props) => {
     //     const text = props.match[1];
