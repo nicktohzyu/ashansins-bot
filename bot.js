@@ -256,7 +256,7 @@ function validateDm(msg) {
         } else {
             const nonAdminMessage = "You have no power here! " +
                 "https://giphy.com/gifs/high-quality-highqualitygifs-L0coY9I1D2BnaKln9a"
-            bot.sendMessage(userId, "Error: you are not authorized to use this command");
+            bot.sendMessage(userId, nonAdminMessage);
             return false;
         }
     }
