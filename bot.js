@@ -69,7 +69,7 @@ function validateDm(msg) {
         return bot.sendMessage(msg.chat.id, HELP_MSG);
     });
 
-    bot.on([/^\/register$/, /^\/register@Ashansins_bot$/], (msg) => {
+    bot.on('/register', (msg) => {
         if(!validateDm(msg)){
             return;
         }
@@ -89,14 +89,14 @@ function validateDm(msg) {
     //         return bot.sendMessage(id, message);
     //     });
     // });
-    bot.on([/^\/kill$/, /^\/kill@Ashansins_bot$/], (msg) => {
+    bot.on('/kill', (msg) => {
         if(!validateDm(msg)){
             return;
         }
         return db.selectTeamDialog(bot, msg, "killVictim", "From which Team is your target to kill?");
     });
 
-    bot.on([/^\/dead$/, /^\/dead@Ashansins_bot$/], (msg) => {
+    bot.on('/dead', (msg) => {
         if(!validateDm(msg)){
             return;
         }
@@ -117,13 +117,13 @@ function validateDm(msg) {
     });
     */
 
-    bot.on([/^\/players$/, /^\/players@Ashansins_bot$/], (msg) => {
+    bot.on('/players', (msg) => {
         db.displayAllPlayers((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
     });
 
-    bot.on([/^\/targets$/, /^\/Targets@Ashansins_bot$/], (msg) => {
+    bot.on('/targets', (msg) => {
         db.sendExterminatorTargets((message) => {
             return bot.sendMessage(msg.chat.id, message, {parseMode: "HTML"});
         });
@@ -169,7 +169,7 @@ function validateDm(msg) {
         return bot.sendMessage(msg.from.id, text, {replyToMessage: msg.message_id});
     });
 
-    bot.on([/^\/Random$/, /^\/random@Ashansins_bot$/], (msg) => {
+    bot.on('/Random', (msg) => {
         return db.selectTeamDialog(bot, msg, "random", "From which Team do you want to select a random player?");
     });
 
