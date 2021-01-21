@@ -11,7 +11,8 @@ module.exports.GROUP_CHATS = [-350775032,
     -483192819, // wakanda
     -428372620, // guardians
     -458788961, // shield
-    -330611685 //asgard
+    -330611685, //asgard
+    -1001458787880 //mega group
 ];
 module.exports.HELP_MSG =
     `The available commands for this game are:
