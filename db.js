@@ -381,6 +381,8 @@ function processKill(bot, msg, victimUsername, killType, callback) {
             updateKillCount(false, msg.from.id, victim.user.id, killType);
 
             // TODO: wait for update DB to complete without error before sending success messages
+
+            // TODO: include team name in notification
             //notify group chats
             const groupMsgStr = victim.user.username + " has been " +
                 killType.toUpperCase() + "ed by " + killer.user.username + "!"

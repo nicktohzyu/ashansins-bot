@@ -6,6 +6,8 @@ module.exports.teleLogAdminId = JSON.parse(process.env.TELE_LOG_ADMIN_ID)
 module.exports.DbUriString = process.env.MONGODB_URI;
 
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
+
+// TODO: move to .env
 module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
 module.exports.GROUP_CHATS = [-350775032,
     -483192819, // wakanda
