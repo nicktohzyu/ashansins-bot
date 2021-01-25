@@ -85,8 +85,8 @@ var playerSchema = new mongoose.Schema({
 });
 
 var Message = mongoose.model('Message', messageSchema);
-var Player = mongoose.model('Phase1Player', playerSchema);
-// var Player = mongoose.model('Phase2Player', playerSchema);
+// var Player = mongoose.model('Phase1Player', playerSchema);
+var Player = mongoose.model('Phase2Player', playerSchema);
 
 /*
 // This command crashes the application. Also it it not used in the app. Commented out for ashansins6

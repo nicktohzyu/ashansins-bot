@@ -8,13 +8,17 @@ module.exports.DbUriString = process.env.MONGODB_URI;
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
 
 // TODO: move to .env
-module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
-module.exports.GROUP_CHATS = [-350775032,
-    -483192819, // wakanda
-    -428372620, // guardians
-    -458788961, // shield
-    -330611685, //asgard
-    -1001458787880 //mega group
+// module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
+module.exports.TEAMS = ["Avengers", "Thanos"];
+module.exports.GROUP_CHATS = [
+    -350775032, // records
+    // -483192819, // wakanda
+    // -428372620, // guardians
+    // -458788961, // shield
+    // -330611685, // asgard
+    -1001458787880, // mega group
+    -326651665, // avengers
+    -455500126, // thanos
 ];
 module.exports.HELP_MSG =
     `The available commands for this game are:
