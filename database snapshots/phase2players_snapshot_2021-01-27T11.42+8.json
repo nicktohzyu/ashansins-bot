@@ -1,0 +1,1661 @@
+[{
+  "_id": {
+    "$oid": "6006d43ba33af42974900ac1"
+  },
+  "user": {
+    "name": "Prachi",
+    "username": "pra2023",
+    "id": 814937837,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"sid_premnath\"],\"Thanos\":[\"oscarity\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d443a33af42974900ac2"
+  },
+  "user": {
+    "name": "Nishant",
+    "username": "lordnishant",
+    "id": 578344910,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d458a33af42974900ac3"
+  },
+  "user": {
+    "name": "steffin",
+    "username": "steffint",
+    "id": 782564476,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 36432035,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d480a33af42974900ac9"
+  },
+  "user": {
+    "name": "valerie",
+    "username": "valpalerie",
+    "id": 201595441,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 8,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"itsraininggg\",\"froschbravo\",\"sahus0303\"],\"Wakanda\":[\"bridsss\"],\"Thanos\":[\"yunze\",\"gottagofas\",\"hkhkoh\",\"leehws\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d4a9a33af42974900acc"
+  },
+  "user": {
+    "name": "ben_",
+    "username": "BenTeoo",
+    "id": 906761097,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 597282110,
+    "victim_id": 0,
+    "shans": 4,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Thanos\":[\"Okutai\",\"Liang_En\",\"sid_premnath\",\"itsraininggg\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d4aba33af42974900acd"
+  },
+  "user": {
+    "name": "alyssa",
+    "username": "awoops",
+    "id": 417503063,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 3,
+    "deaths": 0,
+    "sticks": 1,
+    "can_claim_kill": false,
+    "victims": "{\"Guardians\":[\"bohemin\",\"timtamzy\",\"iztanpy\"],\"SHIELD\":[\"Timkmz\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d509a33af42974900acf"
+  },
+  "user": {
+    "name": "Rochelle 🐸",
+    "username": "bruhchelle",
+    "id": 217020042,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d55aa33af42974900ad2"
+  },
+  "user": {
+    "name": "Eugene",
+    "username": "BonyPony",
+    "id": 133546378,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 748320380,
+    "victim_id": 0,
+    "shans": 4,
+    "deaths": 1,
+    "sticks": 1,
+    "can_claim_kill": false,
+    "victims": "{\"Asgard\":[\"Chaaroooii\",\"jj_ayj\"],\"SHIELD\":[\"oscarity\"],\"Thanos\":[\"ychuan18\",\"wintanmee\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d55ba33af42974900ad3"
+  },
+  "user": {
+    "name": "shalenee",
+    "username": "shalebeebo",
+    "id": 491389399,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 275580333,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": true,
+    "victims": "{\"Thanos\":[\"bridsss\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d584a33af42974900ad4"
+  },
+  "user": {
+    "name": "Wan Lin",
+    "username": "tingwanlin",
+    "id": 495503846,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 215447548,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d5e4a33af42974900ad8"
+  },
+  "user": {
+    "name": "ameera",
+    "username": "aemeera",
+    "id": 376586489,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d73ca33af42974900ade"
+  },
+  "user": {
+    "name": "Linus",
+    "username": "linenezz",
+    "id": 155025266,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Guardians\":[\"BenTeoo\"],\"Thanos\":[\"sahus0303\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d84ea33af42974900adf"
+  },
+  "user": {
+    "name": "Janson",
+    "username": "doctoorhouse",
+    "id": 374127743,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d9a5a33af42974900ae3"
+  },
+  "user": {
+    "name": "Jin Ming",
+    "username": "thecheesz",
+    "id": 74122931,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006da3ea33af42974900ae5"
+  },
+  "user": {
+    "name": "Megan",
+    "username": "mmeganloww",
+    "id": 901904839,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 266771445,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Guardians\":[\"ddannyiel\"],\"Wakanda\":[\"htetdbear\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006da86a33af42974900ae6"
+  },
+  "user": {
+    "name": "Hongyi 😙",
+    "username": "ninjaseaweed",
+    "id": 723908582,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006db99a33af42974900ae9"
+  },
+  "user": {
+    "name": "qi hui",
+    "username": "qihuilimm",
+    "id": 517666056,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dc77a33af42974900aee"
+  },
+  "user": {
+    "name": "Jasmine",
+    "username": "jasminehzy",
+    "id": 76206491,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dea6a33af42974900af0"
+  },
+  "user": {
+    "name": "Rycia",
+    "username": "rycia",
+    "id": 29077231,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dfa4a33af42974900af2"
+  },
+  "user": {
+    "name": "Fayola",
+    "username": "Fayolatan27",
+    "id": 1086533404,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 875444329,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e219a33af42974900af5"
+  },
+  "user": {
+    "name": "mitch",
+    "username": "mtdx99",
+    "id": 516819061,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"theboyopposite\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e80ca33af42974900af8"
+  },
+  "user": {
+    "name": "mei",
+    "username": "meiyeee",
+    "id": 854894241,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006ee19a33af42974900afa"
+  },
+  "user": {
+    "name": "Dylan",
+    "username": "dpatty777",
+    "id": 625992955,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 337421674,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60070a16a33af42974900b02"
+  },
+  "user": {
+    "name": "Tanat",
+    "username": "tanatt00",
+    "id": 624321362,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 292350212,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60070a9ba33af42974900b03"
+  },
+  "user": {
+    "name": "tiffany",
+    "username": "tiffanyjhns",
+    "id": 889708587,
+    "team": "Avengers",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 337421674,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600710b0a4f68539d4c146a9"
+  },
+  "user": {
+    "name": "Douglas",
+    "username": "Douglaschoi",
+    "id": 194760564,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007110ea4f68539d4c146ab"
+  },
+  "user": {
+    "name": "rach",
+    "username": "itsrachelng",
+    "id": 669055267,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007132ea4f68539d4c146ad"
+  },
+  "user": {
+    "name": "PEEP PEPE🐺 loves dodgies",
+    "username": "peeppepe",
+    "id": 60477559,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"kepkheus\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007265ba4f68539d4c146b1"
+  },
+  "user": {
+    "name": "Edith",
+    "username": "edivv",
+    "id": 667345354,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60078c4ea4f68539d4c146b4"
+  },
+  "user": {
+    "name": "Benjamin",
+    "username": "usernamexx420",
+    "id": 95573754,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600808b97c1e503bf022f351"
+  },
+  "user": {
+    "name": "Ｌuwｕne ☾",
+    "username": "omyhangu",
+    "id": 343131330,
+    "team": "Avengers",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d426a33af42974900ac0"
+  },
+  "user": {
+    "name": "MinKyu",
+    "username": "froschbravo",
+    "id": 536590757,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Guardians\":[\"teamlemon\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d45fa33af42974900ac4"
+  },
+  "user": {
+    "name": "Sid",
+    "username": "sid_premnath",
+    "id": 602850776,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 906761097,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d46ea33af42974900ac5"
+  },
+  "user": {
+    "name": "Liang En",
+    "username": "Liang_En",
+    "id": 368883433,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 906761097,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d470a33af42974900ac6"
+  },
+  "user": {
+    "name": "Seng leng",
+    "username": "meownir",
+    "id": 980594372,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d47ca33af42974900ac7"
+  },
+  "user": {
+    "name": "Hyungwoon Lee",
+    "username": "leehws",
+    "id": 597282110,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 201595441,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Avengers\":[\"BenTeoo\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d47da33af42974900ac8"
+  },
+  "user": {
+    "name": "Tim",
+    "username": "Timkmz",
+    "id": 189580139,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d4a7a33af42974900acb"
+  },
+  "user": {
+    "name": "Sherlin",
+    "username": "sherlins",
+    "id": 354875984,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d4d8a33af42974900ace"
+  },
+  "user": {
+    "name": "winna",
+    "username": "wintanmee",
+    "id": 276798125,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 133546378,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d555a33af42974900ad0"
+  },
+  "user": {
+    "name": "jay",
+    "username": "jj_ayj",
+    "id": 875444329,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"Hengnezz\"],\"Avengers\":[\"Fayolatan27\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d557a33af42974900ad1"
+  },
+  "user": {
+    "name": "pric 🥟",
+    "username": "poofingfudges",
+    "id": 96319478,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d5a4a33af42974900ad6"
+  },
+  "user": {
+    "name": "Daniel",
+    "username": "ddannyiel",
+    "id": 318510534,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d5d6a33af42974900ad7"
+  },
+  "user": {
+    "name": "Tai",
+    "username": "Okutai",
+    "id": 370573531,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 906761097,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"itsraininggg\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d5f3a33af42974900ad9"
+  },
+  "user": {
+    "name": "Johnathan",
+    "username": "theboyopposite",
+    "id": 184680657,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"itschlowee\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d5fba33af42974900ada"
+  },
+  "user": {
+    "name": "celeste",
+    "username": "drguccinuggets",
+    "id": 337421674,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Avengers\":[\"tiffanyjhns\",\"dpatty777\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d65ca33af42974900adb"
+  },
+  "user": {
+    "name": "Keph",
+    "username": "kepkheus",
+    "id": 146841392,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d6f2a33af42974900adc"
+  },
+  "user": {
+    "name": "faseeh",
+    "username": "gottagofas",
+    "id": 36432035,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 201595441,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"voon_jung\"],\"Avengers\":[\"steffint\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d710a33af42974900add"
+  },
+  "user": {
+    "name": "Oscar",
+    "username": "oscarity",
+    "id": 198945420,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 814937837,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 4,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"gottagofas\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d8eca33af42974900ae0"
+  },
+  "user": {
+    "name": "janet",
+    "username": "janetchenn",
+    "id": 292350212,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Avengers\":[\"tanatt00\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d932a33af42974900ae1"
+  },
+  "user": {
+    "name": "Heng Li",
+    "username": "Hengnezz",
+    "id": 841576542,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006d948a33af42974900ae2"
+  },
+  "user": {
+    "name": "VOON",
+    "username": "voon_jung",
+    "id": 769987998,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Guardians\":[\"sai_thejaa\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006da3ea33af42974900ae4"
+  },
+  "user": {
+    "name": "Yi Jie",
+    "username": "bettersafethansushi",
+    "id": 216370334,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006daaca33af42974900ae7"
+  },
+  "user": {
+    "name": "Shi Qi",
+    "username": "shiqigohh",
+    "id": 748320380,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Avengers\":[\"BonyPony\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dae9a33af42974900ae8"
+  },
+  "user": {
+    "name": "Suhas",
+    "username": "sahus0303",
+    "id": 678101743,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 155025266,
+    "victim_id": 0,
+    "shans": 3,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"shiqigohh\"],\"Guardians\":[\"wintanmee\"],\"Asgard\":[\"hsreya\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006db9aa33af42974900aea"
+  },
+  "user": {
+    "name": "Eu Jin",
+    "username": "eujin12",
+    "id": 711886793,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"drguccinuggets\"],\"Guardians\":[\"jialeaves\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dbaba33af42974900aeb"
+  },
+  "user": {
+    "name": "Houy",
+    "username": "seavhouy",
+    "id": 539770730,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dc6ca33af42974900aec"
+  },
+  "user": {
+    "name": "Ernest",
+    "username": "Nerdyernyperny",
+    "id": 129188151,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dc6da33af42974900aed"
+  },
+  "user": {
+    "name": "Zijie 🫓",
+    "username": "IMZIJIE",
+    "id": 421176433,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"jacindatsen\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006dd53a33af42974900aef"
+  },
+  "user": {
+    "name": "siyu",
+    "username": "fourbraincells",
+    "id": 151672222,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"SHIELD\":[\"hkhkoh\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006deaca33af42974900af1"
+  },
+  "user": {
+    "name": "Isaac",
+    "username": "iztanpy",
+    "id": 221737147,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e04ba33af42974900af3"
+  },
+  "user": {
+    "name": "Bridget Grace",
+    "username": "bridsss",
+    "id": 13852196,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 491389399,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e190a33af42974900af4"
+  },
+  "user": {
+    "name": "Lian Kit",
+    "username": "LianKit",
+    "id": 397702539,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e346a33af42974900af6"
+  },
+  "user": {
+    "name": "y",
+    "username": "ychuan18",
+    "id": 57000804,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 133546378,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006e764a33af42974900af7"
+  },
+  "user": {
+    "name": "Min Si",
+    "username": "bohemin",
+    "id": 123695200,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006ee17a33af42974900af9"
+  },
+  "user": {
+    "name": "Yit Ching",
+    "username": "Yitching",
+    "id": 225967715,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006f0a3a33af42974900afb"
+  },
+  "user": {
+    "name": "Charles",
+    "username": "PolarCub",
+    "id": 461797923,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006f271a33af42974900afc"
+  },
+  "user": {
+    "name": "Christian",
+    "username": "Chris9805",
+    "id": 853898707,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 0,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Asgard\":[\"Okutai\"],\"Wakanda\":[\"seavhouy\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006f912a33af42974900afd"
+  },
+  "user": {
+    "name": "Koh Hong Kai",
+    "username": "hkhkoh",
+    "id": 262576314,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 201595441,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6006f967a33af42974900afe"
+  },
+  "user": {
+    "name": "chloe",
+    "username": "itschlowee",
+    "id": 515530820,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600705bfa33af42974900aff"
+  },
+  "user": {
+    "name": "tsing ngia",
+    "username": "tsingzx",
+    "id": 328216769,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60070645a33af42974900b00"
+  },
+  "user": {
+    "name": "theja",
+    "username": "sai_thejaa",
+    "id": 796992148,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 2,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60070664a33af42974900b01"
+  },
+  "user": {
+    "name": "Jia Rui",
+    "username": "Chaaroooii",
+    "id": 168403166,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007116fa4f68539d4c146ac"
+  },
+  "user": {
+    "name": "Jaymi",
+    "username": "mimae508",
+    "id": 643601068,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007147aa4f68539d4c146ae"
+  },
+  "user": {
+    "name": "Jiali",
+    "username": "jialeaves",
+    "id": 266460279,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 1,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Asgard\":[\"imgoodchild\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600714aaa4f68539d4c146af"
+  },
+  "user": {
+    "name": "Timothy",
+    "username": "teamlemon",
+    "id": 262303591,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007199ea4f68539d4c146b0"
+  },
+  "user": {
+    "name": "shreya",
+    "username": "hsreya",
+    "id": 266771445,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 4,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"ivyyingying\",\"bettersafethansushi\"],\"Guardians\":[\"sherlins\"],\"Avengers\":[\"mmeganloww\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007313ba4f68539d4c146b2"
+  },
+  "user": {
+    "name": "Ryan Jeremy",
+    "username": "imgoodchild",
+    "id": 215447548,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 2,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Wakanda\":[\"janetchenn\"],\"Avengers\":[\"tingwanlin\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600732cca4f68539d4c146b3"
+  },
+  "user": {
+    "name": "Jacinda",
+    "username": "jacindatsen",
+    "id": 501440245,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60078d0aa4f68539d4c146b5"
+  },
+  "user": {
+    "name": "yunze",
+    "username": "yunze",
+    "id": 367913189,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 201595441,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007a01ba4f68539d4c146b6"
+  },
+  "user": {
+    "name": "Htet",
+    "username": "htetdbear",
+    "id": 203463903,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007af53a4f68539d4c146b7"
+  },
+  "user": {
+    "name": "Ivy",
+    "username": "ivyyingying",
+    "id": 866448288,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007c211a4f68539d4c146b8"
+  },
+  "user": {
+    "name": "/shan",
+    "username": "itsraininggg",
+    "id": 275580333,
+    "team": "Thanos",
+    "state": "Dead",
+    "equipment": "None",
+    "killer_id": 906761097,
+    "victim_id": 0,
+    "shans": 6,
+    "deaths": 3,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{\"Asgard\":[\"leehws\",\"Liang_En\"],\"Guardians\":[\"ychuan18\",\"tsingzx\",\"sai_thejaa\"],\"Wakanda\":[\"Edmiang\"]}"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6007c8e6a4f68539d4c146b9"
+  },
+  "user": {
+    "name": "Edwin",
+    "username": "Edmiang",
+    "id": 248935893,
+    "team": "Thanos",
+    "state": "Alive",
+    "equipment": "None",
+    "killer_id": 0,
+    "victim_id": 0,
+    "shans": 0,
+    "deaths": 1,
+    "sticks": 0,
+    "can_claim_kill": false,
+    "victims": "{}"
+  },
+  "__v": 0
+}]
