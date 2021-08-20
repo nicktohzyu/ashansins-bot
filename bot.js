@@ -351,12 +351,21 @@ bot.on('callbackQuery', msg => {
                 return bot.sendMessage(msg.from.id, message);
             });
             break;
+        case 'cancel':
+            cancelCallback(msg);
+            break;
         default:
             bot.sendMessage(msg.from.id, "An unexpected error has occurred in the callback");
             break;
     }
 
 });
+
+function cancelCallback(msg) {
+    bot.editMessageText({chatId: msg.message.chat.id,
+            messageId: msg.message.message_id},
+        'Your request has been cancelled!').catch(error => console.log('Error:', error));;
+}
 
 function extractFirst(input) {
     var inputArray = input.split(" ");

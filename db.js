@@ -85,8 +85,8 @@ var playerSchema = new mongoose.Schema({
 });
 
 var Message = mongoose.model('Message', messageSchema);
-// var Player = mongoose.model('Phase1Player', playerSchema);
-var Player = mongoose.model('Phase2Player', playerSchema);
+var Player = mongoose.model('Phase1Player', playerSchema);
+// var Player = mongoose.model('Phase2Player', playerSchema);
 
 /*
 // This command crashes the application. Also it it not used in the app. Commented out for ashansins6
@@ -548,6 +548,7 @@ function selectTeamDialog(bot, msg, purpose, text) {
         });
         buttons.push([button]);
     }
+    addCancelOption(bot, buttons);
     const replyMarkup = bot.inlineKeyboard(
         buttons
     );
@@ -557,6 +558,15 @@ function selectTeamDialog(bot, msg, purpose, text) {
     } else {
         bot.sendMessage(msg.from.id, text, {replyMarkup});
     }
+}
+
+function addCancelOption(bot, buttons){
+    const button = bot.inlineButton("cancel", {
+        callback: JSON.stringify({
+            p: "cancel"
+        })
+    });
+    buttons.push([button]);
 }
 
 function selectVictimDialog(bot, msg, team) {
@@ -572,7 +582,7 @@ function selectVictimDialog(bot, msg, team) {
             };
             buttons.push([bot.inlineButton(victims[i].user.username, {callback: JSON.stringify(packet)})]);
         }
-
+        addCancelOption(bot, buttons);
         // console.log(hitlist);
 
         let replyMarkup = bot.inlineKeyboard(
@@ -597,7 +607,7 @@ function selectKillTypeDialog(bot, msg, target) {
         "m": "stick"
     };
     buttons.push([bot.inlineButton("stick", {callback: JSON.stringify(stickPacket)})]);
-
+    addCancelOption(bot, buttons);
 
     let replyMarkup = bot.inlineKeyboard(
         buttons
@@ -621,6 +631,7 @@ function dead(bot, msg, team) {
             };
             buttons.push([bot.inlineButton(alive[i].user.username, {callback: JSON.stringify(packet)})]);
         }
+        addCancelOption(bot, buttons);
         let replyMarkup = bot.inlineKeyboard(
             buttons
         );
