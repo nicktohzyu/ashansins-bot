@@ -13,10 +13,10 @@ const db = require('./db');
  * @returns true IFF the messsage was sent directly
  */
 function validateDm(msg) {
-    if(msg.from.id !== msg.chat.id){
+    if (msg.from.id !== msg.chat.id) {
         bot.sendMessage(msg.chat.id, "Error: use this command should only be used as a direct message.");
         return false
-    } else{
+    } else {
         return true;
     }
 }
@@ -70,7 +70,7 @@ function validateDm(msg) {
     });
 
     bot.on('/register', (msg) => {
-        if(!validateDm(msg)){
+        if (!validateDm(msg)) {
             return;
         }
         return db.selectTeamDialog(bot, msg, "register", "To which Team do you pledge your allegiance?");
@@ -90,14 +90,14 @@ function validateDm(msg) {
     //     });
     // });
     bot.on('/kill', (msg) => {
-        if(!validateDm(msg)){
+        if (!validateDm(msg)) {
             return;
         }
         return db.selectTeamDialog(bot, msg, "killVictim", "From which Team is your target to kill?");
     });
 
     bot.on('/dead', (msg) => {
-        if(!validateDm(msg)){
+        if (!validateDm(msg)) {
             return;
         }
         return db.selectTeamDialog(bot, msg, "predead", "From which Team is your killer?");
@@ -333,7 +333,7 @@ bot.on('callbackQuery', msg => {
             break;
         case "kill":
             // console.log("killing: " + data.t);
-            return db.processKill(bot, msg, data.t, data.m,(id, message) => {
+            return db.processKill(bot, msg, data.t, data.m, (id, message) => {
                 return bot.sendMessage(id, message);
             });
             break;
@@ -358,7 +358,6 @@ bot.on('callbackQuery', msg => {
             bot.sendMessage(msg.from.id, "An unexpected error has occurred in the callback");
             break;
     }
-
 });
 
 function cancelCallback(msg) {

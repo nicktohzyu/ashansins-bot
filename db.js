@@ -8,7 +8,7 @@ module.exports = {
     processKill: processKill,
     processRegistration: processRegistration,
     processUnregistration: processUnregistration,
-    notifyGroupChats:notifyGroupChats,
+    notifyGroupChats: notifyGroupChats,
     sendToAll: sendToAll,
     sendTo: sendTo,
     displayAllPlayers: displayAllPlayers,
@@ -560,7 +560,7 @@ function selectTeamDialog(bot, msg, purpose, text) {
     }
 }
 
-function addCancelOption(bot, buttons){
+function addCancelOption(bot, buttons) {
     const button = bot.inlineButton("cancel", {
         callback: JSON.stringify({
             p: "cancel"
