@@ -6,6 +6,7 @@ module.exports.teleLogAdminId = JSON.parse(process.env.TELE_LOG_ADMIN_ID)
 module.exports.DbUriString = process.env.MONGODB_URI;
 
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
+module.exports.VALIDATE_DIRECT_MESSAGE = "Walao, don't spam people lah. Message me directly can liao.";
 
 // TODO: move to .env
 module.exports.TEAMS = ["Scone Scoopers", "Shake Shack", "Yoda Soda", "Pizza the Hutt"]; //phase 1
