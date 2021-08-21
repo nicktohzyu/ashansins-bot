@@ -11,14 +11,14 @@ module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died succes
 module.exports.TEAMS = ["Scone Scoopers", "Shake Shack", "Yoda Soda", "Pizza the Hutt"]; //phase 1
 // module.exports.TEAMS = ["Rebels", "Nestle"]; //phase 2
 module.exports.GROUP_CHATS = [
-    -350775032, // records
-    // -483192819, // wakanda
-    // -428372620, // guardians
-    // -458788961, // shield
-    // -330611685, // asgard
-    -1001458787880, // mega group
-    -326651665, // avengers
-    -455500126, // thanos
+    // -429367857, // dev records 1543255785
+    // -1507493514, // announcements
+    -1001476466450, //mega group
+    -576508720, // records
+    -1001375948344, // pizza
+    -1001372622196, // yoda
+    -1001221079857, // shake
+    -1001176521025, // scone
 ];
 module.exports.HELP_MSG =
     `https://youtu.be/pUaxXsqGeFI
