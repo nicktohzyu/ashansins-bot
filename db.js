@@ -28,6 +28,7 @@ const {
     DbUriString,
     SUCCESSFUL_DEATH_MESSAGE,
     TEAMS,
+    TEAMLINKS,
     GROUP_CHATS
 } = require("./config")
 
@@ -472,6 +473,15 @@ function isValidTeam(team) {
     return false;
 }
 
+function getTeamLink(team) {
+    for (let i = 0; i < TEAMS.length; i++) {
+        if (team === TEAMS[i]) {
+            return TEAMLINKS[i];
+        }
+    }
+    return "";
+}
+
 async function isRegistered(userId) {
     const matches = await Player.find({"user.id": userId}).exec();
     return matches.length > 0;
@@ -479,15 +489,22 @@ async function isRegistered(userId) {
 
 async function processRegistration(msg, team, callback) {
     if (await isRegistered(msg.from.id)) {
-        callback("Either you've already registered, or we have encountered an error.");
+        callback("You are already registered as part of Team "
+            + team
+            + "!\n\nMain Ashanshins Channel:\nhttps://t.me/joinchat/KQbQCtr_GJo0ODk1\n\nMain Ashanshins Group:\nhttps://t.me/joinchat/6_HD4CX2E21lY2U1\n\nTeam "
+            + team
+            + " Group:\n"
+            + getTeamLink(team)
+            + "\n\nMay the force be with you..."
+        );
         return;
     }
-    if (!isValidTeam(team)) {
-        console.log("Error in processing registration, invalid team");
-        const bad = "An unknown error in team selection has occurred, please contact the bot developer"
-        callback(bad);
-        return;
-    }
+    // if (!isValidTeam(team)) {
+    //     console.log("Error in processing registration, invalid team");
+    //     console.log(msg.from.username);
+    //     callback("An unknown error in team selection has occurred! Please contact the bot developers.");
+    //     return;
+    // }
     try {
         addPlayer({
             name: msg.from.first_name,
@@ -509,7 +526,16 @@ async function processRegistration(msg, team, callback) {
         callback("An error occured in registration!");
         return;
     }
-    callback("Successful registration!");
+    callback("Welcome to Ashanshins 8, " 
+        + msg.from.first_name 
+        + ".\n\nThe Sorting Hat says... " 
+        + team 
+        + "!\n\nMain Ashanshins Channel:\nhttps://t.me/joinchat/KQbQCtr_GJo0ODk1\n\nMain Ashanshins Group:\nhttps://t.me/joinchat/6_HD4CX2E21lY2U1\n\nTeam "
+        + team
+        + " Group:\n"
+        + getTeamLink(team)
+        + "\n\nMay the force be with you..."
+        );
 }
 
 // function processUnregistration(msg, user, callback) {
@@ -520,6 +546,7 @@ async function processRegistration(msg, team, callback) {
 // }
 
 async function processUnregistration(msg, userName, callback) {
+    console.log("asd " + userName);
     const doc = await Player.findOneAndDelete({"user.username": userName})
         .exec();
     if (doc) {

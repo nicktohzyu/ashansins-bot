@@ -10,7 +10,9 @@ module.exports.VALIDATE_DIRECT_MESSAGE = "Walao, don't spam people lah. Message 
 
 // TODO: move to .env
 module.exports.TEAMS = ["Scone Scoopers", "Shake Shack", "Yoda Soda", "Pizza the Hutt"]; //phase 1
+module.exports.TEAMLINKS = ["https://t.me/joinchat/znnCwpeRgLdjYmVl", "https://t.me/joinchat/p20ldVveuP4xOTVl", "https://t.me/joinchat/qEx3E8K0zhZjZDll", "https://t.me/joinchat/kLDG3q3q6mkzYWVl"]; //phase 1 telegram group links
 // module.exports.TEAMS = ["Rebels", "Nestle"]; //phase 2
+// module.exports.TEAMLINKS = ["", ""]; //phase 2 telegram group links
 module.exports.GROUP_CHATS = [
     // -429367857, // dev records 1543255785
     // -1507493514, // announcements

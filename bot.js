@@ -70,10 +70,31 @@ function validateDm(msg) {
     });
 
     bot.on('/register', (msg) => {
-        if (!validateDm(msg)) {
-            return;
-        }
-        return db.selectTeamDialog(bot, msg, "register", "To which Team do you pledge your allegiance?");
+
+        const fs = require('fs');
+        fs.readFile('./teamlist.json', 'utf8', (error, jsonString) => {
+            if (error) {
+                console.log("Error reading JSON file:", error);
+                return;
+            }
+            try {
+                const teamlist = JSON.parse(jsonString);
+                const username = msg.from.username;
+                const team = teamlist[username.toLowerCase()];
+                console.log(msg.from.id);
+                
+                if (!validateDm(msg)) {
+                    return;
+                }
+
+                return team 
+                    ? db.processRegistration(msg, team, (message) => {
+                        return bot.sendMessage(msg.from.id, message);
+                    })
+                    : bot.sendMessage(msg.chat.id, "You don't seem to have signed up for Ashanshins! Please contact the Ashanshins game masters for assistance.");
+
+            } finally {}
+        });
     });
     // bot.on(/^\/register (.+)$/, (msg, props) => {
     //     const text = props.match[1].toLowerCase();
@@ -241,7 +262,8 @@ function validateDm(msg) {
         if (!validateAdmin(msg.from.id)) {
             return;
         }
-        const userName = props.match[1]
+        const command = props.match[1];
+        const userName = command.substring(12);
         // console.log("Attempting to unregister " + userName);
         return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
@@ -358,11 +380,11 @@ bot.on('callbackQuery', msg => {
         case "random":
             return db.rollTeam(bot, msg, data.t);
             break;
-        case "register":
-            return db.processRegistration(msg, data.t, (message) => {
-                return bot.sendMessage(msg.from.id, message);
-            });
-            break;
+        // case "register":
+        //     return db.processRegistration(msg, data.t, (message) => {
+        //         return bot.sendMessage(msg.from.id, message);
+        //     });
+        //     break;
         case 'cancel':
             cancelCallback(msg);
             break;
