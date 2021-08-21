@@ -14,7 +14,9 @@ const db = require('./db');
  */
 function validateDm(msg) {
     if (msg.from.id !== msg.chat.id) {
-        bot.sendMessage(msg.chat.id, "Error: use this command should only be used as a direct message.");
+        //TODO: move string to config
+        //TODO: send as reply
+        bot.sendMessage(msg.chat.id, "Walao, don't spam people lah. Message me directly can liao.");
         return false
     } else {
         return true;
@@ -66,7 +68,7 @@ function validateDm(msg) {
     });
 
     bot.on('/help', (msg) => {
-        return bot.sendMessage(msg.chat.id, HELP_MSG);
+        return bot.sendMessage(msg.chat.id, HELP_MSG, { webPreview: false });
     });
 
     bot.on('/register', (msg) => {
