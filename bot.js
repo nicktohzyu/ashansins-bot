@@ -1,4 +1,4 @@
-const {adminIDs, botToken, isTeleLogActivate, teleLogAdminId, HELP_MSG} = require('./config');
+const {adminIDs, botToken, isTeleLogActivate, teleLogAdminId, HELP_MSG, VALIDATE_DIRECT_MESSAGE} = require('./config');
 const TeleBot = require('telebot');
 const request = require('request');
 const bot = new TeleBot(botToken);
@@ -14,9 +14,7 @@ const db = require('./db');
  */
 function validateDm(msg) {
     if (msg.from.id !== msg.chat.id) {
-        //TODO: move string to config
-        //TODO: send as reply
-        bot.sendMessage(msg.chat.id, "Walao, don't spam people lah. Message me directly can liao.");
+        bot.sendMessage(msg.chat.id, VALIDATE_DIRECT_MESSAGE, { replyToMessage: msg.message_id });
         return false
     } else {
         return true;
