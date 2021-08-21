@@ -21,7 +21,9 @@ module.exports.GROUP_CHATS = [
     -455500126, // thanos
 ];
 module.exports.HELP_MSG =
-    `The available commands for this game are:
+    `https://youtu.be/pUaxXsqGeFI
+
+The available commands for this game are:
 
 To register, use:
 /register (and follow the prompts)
@@ -39,5 +41,5 @@ To view ALL players, use:
 To view living players and their kill counts, use:
 /targets
 
-Please start a conversation with @ashansins7_bot first if you have not done so :)`
-
+Please start a conversation with @Ashansins_8_bot first if you have not done so :)`
+//TODO: move bot username to env

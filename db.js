@@ -69,7 +69,7 @@ var playerSchema = new mongoose.Schema({
         state: String,
         equipment: String,
         killer_id: Number,
-        victim_id: Number,
+        victim_id: Number, //TODO: what is this used for?
         // sticker_id: Number,
         shans: Number,
         deaths: Number,

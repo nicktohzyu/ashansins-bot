@@ -90,9 +90,11 @@ function validateDm(msg) {
     //     });
     // });
     bot.on('/kill', (msg) => {
+        //TODO: add warning that victims must register death first
         if (!validateDm(msg)) {
             return;
         }
+        //TODO: only show unclaimed dead victims
         return db.selectTeamDialog(bot, msg, "killVictim", "From which Team is your target to kill?");
     });
 
@@ -162,7 +164,7 @@ function validateDm(msg) {
 
 //admin commands
 {
-    bot.on(/^\/Say (.+)$/, (msg, props) => {
+    bot.on(/^\/Echo (.+)$/, (msg, props) => {
         if (!validateAdmin(msg.from.id)) {
             return;
         }
@@ -173,6 +175,7 @@ function validateDm(msg) {
     });
 
     bot.on('/Random', (msg) => {
+        //TODO: only selects dead players. Purpose? Should this be split to /RandomDead?
         if (!validateAdmin(msg.from.id)) {
             return;
         }
@@ -370,9 +373,11 @@ bot.on('callbackQuery', msg => {
 });
 
 function cancelCallback(msg) {
-    bot.editMessageText({chatId: msg.message.chat.id,
-            messageId: msg.message.message_id},
-        'Your request has been cancelled!').catch(error => console.log('Error:', error));;
+    bot.editMessageText({
+            chatId: msg.message.chat.id,
+            messageId: msg.message.message_id
+        },
+        'Your request has been cancelled!').catch(error => console.log('Error:', error));
 }
 
 function extractFirst(input) {
