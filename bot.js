@@ -163,6 +163,9 @@ function validateDm(msg) {
 //admin commands
 {
     bot.on(/^\/Say (.+)$/, (msg, props) => {
+        if (!validateAdmin(msg.from.id)) {
+            return;
+        }
         // console.log(msg);
         // console.log(props);
         const text = props.match[1];
@@ -170,10 +173,16 @@ function validateDm(msg) {
     });
 
     bot.on('/Random', (msg) => {
+        if (!validateAdmin(msg.from.id)) {
+            return;
+        }
         return db.selectTeamDialog(bot, msg, "random", "From which Team do you want to select a random player?");
     });
 
     bot.on('/SudoTest', msg => {
+        if (!validateAdmin(msg.from.id)) {
+            return;
+        }
         console.log("entered sudoTest");
         return bot.sendMessage(msg.chat.id, msg.chat.id, {parseMode: "HTML"});
     });
