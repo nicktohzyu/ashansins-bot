@@ -8,8 +8,8 @@ module.exports.DbUriString = process.env.MONGODB_URI;
 module.exports.SUCCESSFUL_DEATH_MESSAGE = "Congratulations, you have died successfully!";
 
 // TODO: move to .env
-// module.exports.TEAMS = ["Wakanda", "Guardians", "Asgard", "SHIELD"];
-module.exports.TEAMS = ["Avengers", "Thanos"];
+module.exports.TEAMS = ["Scone Scoopers", "Shake Shack", "Yoda Soda", "Pizza the Hutt"]; //phase 1
+// module.exports.TEAMS = ["Rebels", "Nestle"]; //phase 2
 module.exports.GROUP_CHATS = [
     -350775032, // records
     // -483192819, // wakanda
