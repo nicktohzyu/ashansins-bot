@@ -264,7 +264,9 @@ function validateDm(msg) {
         }
         const command = props.match[1];
         const userName = command.substring(12);
-        // console.log("Attempting to unregister " + userName);
+        console.log("Processing unregister" + userName);
+        console.log("Regex capture: " + command);
+        console.log("userName: " + userName);
         return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });

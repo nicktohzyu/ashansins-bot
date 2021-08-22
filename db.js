@@ -546,7 +546,7 @@ async function processRegistration(msg, team, callback) {
 // }
 
 async function processUnregistration(msg, userName, callback) {
-    console.log("asd " + userName);
+    // console.log("executing processUnregistration, userName: " + userName);
     const doc = await Player.findOneAndDelete({"user.username": userName})
         .exec();
     if (doc) {
