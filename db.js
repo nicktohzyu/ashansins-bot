@@ -580,7 +580,7 @@ function selectTeamDialog(bot, msg, purpose, text) {
         buttons
     );
 
-    if (purpose == "random" || purpose == "register") {
+    if (purpose === "random" || purpose === "register") {
         bot.sendMessage(msg.chat.id, text, {replyMarkup});
     } else {
         bot.sendMessage(msg.from.id, text, {replyMarkup});

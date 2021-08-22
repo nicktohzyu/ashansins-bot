@@ -54,7 +54,7 @@ function validateDm(msg) {
             // Compliment
             request('https://complimentr.com/api', {json: true}, function (error, response, body) {
                 let text;
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     text = body.compliment;
                 } else {
                     text = "I'm not in the mood to compliment you.";
@@ -414,21 +414,21 @@ function extractFirst(input) {
     return [inputArray[0], remainder];
 }
 
-function extractLast(input) {
-    var inputArray = input.split(" ");
-    var remaining = inputArray[0];
-
-    for (var i = 1; i < inputArray.length - 1; i++) {
-        remaining += " " + inputArray[i];
-    }
-    return [remaining, inputArray[inputArray.length - 1]];
-}
-
-function pingAdmins(bot, message) {
-    for (var i in adminIDs) {
-        bot.sendMessage(adminIDs[i], message);
-    }
-}
+// function extractLast(input) {
+//     var inputArray = input.split(" ");
+//     var remaining = inputArray[0];
+//
+//     for (var i = 1; i < inputArray.length - 1; i++) {
+//         remaining += " " + inputArray[i];
+//     }
+//     return [remaining, inputArray[inputArray.length - 1]];
+// }
+//
+// function pingAdmins(bot, message) {
+//     for (var i in adminIDs) {
+//         bot.sendMessage(adminIDs[i], message);
+//     }
+// }
 
 // bot.on('/generate_equations', (msg) => { //nani?
 //     var operands = [" + ", " - ", " * ", " / "];
