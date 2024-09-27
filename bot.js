@@ -54,7 +54,7 @@ function validateDm(msg) {
             // Compliment
             request('https://complimentr.com/api', {json: true}, function (error, response, body) {
                 let text;
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     text = body.compliment;
                 } else {
                     text = "I'm not in the mood to compliment you.";
@@ -70,10 +70,31 @@ function validateDm(msg) {
     });
 
     bot.on('/register', (msg) => {
-        if (!validateDm(msg)) {
-            return;
-        }
-        return db.selectTeamDialog(bot, msg, "register", "To which Team do you pledge your allegiance?");
+
+        const fs = require('fs');
+        fs.readFile('./teamlist.json', 'utf8', (error, jsonString) => {
+            if (error) {
+                console.log("Error reading JSON file:", error);
+                return;
+            }
+            try {
+                const teamlist = JSON.parse(jsonString);
+                const username = msg.from.username;
+                const team = teamlist[username.toLowerCase()];
+                console.log(msg.from.id);
+                
+                if (!validateDm(msg)) {
+                    return;
+                }
+
+                return team 
+                    ? db.processRegistration(msg, team, (message) => {
+                        return bot.sendMessage(msg.from.id, message);
+                    })
+                    : bot.sendMessage(msg.chat.id, "You don't seem to have signed up for Ashanshins! Please contact the Ashanshins game masters for assistance.");
+
+            } finally {}
+        });
     });
     // bot.on(/^\/register (.+)$/, (msg, props) => {
     //     const text = props.match[1].toLowerCase();
@@ -241,8 +262,11 @@ function validateDm(msg) {
         if (!validateAdmin(msg.from.id)) {
             return;
         }
-        const userName = props.match[1]
-        // console.log("Attempting to unregister " + userName);
+        const command = props.match[1];
+        const userName = command.substring(12);
+        console.log("Processing unregister" + userName);
+        console.log("Regex capture: " + command);
+        console.log("userName: " + userName);
         return db.processUnregistration(msg, userName, (message) => {
             return bot.sendMessage(msg.chat.id, message);
         });
@@ -358,11 +382,11 @@ bot.on('callbackQuery', msg => {
         case "random":
             return db.rollTeam(bot, msg, data.t);
             break;
-        case "register":
-            return db.processRegistration(msg, data.t, (message) => {
-                return bot.sendMessage(msg.from.id, message);
-            });
-            break;
+        // case "register":
+        //     return db.processRegistration(msg, data.t, (message) => {
+        //         return bot.sendMessage(msg.from.id, message);
+        //     });
+        //     break;
         case 'cancel':
             cancelCallback(msg);
             break;
@@ -390,21 +414,21 @@ function extractFirst(input) {
     return [inputArray[0], remainder];
 }
 
-function extractLast(input) {
-    var inputArray = input.split(" ");
-    var remaining = inputArray[0];
-
-    for (var i = 1; i < inputArray.length - 1; i++) {
-        remaining += " " + inputArray[i];
-    }
-    return [remaining, inputArray[inputArray.length - 1]];
-}
-
-function pingAdmins(bot, message) {
-    for (var i in adminIDs) {
-        bot.sendMessage(adminIDs[i], message);
-    }
-}
+// function extractLast(input) {
+//     var inputArray = input.split(" ");
+//     var remaining = inputArray[0];
+//
+//     for (var i = 1; i < inputArray.length - 1; i++) {
+//         remaining += " " + inputArray[i];
+//     }
+//     return [remaining, inputArray[inputArray.length - 1]];
+// }
+//
+// function pingAdmins(bot, message) {
+//     for (var i in adminIDs) {
+//         bot.sendMessage(adminIDs[i], message);
+//     }
+// }
 
 // bot.on('/generate_equations', (msg) => { //nani?
 //     var operands = [" + ", " - ", " * ", " / "];
